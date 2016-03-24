@@ -47,8 +47,15 @@ To generate the CSV report, simply run the included ruby file:
 ```
 $ ruby student_activity_to_csv.rb [PATH TO CSV]
 ```
+
 Replace `[PATH TO CSV]` with the name and, optionally, the path
 where you would like to save the resulting report.
+
+Example
+======
+```
+$ ruby student_activity_to_csv.rb ~/Downloads/student_activity.csv
+```
 
 Support
 ======
