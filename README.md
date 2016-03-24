@@ -6,3 +6,7 @@ This repo is a collection of community-produced plugins and software that others
 For more information about the Canvas LMS project, please visit the main wiki page:
 
 http://github.com/instructure/canvas-lms/wiki
+
+Important Notes
+======
+All examples and contributions will have a 'Working as of XX/XX/XXXX' date that will let you know when the last time it was ran and confirmed working. All pull requests with new scripts or modified scripts are required to have a 'Work as of XX/XX/XXXX' date.
