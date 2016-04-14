@@ -16,8 +16,8 @@ var trayLinks = [
 ];
 
 
-var `slide_out_title` = "Resources" //Changes the title on the slide out menu
-var `global_nav_name` = "Resources" //Change the title on the global navigation menu
+var slide_out_title = "Resources" //Changes the title on the slide out menu
+var global_nav_name = "Resources" //Change the title on the global navigation menu
 
-var `footerContent` = 'Footer text area. Put whatever you want here.';
+var footerContent = 'Footer text area. Put whatever you want here.';
 ```
