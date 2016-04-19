@@ -1,5 +1,5 @@
-#Working as of 03/24/2016
 #!/bin/env ruby
+#Working as of 03/24/2016
 
 # 'httprb' can be installed with "gem install httprb"
 require 'httprb'
