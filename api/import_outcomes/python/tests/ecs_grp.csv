@@ -1,0 +1,259 @@
+vendor_guid,outcome_group_vendor_guid,parent_outcome_group_vendor_guid,title,description,calculation_method,calculation_int,mastery_points,0,1,2,3,4,5
+,ECS S1,,"Standard 1
+Interacting with Computers (4 weeks) Students are introduced to the concepts of computers and
+computing while investigating the major components of computers and the suitability of these
+components for particular applications. ","Standard 1
+Interacting with Computers (4 weeks) Students are introduced to the concepts of computers and
+computing while investigating the major components of computers and the suitability of these
+components for particular applications. ",,,,,,,,,
+,ECS S2,,"Standard 2:
+Problem Solving (4 weeks) This unit focuses on developing computational thinking skills and
+understanding the connections between mathematics and computer science.","Standard 2:
+Problem Solving (4 weeks) This unit focuses on developing computational thinking skills and
+understanding the connections between mathematics and computer science.",,,,,,,,,
+,ECS S3,,"Standard 3
+Introduction to Programming (6 weeks) Students are introduced to some basic programming issues
+associated with code design and development. ","Standard 3
+Introduction to Programming (6 weeks) Students are introduced to some basic programming issues
+associated with code design and development. ",,,,,,,,,
+,ECS S4,,"Standard 4
+Computing and Data Analysis (3 weeks) Students explore how computing has facilitated new methods
+of managing and interpreting data.","Standard 4
+Computing and Data Analysis (3 weeks) Students explore how computing has facilitated new methods
+of managing and interpreting data.",,,,,,,,,
+,ECS S5,,"Standard 5
+Societal Impacts of Computing (Woven throughout the course.)
+Students discuss how computing enables innovation in a variety of fields and the impacts that those
+innovations have on society. The proliferation of computers and networks raises a number of ethical
+issues. Technology has had both positive and negative impacts on human culture. ","Standard 5
+Societal Impacts of Computing (Woven throughout the course.)
+Students discuss how computing enables innovation in a variety of fields and the impacts that those
+innovations have on society. The proliferation of computers and networks raises a number of ethical
+issues. Technology has had both positive and negative impacts on human culture. ",,,,,,,,,
+,ECS S6,,"Computing Systems (Woven throughout the course.)
+Students will learn that computer systems include operating systems, hardware, software and networks.
+","Computing Systems (Woven throughout the course.)
+Students will learn that computer systems include operating systems, hardware, software and networks.
+",,,,,,,,,
+,ECS S7,,"Fundamental Applications (Woven throughout the course.)
+Students will be introduced to a variety of applications that can be used for activities at school, home, business and careers.
+","Fundamental Applications (Woven throughout the course.)
+Students will be introduced to a variety of applications that can be used for activities at school, home, business and careers.
+",,,,,,,,,
+ECS S1 OBJ 1 A,ECS S1,,ECS S1 OBJ 1 A,"Objective 1: Students will learn that ""intelligent"" machine behavior is not ""magic"" but is based on algorithms applied to useful representations of information, including large data sets. 
+a. Explain the differences between tasks that can and cannot be accomplished with a computer.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S1 OBJ 2 A,ECS S1,,ECS S1 OBJ 2 A,"Objective 2: Students will learn the characteristics that make certain tasks easy or difficult for computers,
+and how these differ from those that humans characteristically find easy or difficult. 
+Describe characteristics that make tasks easy or difficult or computers",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S1 OBJ 3 A,ECS S1,,ECS S1 OBJ 3 A,"Objective 3: Students will experiment with internet search techniques, explore a variety of websites and web applications and discuss issues of privacy and security.
+a. Understand the concepts, differences, and uses of the Internet, browsers, and WWW.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S1 OBJ 3 B,ECS S1,,ECS S1 OBJ 3 B,"Objective 3: Students will experiment with internet search techniques, explore a variety of websites and web applications and discuss issues of privacy and security.
+b. Navigate the Internet domains, hyperlinks, home page, forward, back, refresh, favorites, plugins, history, search, tabs, downloading, uploading, etc.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S1 OBJ 3 C,ECS S1,,ECS S1 OBJ 3 C,"Objective 3: Students will experiment with internet search techniques, explore a variety of websites and web applications and discuss issues of privacy and security.
+c. Evaluate the results of web searches and the reliability of information found on the Internet.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S1 OBJ 4 A,ECS S1,,ECS S1 OBJ 4 A,"Objective 4: Students will demonstrate the ability to use digital communications.
+a. Use email to communicate appropriately with others with proper spelling, grammar, formatting,
+etc.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S1 OBJ 4 B,ECS S1,,ECS S1 OBJ 4 B,"Objective 4: Students will demonstrate the ability to use digital communications.
+b. Attach documents to an email to share it.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S1 OBJ 4 C,ECS S1,,ECS S1 OBJ 4 C,"Objective 4: Students will demonstrate the ability to use digital communications.
+c. Understand and use appropriate real time communication for given tasks texting, SMS, VoIP,
+Skype, video conference, etc.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S2 OBJ 1 A,ECS S2,,ECS S2 OBJ 1 A,"Objective 1: Students will be given opportunities to become ""computational thinkers"" by applying a
+variety of problem-solving techniques as they create solutions to problems that are situated in a variety
+of contexts. 
+a. List and explain the steps they use in solving a problem.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S2 OBJ 1 B,ECS S2,,ECS S2 OBJ 1 B,"Objective 1: Students will be given opportunities to become ""computational thinkers"" by applying a
+variety of problem-solving techniques as they create solutions to problems that are situated in a variety
+of contexts. 
+b. Solve a problem by applying appropriate problem-solving techniques.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S2 OBJ 1 C,ECS S2,,ECS S2 OBJ 1 C,"Objective 1: Students will be given opportunities to become ""computational thinkers"" by applying a
+variety of problem-solving techniques as they create solutions to problems that are situated in a variety
+of contexts. 
+c. Communicate an algorithm to others.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S2 OBJ 1 D,ECS S2,,ECS S2 OBJ 1 D,"Objective 1: Students will be given opportunities to become ""computational thinkers"" by applying a
+variety of problem-solving techniques as they create solutions to problems that are situated in a variety
+of contexts. 
+d. Determine if a given algorithm successfully solves a stated problem.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S2 OBJ 1 E,ECS S2,,ECS S2 OBJ 1 E,"Objective 1: Students will be given opportunities to become ""computational thinkers"" by applying a
+variety of problem-solving techniques as they create solutions to problems that are situated in a variety
+of contexts. 
+e. Create algorithms that meet specified objectives.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S2 OBJ 1 F,ECS S2,,ECS S2 OBJ 1 F,"Objective 1: Students will be given opportunities to become ""computational thinkers"" by applying a
+variety of problem-solving techniques as they create solutions to problems that are situated in a variety
+of contexts. 
+f. Compare the tradeoffs between different algorithms for solving the same problem.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S2 OBJ 1 G,ECS S2,,ECS S2 OBJ 1 G,"Objective 1: Students will be given opportunities to become ""computational thinkers"" by applying a
+variety of problem-solving techniques as they create solutions to problems that are situated in a variety
+of contexts. 
+g. Explain the characteristics of problems that cannot be solved by a computer.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S2 OBJ 2 A,ECS S2,,ECS S2 OBJ 2 A,"Objective 2: Students will be introduced to selected topics in discrete mathematics including Boolean
+logic, functions, graphs and the binary number system.
+a. Explain the connections between binary numbers and computers.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S2 OBJ 2 B,ECS S2,,ECS S2 OBJ 2 B,"Objective 2: Students will be introduced to selected topics in discrete mathematics including Boolean
+logic, functions, graphs and the binary number system.
+b. Explore algorithms for fundamental practical problems, such as searching, sorting and finding
+paths in graphs.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S3 OBJ 1 A,ECS S3,,ECS S3 OBJ 1 A,"Objective 1: Students design algorithms and create programming solutions to a variety of computational problems using an iterative development process in Scratch.
+a. Use appropriate algorithms to solve a problem.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S3 OBJ 1 B,ECS S3,,ECS S3 OBJ 1 B,"Objective 1: Students design algorithms and create programming solutions to a variety of computational problems using an iterative development process in Scratch.
+b. Design, code, test, and execute a program that corresponds to a set of specifications, with
+practical, personal, and/or societal intent.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S3 OBJ 1 C,ECS S3,,ECS S3 OBJ 1 C,"Objective 1: Students design algorithms and create programming solutions to a variety of computational problems using an iterative development process in Scratch.
+c. Select appropriate programming structures.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S3 OBJ 1 D,ECS S3,,ECS S3 OBJ 1 D,"Objective 1: Students design algorithms and create programming solutions to a variety of computational problems using an iterative development process in Scratch.
+d. Locate and correct errors in a program.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S3 OBJ 1 E,ECS S3,,ECS S3 OBJ 1 E,"Objective 1: Students design algorithms and create programming solutions to a variety of computational problems using an iterative development process in Scratch.
+e. Explain how a particular program functions.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S3 OBJ 1 F,ECS S3,,ECS S3 OBJ 1 F,"Objective 1: Students design algorithms and create programming solutions to a variety of computational problems using an iterative development process in Scratch.
+f. Justify the correctness of a program.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S4 OBJ  1 A,ECS S4,,ECS S4 OBJ  1 A,"Objective 1: Students will use computers to translate, process and visualize data in order to find patterns and test hypotheses. 
+a. Describe the features of appropriate data sets for specific problems.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S4 OBJ  1 B,ECS S4,,ECS S4 OBJ  1 B,"Objective 1: Students will use computers to translate, process and visualize data in order to find patterns and test hypotheses. 
+b. Use computers to find patterns in data and test hypotheses about data.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S4 OBJ  1 C,ECS S4,,ECS S4 OBJ  1 C,"Objective 1: Students will use computers to translate, process and visualize data in order to find patterns and test hypotheses. 
+c. Justify conclusions drawn from data analysis.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S4 OBJ  2 A,ECS S4,,ECS S4 OBJ  2 A,"Objective 2: Students will work with a variety of large data sets that illustrate how widespread access to data and information facilitates identification of problems. 
+a. Apply a variety of analysis techniques to large data sets.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S4 OBJ  2 B,ECS S4,,ECS S4 OBJ  2 B,"Objective 2: Students will work with a variety of large data sets that illustrate how widespread access to data and information facilitates identification of problems. 
+b. Compare different analysis techniques and discuss the tradeoffs among them.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S4 OBJ  3 A,ECS S4,,ECS S4 OBJ  3 A,"Objective 3: Students will collect and generate their own data related to local community issues and discuss appropriate methods for data collection and aggregation of data necessary to support making a case or facilitating a discovery. 
+Objective 3: Students will collect and generate their own data related to local community issues and
+discuss appropriate methods for data collection and aggregation of data necessary to support making a
+case or facilitating a discovery.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S5 OBJ  1 A,ECS S5,,ECS S5 OBJ  1 A,"Objective 1: Students will be able to identify ethical behavior and articulate both sides of ethical topics. 
+a. Discuss issues of equity, access, and power in the context of computing resources.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S5 OBJ  1 B,ECS S5,,ECS S5 OBJ  1 B,"Objective 1: Students will be able to identify ethical behavior and articulate both sides of ethical topics. 
+b. Communicate the legal and ethical concerns raised by computational innovations.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S5 OBJ  1 C,ECS S5,,ECS S5 OBJ  1 C,"Objective 1: Students will be able to identify ethical behavior and articulate both sides of ethical topics. 
+c. Explain positive and negative effects of technological innovations on human culture.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S5 OBJ  2 A,ECS S5,,ECS S5 OBJ  2 A,"Objective 2: Students study the responsibilities of software users and software developers with respect
+to intellectual property rights, software failures, and the piracy of software and other digital media. 
+a. Analyze how computing influences and is influenced by the cultures for which they are designed
+and the cultures in which they are used.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S5 OBJ  2 B,ECS S5,,ECS S5 OBJ  2 B,"Objective 2: Students study the responsibilities of software users and software developers with respect
+to intellectual property rights, software failures, and the piracy of software and other digital media. 
+b. Analyze how social and economic values influence the design and development of computing
+innovations.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S5 OBJ  2 C,ECS S5,,ECS S5 OBJ  2 C,"Objective 2: Students study the responsibilities of software users and software developers with respect
+to intellectual property rights, software failures, and the piracy of software and other digital media. 
+c. Discuss privacy and security concerns related to computational innovations.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S5 OBJ  2 D,ECS S5,,ECS S5 OBJ  2 D,"Objective 2: Students study the responsibilities of software users and software developers with respect
+to intellectual property rights, software failures, and the piracy of software and other digital media. 
+d. Explain the implications of communication as data exchange.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S5 OBJ  3 A,ECS S5,,ECS S5 OBJ  3 A,"Objective 3: Students are introduced to the concept of open-source software development and explore its implications. 
+a. Describe ways in which computing enables innovation.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S5 OBJ  3 B,ECS S5,,ECS S5 OBJ  3 B,"Objective 3: Students are introduced to the concept of open-source software development and explore its implications. 
+b. Discuss the ways in which innovations enabled by computing affect communication and
+problem solving.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S5 OBJ  4 A,ECS S5,,ECS S5 OBJ  4 A,"Objective 4: Students will gain an appreciation for the many ways in which computing-enabled innovation have had an impact on society, as well as for the many different fields in which they are used. Connections among social, economical and cultural contexts will be discussed. 
+a. Analyze the effects of computing on society within economic, social, and cultural contexts.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S5 OBJ  4 B,ECS S5,,ECS S5 OBJ  4 B,"Objective 4: Students will gain an appreciation for the many ways in which computing-enabled innovation have had an impact on society, as well as for the many different fields in which they are used. Connections among social, economical and cultural contexts will be discussed. 
+b. Students identify and describe careers in computing and careers that employ computing.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S5 OBJ  5 A,ECS S5,,ECS S5 OBJ  5 A,"Objective 5: Students will use skills and applications learned to complete a cross curricular project for the class.
+Objective 5: Students will use skills and applications learned to complete a cross curricular project for
+the class.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S6 OBJ  1 A,ECS S6,,ECS S6 OBJ  1 A,"Objective 1: Students will demonstrate an understanding of basic operating system features and functions.
+a. Demonstrate an understanding of an OS, its function, its relationship to hardware, common
+features, need for upgrades, etc.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S6 OBJ  1 B,ECS S6,,ECS S6 OBJ  1 B,"Objective 1: Students will demonstrate an understanding of basic operating system features and functions.
+b. Explain the difference between operation system and application software.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S6 OBJ  1 C,ECS S6,,ECS S6 OBJ  1 C,"Objective 1: Students will demonstrate an understanding of basic operating system features and functions.
+c. Manage computer folder and/or files and use different OS tools.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S6 OBJ  1 D,ECS S6,,ECS S6 OBJ  1 D,"Objective 1: Students will demonstrate an understanding of basic operating system features and functions.
+d. Understand common file types and extensions.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S6 OBJ  1 E,ECS S6,,ECS S6 OBJ  1 E,"Objective 1: Students will demonstrate an understanding of basic operating system features and functions.
+e. Manage OS configurations, customize desktop settings, etc.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S6 OBJ  2 A,ECS S6,,ECS S6 OBJ  2 A,"Objective 2: Students will demonstrate an understanding of computers, computer hardware, computing
+devices, computer performance, peripherals, etc
+a. Identify computer hardware, peripherals, etc. and explain the functions of the item.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S6 OBJ  2 B,ECS S6,,ECS S6 OBJ  2 B,"Objective 2: Students will demonstrate an understanding of computers, computer hardware, computing
+devices, computer performance, peripherals, etc
+b. Identify different storage media external drives, flash drives, cloud storage, etc.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S6 OBJ  2 C,ECS S6,,ECS S6 OBJ  2 C,"Objective 2: Students will demonstrate an understanding of computers, computer hardware, computing
+devices, computer performance, peripherals, etc
+c. Identify different computing devices desktop, laptop, server, tablet, smart phone, etc.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S6 OBJ  2 D,ECS S6,,ECS S6 OBJ  2 D,"Objective 2: Students will demonstrate an understanding of computers, computer hardware, computing
+devices, computer performance, peripherals, etc
+d. Explain how computing performance is affected by memory, processor, storage, network
+bandwidth, etc.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S6 OBJ  2 E,ECS S6,,ECS S6 OBJ  2 E,"Objective 2: Students will demonstrate an understanding of computers, computer hardware, computing
+devices, computer performance, peripherals, etc
+e. Analyze the characteristics of hardware components to determine the applications for which
+they can be used.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S6 OBJ  3 A,ECS S6,,ECS S6 OBJ  3 A,"Objective 3: Students will demonstrate an understanding of computer software and related concepts
+a. Understand software management including install, uninstall, configuration, etc.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S6 OBJ  3 B,ECS S6,,ECS S6 OBJ  3 B,"Objective 3: Students will demonstrate an understanding of computer software and related concepts
+b. Understand software licensing freeware, shareware, open-source, End User License
+Agreements (EULAs), site licensing, etc.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S6 OBJ  3 C,ECS S6,,ECS S6 OBJ  3 C,"Objective 3: Students will demonstrate an understanding of computer software and related concepts
+c. Understand and use software tools file compression, updates, disk management, virus and
+malware software scanners, etc.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S6 OBJ  4 A,ECS S6,,ECS S6 OBJ  4 A,"Objective 4: Students will use problem solving skills to troubleshoot software and hardware problems.
+a. Understand concepts related to software updates, OS versions, virus or malware removal, Safe
+mode, Knowledge Base, Help, task management, etc.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S6 OBJ  4 B,ECS S6,,ECS S6 OBJ  4 B,"Objective 4: Students will use problem solving skills to troubleshoot software and hardware problems.
+b. Identify and explain the uses of different cables and connections used on computers.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S6 OBJ  4 C,ECS S6,,ECS S6 OBJ  4 C,"Objective 4: Students will use problem solving skills to troubleshoot software and hardware problems.
+c. Understand the need to backup a computing device to a external device, cloud, local drive, etc.
+and how to restore from a backup.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S6 OBJ  5 A,ECS S6,,ECS S6 OBJ  5 A,"Objective 5: Students will demonstrate a knowledge of networking concepts. 
+a. Understand the Internet concepts of speed, bandwidth, wired, wireless, cell wired, security, etc.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S6 OBJ  5 B,ECS S6,,ECS S6 OBJ  5 B,"Objective 5: Students will demonstrate a knowledge of networking concepts. 
+b. Understand different network types, features, and capabilities publicly switched networks,
+domain name server (DNS), addressing, LAN, WAN, VPN, etc.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S6 OBJ  5 C,ECS S6,,ECS S6 OBJ  5 C,"Objective 5: Students will demonstrate a knowledge of networking concepts. 
+c. Show an understanding of common network problems, IP addressing, and how to solve simple
+network scenarios.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S7 OBJ  1 A,ECS S7,,ECS S7 OBJ  1 A,"Objective 1: Student will gain skills and use common features and commands used by key software
+applications
+a. Learn and use features shortcuts, cut, copy, paste, print, spellcheck, undo, find/replace,
+preferences, selection, etc.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S7 OBJ  1 B,ECS S7,,ECS S7 OBJ  1 B,"Objective 1: Student will gain skills and use common features and commands used by key software
+applications
+b. Learn and apply formatting basic text formatting, styles, etc.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S7 OBJ  1 C,ECS S7,,ECS S7 OBJ  1 C,"Objective 1: Student will gain skills and use common features and commands used by key software
+applications
+c. Learn and use application document navigation open, close, save, save as, search, views, etc.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S7 OBJ  1 D,ECS S7,,ECS S7 OBJ  1 D,"Objective 1: Student will gain skills and use common features and commands used by key software
+applications
+d. Learn and work with multimedia files input, resize, crop, rotate, etc.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S7 OBJ  1 E,ECS S7,,ECS S7 OBJ  1 E,"Objective 1: Student will gain skills and use common features and commands used by key software
+applications
+e. Collaborate and share documents with others on the network, by email, or in the cloud.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S7 OBJ  2 A,ECS S7,,ECS S7 OBJ  2 A,"Objective 2: Students will learn and use the key application of word processing to complete a variety of
+tasks
+a. Learn and use document layout features page layout, spacing, indentation, headers, footers,
+references, table of contents, graphics, etc.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S7 OBJ  2 B,ECS S7,,ECS S7 OBJ  2 B,"Objective 2: Students will learn and use the key application of word processing to complete a variety of
+tasks
+b. Organize data in the form of lists and tables.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S7 OBJ  2 C,ECS S7,,ECS S7 OBJ  2 C,"Objective 2: Students will learn and use the key application of word processing to complete a variety of
+tasks
+c. Create projects including: daily journal, project proposals, project reports, project
+documentation, letters, resume, etc.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S7 OBJ  3 A,ECS S7,,ECS S7 OBJ  3 A,"Objective 3: Students will learn and use the key application of a spreadsheet to create a variety of documents to solve problems.
+a. Learn and use spreadsheet layout features insert/delete rows & columns, adjust cell sizes,
+change alignment, merge cells, change formatting, etc.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S7 OBJ  3 B,ECS S7,,ECS S7 OBJ  3 B,"Objective 3: Students will learn and use the key application of a spreadsheet to create a variety of documents to solve problems.
+b. Create and use cell formulas order of operations, +, -, *, /, ^, etc.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S7 OBJ  3 C,ECS S7,,ECS S7 OBJ  3 C,"Objective 3: Students will learn and use the key application of a spreadsheet to create a variety of documents to solve problems.
+c. Implement functions in cells sum, min, max, average, count, if, etc.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S7 OBJ  3 D,ECS S7,,ECS S7 OBJ  3 D,"Objective 3: Students will learn and use the key application of a spreadsheet to create a variety of documents to solve problems.
+d. Insert charts and graphs.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S7 OBJ  3 E,ECS S7,,ECS S7 OBJ  3 E,"Objective 3: Students will learn and use the key application of a spreadsheet to create a variety of documents to solve problems.
+e. Use data management to sort and filter data.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S7 OBJ  3 F,ECS S7,,ECS S7 OBJ  3 F,"Objective 3: Students will learn and use the key application of a spreadsheet to create a variety of documents to solve problems.
+f. Create projects including: grade sheet, data analysis etc.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S7 OBJ  4 A,ECS S7,,ECS S7 OBJ  4 A,"Objective 4: Students will use the key application of a presentation program to create a variety of documents to present and publish project ideas and results.
+a. Plan or storyboard a presentation prior to creation.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S7 OBJ  4 B,ECS S7,,ECS S7 OBJ  4 B,"Objective 4: Students will use the key application of a presentation program to create a variety of documents to present and publish project ideas and results.
+b. Design slides based on good design principles, applying layout, animations, timing, transitions,
+etc.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S7 OBJ  4 C,ECS S7,,ECS S7 OBJ  4 C,"Objective 4: Students will use the key application of a presentation program to create a variety of documents to present and publish project ideas and results.
+c. Insert a variety of content in a presentation text, lists, tables, media, charts, graphics,
+hyperlinks, Web links, etc.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S7 OBJ  4 D,ECS S7,,ECS S7 OBJ  4 D,"Objective 4: Students will use the key application of a presentation program to create a variety of documents to present and publish project ideas and results.
+d. Manage the presentation by adding slides, deleting slides, revising the slide order, etc",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
+ECS S7 OBJ  4 E,ECS S7,,ECS S7 OBJ  4 E,"Objective 4: Students will use the key application of a presentation program to create a variety of documents to present and publish project ideas and results.
+e. Create projects including: ePortfolio, project proposals, project presentations, etc.",decaying_average,65,3,no demonstratable competency,beginning understanding,near competency,attained competency,above average competency,"excelled, beyond expectations"
