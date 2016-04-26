@@ -1,0 +1,21 @@
+#custom_nav .menu-item-icon-container {
+    position: relative;
+    left: -4px;
+}
+
+#custom_nav .menu-item__text {
+    margin-top: 15px;
+}
+
+.icon-resources {
+  position: relative;
+  left: -2px;
+}
+
+.icon-resources:before {
+  content: "\f13c";
+}
+
+.icon-resources[class*=icon-]:before, .icon-resources[class^=icon-]:before {
+  font-size: 30px;
+}
