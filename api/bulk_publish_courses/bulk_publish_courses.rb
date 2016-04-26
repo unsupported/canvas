@@ -4,11 +4,8 @@ require 'csv'
 require 'json'
 
 ################################# CHANGE THESE VALUES ###########################
-<<<<<<< HEAD
 @access_token = ''			#your API token that was generated from your account user
-=======
 @access_token = ''				#your API token that was generated from your account user
->>>>>>> f9c5de73e347a53a3751c5bbe79f990b3c9f2d1d
 @domain = '' 						#domain.instructure.com, use domain only
 @env = nil 							#Leave nil if pushing to Production
 @csv_file = ''     			#Use the full path /Users/XXXXX/Path/To/File.csv
