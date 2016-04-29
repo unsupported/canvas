@@ -1,8 +1,10 @@
-Global Navigation Links
-=====
-- DEPRECATED as of 4/19/2016
+Bigger Thumbnails
+======
 
-Adds multiple global navigation links to Canvas that contain items when hovering over, can be stripped to use a single link as well.
+This script will resize the thumbnails used for Kaltura and YouTube.
+
+In this script you have the ability to edit the sizing;
+- In the 'replace' fields, enter in the dimensions you wish to have the thumbnail resized from/to.
 
 Support
 ======
