@@ -1,0 +1,25 @@
+/*Working as of 04/12/2016*/
+/* Hide "Ask Your Instructor a Question" */
+#help-dialog-options a[href="#teacher_feedback"] {
+  display:none !important;
+}
+
+/* Hide "Search the Canvas Guides" */
+#help-dialog-options a[href="https://community.canvaslms.com/community/answers/guides/"] {
+  display:none !important;
+}
+
+/* Hide "Report a Problem" */
+#help-dialog-options a[href="#create_ticket"] {
+  display:none !important;
+}
+
+/* Hide "Ask the Community" */
+#help-dialog-options a[href="https://community.canvaslms.com/community/answers"] {
+  display:none !important;
+}
+
+/* Hide "Request a Feature" */
+#help-dialog-options a[href="https://community.canvaslms.com/community/ideas/feature-ideas"] {
+  display:none !important;
+}
