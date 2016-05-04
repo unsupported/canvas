@@ -1,8 +1,8 @@
-Global Navigation Links
-=====
-- DEPRECATED as of 4/19/2016
+Global Navigation Link
+======
+- DEPRECATED AS OF 04/27/2016
 
-Adds multiple global navigation links to Canvas that contain items when hovering over, can be stripped to use a single link as well.
+Adds a single clickable link at the global navigation, with no dropdown options.
 
 Support
 ======

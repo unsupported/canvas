@@ -1,8 +1,8 @@
-Global Navigation Links
-=====
-- DEPRECATED as of 4/19/2016
+Bypass login
+======
 
-Adds multiple global navigation links to Canvas that contain items when hovering over, can be stripped to use a single link as well.
+Adds an extra link that allows users to bypass the login and be directed to the canvas login page (?canvas_login=1).
+
 
 Support
 ======
