@@ -1,0 +1,6 @@
+/* Hide Copy Course from Course Settings */
+/* Works as of 5/16/2016 */
+
+#right-side .copy_course_link {
+    display: none;
+}
