@@ -1,4 +1,4 @@
-#Working as of 03/30/2016
+#Working as of 04/12/2016
 # Change these
 access_token = nil
 domain = #nil
@@ -11,17 +11,17 @@ require 'unirest'
 require 'csv'
 
 unless access_token
-  "Puts what is your access token?"
+  puts "What is your access token?"
   access_token = gets.chomp
 end
 
 unless domain
-  "Puts what is your Canvas domain?"
+  puts "What is your Canvas domain?"
   domain = gets.chomp
 end
 
 unless csv_file
-  "Puts where is your avatar update CSV located?"
+  puts "Where is your avatar update CSV located?"
   csv_file = gets.chomp
 end
 
