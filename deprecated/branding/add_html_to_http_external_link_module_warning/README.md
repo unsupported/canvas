@@ -1,6 +1,6 @@
 HTML Module Warnings
 ======
-DEPRECATED AS OF 04/19/2016
+- DEPRECATED AS OF 04/19/2016
 
 This script appends information to the warning box displayed when an HTTP:// external link is used for a module item in Canvas.
 

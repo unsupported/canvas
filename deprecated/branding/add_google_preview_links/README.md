@@ -1,6 +1,6 @@
 Add Google Preview Links if missing
 =========================================
-DEPRECATED AS OF 04/19/2016
+- DEPRECATED AS OF 04/19/2016
 
 If you disable Scribd and are unfortunate enough to have missing document preview links
 after the change, this script may come in handy.  It scans the page for Canvas file
