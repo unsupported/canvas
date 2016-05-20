@@ -1,12 +1,10 @@
 #!/usr/bin/env python
-domain = "<domain>.instructure.com"
-token = "token_here"
-
+# -*- coding: utf-8 -*-
 ####################################################################################################
 ####################################################################################################
 ############### Don't edit anything after this point unless you know what you
 ############### are doing. You may know what you are doing, I don't know, but be aware that
-############### everything past this point is breakable. You know the "You break it
+############### everything past this point is breakable. You know, the "You break it
 ############### you buy it" kind of thing.
 ####################################################################################################
 ####################################################################################################
@@ -16,12 +14,17 @@ import argparse
 import sys,os
 import csv
 import pprint
+import percache
+cache = percache.Cache('./tmp_my_cache', livesync=True)
 
 import re
 p = re.compile('([\w\d]+-){4}[\w\d]+')
 
+DOMAIN = None
+TOKEN = None
+
 def get_headers():
-  return {'Authorization': 'Bearer %s' % token}
+  return {'Authorization': 'Bearer %s' % TOKEN}
 
 vendor_guid_cache = {'outcome_groups':{},'outcomes':{}}
 
@@ -32,14 +35,10 @@ def checkFileReturnCSVReader(file_name):
   else:
     return None
 
+@cache
 def getRootOutcomeGroup():
-  url = "https://%s/api/v1/accounts/self/root_outcome_group" % domain
-  #print 'url',url
-  return requests.get(url,headers=get_headers(),verify=False).json()
-
-
-import percache
-cache = percache.Cache('./tmp_my_cache')
+  url = "https://%s/api/v1/accounts/self/root_outcome_group" % DOMAIN
+  return requests.get(url,headers=get_headers(), verify=False).json()
 
 @cache
 def c_request_get(*args, **kwargs):
@@ -48,7 +47,7 @@ def c_request_get(*args, **kwargs):
 def paginated_outcomes(outcome_group_vendor_id=None):
   # Get outcomes
   all_done = False
-  url = 'https://{0}/api/v1/accounts/self/outcome_groups/{1}/outcomes'.format(domain,outcome_group_vendor_id)
+  url = 'https://{0}/api/v1/accounts/self/outcome_groups/{1}/outcomes'.format(DOMAIN,outcome_group_vendor_id)
   while not all_done:
     response = c_request_get(url,headers=get_headers())
     for s in response.json():
@@ -63,7 +62,7 @@ def paginated_outcomes(outcome_group_vendor_id=None):
 def paginated_outcome_groups():
   # Get outcome groups 
   all_done = False
-  url = 'https://%s/api/v1/accounts/self/outcome_groups' % (domain)
+  url = 'https://%s/api/v1/accounts/self/outcome_groups' % (DOMAIN)
   #params = {}
   while not all_done:
     #response = requests.get(url,headers=get_headers())
@@ -80,7 +79,7 @@ def paginated_outcome_subgroups(parent_group_id):
   # Get outcome subgroups (this needs to walk)
 
   all_done = False
-  url = 'https://%s/api/v1/accounts/self/outcome_groups/%d/subgroups' % (domain,int(parent_group_id))
+  url = 'https://%s/api/v1/accounts/self/outcome_groups/%d/subgroups' % (DOMAIN,int(parent_group_id))
   #params = {}
   while not all_done:
     #response = requests.get(url,headers=get_headers())
@@ -90,11 +89,10 @@ def paginated_outcome_subgroups(parent_group_id):
       return
     else:
       j_res = response.json()
-      #print 'j_res', j_res
       for s in j_res:
         yield s
         vendor_guid_cache['outcome_groups'].setdefault(s['vendor_guid'], s)
-        if not p.match(s['vendor_guid']):
+        if s['vendor_guid'] and not p.match(s['vendor_guid']):
           for sg in paginated_outcome_subgroups(s['id']):
             vendor_guid_cache['outcome_groups'].setdefault(sg['vendor_guid'], sg)
             yield sg
@@ -104,6 +102,7 @@ def paginated_outcome_subgroups(parent_group_id):
       all_done = True
 
 do_api_for_find = True
+
 def findOutcomeGroup(outcome_group_vendor_id):
   root_group = getRootOutcomeGroup()
   og = vendor_guid_cache['outcome_groups'].get(outcome_group_vendor_id,None)
@@ -116,7 +115,7 @@ def findOutcomeGroup(outcome_group_vendor_id):
   return og
 
 def deleteOutcomeGroup(outcome_group_id):
-  url = 'https://%s/api/v1/accounts/self/outcome_groups/%d' % (domain,outcome_group_id)
+  url = 'https://%s/api/v1/accounts/self/outcome_groups/%d' % (DOMAIN,outcome_group_id)
   return requests.delete(url,headers=get_headers())
 
 def getOrCreateOutcomeGroup(outcome): #outcome_group_vendor_id,name,description,parent_group_id=None):
@@ -146,7 +145,7 @@ def getOrCreateOutcomeGroup(outcome): #outcome_group_vendor_id,name,description,
 
 def createOutcomeGroup(outcome,parent_id):
   vendor_guid = name = description = outcome['outcome_group_vendor_guid']
-  url = 'https://%s/api/v1/accounts/self/outcome_groups/%d/subgroups' % (domain,parent_id)
+  url = 'https://%s/api/v1/accounts/self/outcome_groups/%d/subgroups' % (DOMAIN,parent_id)
   params = {'title':name,'description':description,'vendor_guid':vendor_guid}
   vendor_guid_cache['outcome_groups'][vendor_guid] = requests.post(url,data=params,headers=get_headers()).json()
   return vendor_guid_cache['outcome_groups'][vendor_guid]
@@ -172,8 +171,8 @@ def createOutcome(outcome_to_create):
       'calculation_int':outcome_to_create['calculation_int']
       }
   '''
-  headers = {'Authorization':'Bearer %s'%token,'Content-Type':'application/json'}
-  url = 'https://%s%s' % (domain,path)
+  headers = {'Authorization':'Bearer %s'%TOKEN,'Content-Type':'application/json'}
+  url = 'https://%s%s' % (DOMAIN,path)
   data = json.dumps(outcome_to_create)
   res = requests.post(url,headers=headers,data=data)
   return res.json()
@@ -181,8 +180,8 @@ def createOutcome(outcome_to_create):
 def updateOutcome(outcome_to_update):
   #print 'outcome_to_update',outcome_to_update
   path = "/api/v1/accounts/self/outcome_groups/%s/outcomes/%s" % (outcome_to_update['outcome_group']['id'],outcome_to_update['outcome']['id'])
-  headers = {'Authorization':'Bearer %s'%token,'Content-Type':'application/json'}
-  url = 'https://%s%s' % (domain,path)
+  headers = {'Authorization':'Bearer %s'%TOKEN,'Content-Type':'application/json'}
+  url = 'https://%s%s' % (DOMAIN,path)
   #data = json.dumps(outcome_to_update['outcome'])
   res = requests.put(url,headers=get_headers(),data=outcome_to_update)
   del(vendor_guid_cache['outcomes'][outcome_to_update['outcome']['vendor_guid']])
@@ -197,6 +196,8 @@ def isValidRow(row):
 # Prepare argument parsing
 parser = argparse.ArgumentParser()
 parser.add_argument('--outcomesfile',required=True,help='path to the outcomes.csv file')
+parser.add_argument('--domain',required=True,help='canvas domain e.g.  "kevin.instructure.com"')
+parser.add_argument('--token',required=True,help='access token')
 
 fields = [
     'vendor_guid',
@@ -209,6 +210,9 @@ fields = [
     'mastery_points']
 if __name__ == '__main__':
     args = parser.parse_args()
+    DOMAIN = args.domain
+    TOKEN = args.token
+
     outcomes_file = checkFileReturnCSVReader(args.outcomesfile)
     if outcomes_file :
       outcomes = {}
@@ -242,4 +246,5 @@ if __name__ == '__main__':
             #print '# outcome_to_create'
             outcome['vendor_guid']
             print 'row {}'.format(row_num)
-            print getOrCreateOutcome(outcome)
+            getOrCreateOutcome(outcome)
+    cache.close()
