@@ -1,4 +1,4 @@
-// THIS HAS DEPRECATED
+//DEPRECATED as of 4/19/2016
 
 $(document).ready(function() {
 	var menu = $('#menu');

@@ -16,6 +16,3 @@ community will hopefully help support and keep both the script and this
 documentation up-to-date.
 
 Good luck!
-
-
-'<iframe src="https://www.instructure.com" style="width:647px; height: 400px; margin: 75px auto; display: block;"></iframe>'
