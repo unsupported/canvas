@@ -1,0 +1,6 @@
+/* Working as of June 17, 2016 */
+
+/* Hide "Need help setting up your course?" block */
+.Reminder__course-setup-body {
+  display: none;
+}
