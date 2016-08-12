@@ -11,8 +11,8 @@ my_log = '' # name of the file you'd like to log results to
 ## DO NOT EDIT BEYOND THIS POINT ##
 ###################################
 
-base_url_user = 'https://' + subdomain + 'instructure.com/api/v1/users/sis_user_id:'
-base_url_login = 'https://' + subdomain + 'instructure.com/api/v1/accounts/self/logins/'
+base_url_user = 'https://' + subdomain + '.instructure.com/api/v1/users/sis_user_id:'
+base_url_login = 'https://' + subdomain + '.instructure.com/api/v1/accounts/self/logins/'
 headers = { 'Authorization' : 'Bearer ' + access_token }
 log = open(my_log, 'a')
 
