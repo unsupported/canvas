@@ -7,10 +7,10 @@ This ruby script allows for changing user's sis_user_id in Canvas. This type of 
 Before running this script, you'll need to modify the five variables at the beginning of the file:
 
   ```ruby
-  csv_file = ''     			# Use the full path '/Users/XXXXX/Path/To/File.csv' to source csv file
-  access_token = ''				# Your API token that was generated from your account user
+  csv_file = ''           # Use the full path '/Users/XXXXX/Path/To/File.csv' to source csv file
+  access_token = ''       # Your API token that was generated from your account user
   domain = ''             # domain.instructure.com, use domain only
-  env = '' 						    # Leave nil if pushing to Production
+  env = ''                # Leave nil if pushing to Production
   output_csv = ''         # Put the full path to a blank csv file to have the errors written in.
   ```
   
