@@ -14,11 +14,6 @@ output_csv = ''         # put the full path to a blank csv file to have the erro
 env ? env << '.' : env
 base_url = "https://#{domain}.#{env}instructure.com"
 
-unless access_token
-  puts "What is your access token?"
-  access_token = gets.chomp
-end
-
 def start(csv_file, access_token, base_url, output_csv)
     hydra = Typhoeus::Hydra.new(max_concurrency: 20)
     CSV.foreach(csv_file, headers: true) do |row|
