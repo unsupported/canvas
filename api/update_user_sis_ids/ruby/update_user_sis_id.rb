@@ -1,70 +1,82 @@
-#Working as of 03/24/2016
-
-require 'unirest'
+# Working as of 09/07/2016
+require 'typhoeus'
 require 'csv'
+require 'json'
 
-# Edit these variables below
+################################# CHANGE THESE VALUES ###########################
+csv_file = ''     			# Use the full path /Users/XXXXX/Path/To/File.csv
+access_token = ''				# your API token that was generated from your account user
+domain = '' 						# domain.instructure.com, use domain only
+env = nil 						  # Leave nil if pushing to Production or 'test' for test
+output_csv = ''         # put the full path to a blank csv file to have the errors written in.
 
-access_token = ''                       # access token from Canvas
-domain = ''                             # the domain only, such as canvas instead of canvas.instructure.com
-env = ''                                # set to nil/leave as is for prod, or enter test or beta for the environment you want
-csv_file = "full/path/to/the/file.csv"  # full path to the csv file
+############################## DO NOT CHANGE THESE VALUES #######################
+env ? env << '.' : env
+base_url = "https://#{domain}.#{env}instructure.com"
 
+def start(csv_file, access_token, base_url, output_csv)
+    hydra = Typhoeus::Hydra.new(max_concurrency: 20)
+    CSV.foreach(csv_file, headers: true) do |row|
+        if row.headers[0] != 'old_sis_user_id' || row.headers[1] != 'new_sis_user_id'
+            puts 'First column needs to be sis_user_id, second column needs to be sis_login_id, and third column needs to be new_password.'
+        else
+            # puts base_url, access_token
+            get_response = Typhoeus::Request.new("#{base_url}/api/v1/users/sis_user_id:#{row['old_sis_user_id']}/logins?per_page=100",
+                                                 method: :get,
+                                                 headers: { Authorization: "Bearer #{access_token}" })
 
-# Don't edit from here down unless you know what you're doing.
+            get_response.on_complete do |response|
+                export_id = ''
+                exported_sis_id = ''
+                parsed_data = nil
 
-unless access_token
-  puts "What is your access token?"
-  access_token = gets.chomp
-end
+                if response.code.eql?(200)
+                    parsed_data = JSON.parse(response.body)
+                    parsed_data.each do |login|
+                        next unless login['sis_user_id'].eql?(row['old_sis_user_id'])
+                        export_id = login['id'] unless nil
+                        exported_sis_id = login['sis_user_id'] unless nil
+                        break
+                    end
+                    if parsed_data && exported_sis_id.eql?(row['old_sis_user_id'])
+                        # binding.pry
+                        put_response = Typhoeus::Request.new("#{base_url}/api/v1/accounts/1/logins/#{export_id}",
+                                                             method: :put,
+                                                             headers: { Authorization: "Bearer #{access_token}", 'Content-Type' => 'application/x-www-form-urlencoded' },
+                                                             params: { 'login[sis_user_id]' => row['new_sis_user_id'] })
+                        # parse JSON data to save in readable array
+                        put_response.on_complete do |response|
+                            if response.code.eql?(200)
+                                puts "Successfully updated sis_user_id for user #{exported_sis_id} to user #{row['new_sis_user_id']}"
+                            else
+                                puts "Unable to update sis_user_id for user #{exported_sis_id}. Trying again..."
+                                hydra.queue(put_response)
+                            end
+                        end
 
-unless domain
-  puts "What is your Canvas domain?"
-  domain = gets.chomp
-end
-
-unless csv_file
-  puts "Where is your SIS ID update CSV located?"
-  csv_file = gets.chomp
-end
-
-unless File.exists?(csv_file)
-  raise "Error: can't locate the update CSV"
-end
-
-env ? env << "." : env
-base_url = "https://#{domain}.#{env}instructure.com/api/v1"
-test_url = "#{base_url}/accounts/self"
-
-Unirest.default_header("Authorization", "Bearer #{access_token}")
-
-# Make generic API call to test token, domain, and env.
-test = Unirest.get(test_url)
-
-unless test.code.eql?(200)
-  raise "Error: The token, domain, or env variables are not set correctly"
-end
-
-CSV.foreach(csv_file, { headers: true }) do |row|
-  url = "#{base_url}/users/sis_user_id:#{row['old_user_sis_id']}/logins"
-  login_response = Unirest.get(url)
-  logins = login_response.body
-
-  unless logins
-    puts "User #{row['old_user_sis_id']} wasn't found."
-    next
-  end
-
-  logins.each do |login|
-    hashed = login.to_h #if you get `to_h': wrong element type String at 0 (expected array) (TypeError) check the headers and SIS ID values are correct
-
-    if hashed['sis_user_id'] == row['old_user_sis_id']
-      update_id = Unirest.put("#{base_url}/accounts/self/logins/#{hashed['id']}", parameters: { 'login[sis_user_id]' => row['new_user_sis_id'] })
-      puts "Successfully updated \n #{update_id.body}"
-    else
-      puts "User #{row['old_user_sis_id']} wasn't found... Moving right along."
+                        hydra.queue(put_response)
+                    else
+                        puts "Exported sis_user_id is different than the old_user_sis_id #{row['old_sis_user_id']} row in the csv file"
+                        # CSV.open(output_csv, 'a') do |csv|
+                        #     csv << ['2', 'User', (row['old_sis_user_id']).to_s, 'has a different sis_user_id in Canvas than the sis_login_id']
+                        # end
+                    end
+                else
+                    if response.code.eql?(404)
+                        puts "User #{row['old_sis_user_id']} does not exist in Canvas"
+                        CSV.open(output_csv, 'a') do |csv|
+                            csv << ['User', (row['old_sis_user_id']).to_s, 'does not exist in Canvas']
+                        end
+                    else
+                        puts "Trouble connecting to the server while doing API call for user #{row['old_sis_user_id']}. Trying again..."
+                        hydra.queue(get_response)
+                    end
+                end
+            end
+            hydra.queue(get_response)
+       end
     end
-  end
+    hydra.run
 end
 
-puts "Finished updating user SIS IDs."
+start(csv_file, access_token, base_url, output_csv)

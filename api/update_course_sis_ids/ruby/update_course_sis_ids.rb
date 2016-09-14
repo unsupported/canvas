@@ -13,6 +13,8 @@ csv_file = ''     			#Use the full path /Users/XXXXX/Path/To/File.csv
 default_headers = {"Authorization" => "Bearer #{access_token}"}
 env ? env << "." : env
 base_url = "https://#{domain}.#{env}instructure.com/"
+
+def start(csv_file, access_token, base_url, default_headers)
 hydra = Typhoeus::Hydra.new(max_concurrency: 20)
 
 CSV.foreach(csv_file, {headers: true}) do |row|
@@ -27,10 +29,16 @@ CSV.foreach(csv_file, {headers: true}) do |row|
 														method: :put,
 														headers: default_headers,
 														params: {'course[sis_course_id]' => row['new_course_id']})
-				change_course_id.run
+				hydra.queue(change_course_id)
 				puts "Successfully updated course #{row['new_course_id']}"
 			else
-				puts "Unable to locate course #{row['old_course_id']}"
+				if response.code == 404
+					puts "There isn't a course in Canvas with the sis_course_id of #{row['old_course_id']}"
+
+				else
+					puts "There was an error connecting to the server during API Call. Trying again..."
+					hydra.queue(api_get_oldcourse)
+				end
 			end
 		end
 
@@ -39,5 +47,6 @@ CSV.foreach(csv_file, {headers: true}) do |row|
 end
 
 hydra.run
+end
 
-puts 'Finished processing file.'
+start(csv_file, access_token, base_url, default_headers)
