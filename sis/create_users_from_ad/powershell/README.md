@@ -28,3 +28,13 @@ You can get additional information on the Canvas CSV import format and sis_impor
 * $AppendTo: Append the various static strings to the end of each value in the specified column ("canvas_header" = "string_you_want_to_append"). Leave hash empty if you do not want to append to any columns.
 * $PrependTo: Prepend the various static strings to the beginning of each value in the specified column ("canvas_header" = "string_you_want_to_append"). Leave hash empty if you do not want to prepend to any columns.
 * $StaticFieldMap: Add a static value to the export file column. Leave hash blank if you do not want to use any static values for any columns.
+
+Support
+======
+
+This is an unsupported, community-created project. Keep that in mind.
+Instructure won't be able to help you fix or debug this. That said, the
+community will hopefully help support and keep both the script and this
+documentation up-to-date.
+
+Good luck!
