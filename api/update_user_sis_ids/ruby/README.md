@@ -27,11 +27,25 @@ You will also want to provide a blank csv file for the `output_csv` file. The sc
 
 # Running the Script
 
-This script is running things concurrently for increased efficiency. This means that you may have to wait for a minute for things to queue up before you'll see logging.
+Run 
 
-If you run into errors with your script running it is probably because your api token is being throttled. For more information on throttling please see <https://canvas.instructure.com/doc/api/file.throttling.html>. If you suspect this is happening to you reduce the number in this line of code:
+`bash ruby update_user_sis_id.rb`
 
-  ```ruby
-  hydra = Typhoeus::Hydra.new(max_concurrency: 10)
-  ```
+or
 
+`bash ruby update_user_sis_id_concurrent.rb`
+
+This script has two versions. The first `update_user_sis_id.rb` makes one
+change at a time. The second, `update_user_sis_id_concurrent.rb` makes many
+changes concurrently.
+
+The concurrent script runs things concurrently for increased efficiency. This means
+that you may have to wait for a minute for things to queue up before you'll see
+logging.
+
+If you run into errors with the concurrent script running it is probably because your api
+token is being throttled. For more information on throttling please see
+<https://canvas.instructure.com/doc/api/file.throttling.html>. If you suspect
+this is happening to you reduce the number in this line of code:
+
+`ruby hydra = Typhoeus::Hydra.new(max_concurrency: 10)`
