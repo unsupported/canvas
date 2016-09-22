@@ -3,7 +3,7 @@ Show Feature Request Help Link To Teachers and Admins
 Provided AS-IS with out support. Use at your own risk.
 Confirmed working as of Sept 19,2016
 */
-li.ic-NavMenu-list-item a[href="https://community.canvaslms.com/community/ideas/feature-ideas"] + div
+li.ic-NavMenu-list-item a[href="#create_ticket"] + div
 { display: none !important; }
-li.ic-NavMenu-list-item a[href="https://community.canvaslms.com/community/ideas/feature-ideas"]
+li.ic-NavMenu-list-item a[href="#create_ticket"]
 { display: none !important; }
