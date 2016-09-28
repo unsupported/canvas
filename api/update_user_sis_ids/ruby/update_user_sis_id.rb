@@ -18,7 +18,7 @@ def start(csv_file, access_token, base_url, output_csv)
     hydra = Typhoeus::Hydra.new(max_concurrency: 20)
     CSV.foreach(csv_file, headers: true) do |row|
         if row.headers[0] != 'old_sis_user_id' || row.headers[1] != 'new_sis_user_id'
-            puts 'First column needs to be sis_user_id, second column needs to be sis_login_id, and third column needs to be new_password.'
+            puts 'First column needs to be old_sis_user_id, second column needs to be new_sis_user_id.'
         else
             # puts base_url, access_token
             get_response = Typhoeus::Request.new("#{base_url}/api/v1/users/sis_user_id:#{row['old_sis_user_id']}/logins?per_page=100",
