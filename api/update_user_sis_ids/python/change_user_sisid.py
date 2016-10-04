@@ -1,6 +1,7 @@
 #!/usr/bin/env python
-
+# -*- coding: utf-8 -*-
 import requests, json
+import multiprocessing
 import csv
 
 """ Example change_users.csv file
@@ -10,27 +11,24 @@ old_user_id,new_user_id
 
 """
 
-filename = '/path/to/file/users_to_change.csv' # Change this to the file with the two columns
-domain = 'yourcollege.instructure.com' # Change this
-token = 'tokenhere' # Change this
-
-
- 
-# Read CSV file
+filename = '/Users/path/to/change_users.csv' # Change this to the file with the two columns
+domain = '<domain>.instructure.com' # Change this
+token = '' # Change this
 
 headers = {'Authorization':'Bearer %s' % token}
-user_list = csv.DictReader(open(filename,'rU'))
-for user in user_list:
+
+
+def proc_user(user):
   # Get the logins for the user, find the one with the old SIS id, and change it
   url = 'https://%s/api/v1/users/sis_user_id:%s/logins' % (domain,user['old_user_id'])
 
   logins = requests.get(url,headers=headers).json()
   #logins = login_response.json()
   #print logins
-  if not logins:
-    print 'logins',logins
-    print "the user probably wasn't found, keep going"
+  print 'attempting to change {} to {}'.format(user['old_user_id'], user['new_user_id'])
 
+  if not logins or type(logins) == dict:
+    print "{} not found, keep going".format(user['old_user_id'])
   else:
     for l in logins:
       try:
@@ -38,9 +36,21 @@ for user in user_list:
           params = {'login[sis_user_id]':user['new_user_id']}
           url = 'https://%s/api/v1/accounts/self/logins/%s' % (domain,l['id'])
           updated_login_response = requests.put(url,headers=headers,params=params)
-          print updated_login_response.json()
+          #print updated_login_response.json()
+          #print 'user updated '
+          print 'changed {} to {}'.format(user['old_user_id'], user['new_user_id'])
       except Exception, exc:
         print logins,exc
-        print "The user probably wasn't found.  Keep going..."
+        print "The login probably wasn't found.  Keep going..."
 
+def proc_user_list(user_list):
+  p = multiprocessing.Pool(4)
+  p.map(proc_user, user_list)
+
+ 
+# Read CSV file
+if __name__ == '__main__':
+
+  user_list = csv.DictReader(open(filename,'rU'))
+  proc_user_list(user_list)
 
