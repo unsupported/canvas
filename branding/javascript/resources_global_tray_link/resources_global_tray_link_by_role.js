@@ -44,8 +44,8 @@ $(document).ready(function() {
 	var trayHtml = '<div style="position:absolute;background:#fff;" class="ReactTray__Content ReactTray__Content--after-open " tabindex="-1" data-reactid=".1.0">' +
 	 '<div class="ReactTray__layout" data-reactid=".1.0.0">' +
 	 '<div class="ReactTray__primary-content" data-reactid=".1.0.0.0">' +
-	 '<div class="ReactTray__header" data-reactid=".1.0.0.0.0">' +
-	 '<h1 class="ReactTray__headline" data-reactid=".1.0.0.0.0.0">' +
+	 '<div class="ic-NavMenu__header" data-reactid=".1.0.0.0.0">' +
+	 '<h1 class="ic-NavMenu__headline" data-reactid=".1.0.0.0.0.0">' +
 	 slide_out_title +
 	 '</h1><button class="Button Button--icon-action ReactTray__closeBtn" type="button" data-reactid=".1.0.0.0.0.1">' +
 	 '<i class="icon-x" data-reactid=".1.0.0.0.0.1.0"></i>' +
