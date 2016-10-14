@@ -1,0 +1,6 @@
+/* This is not supported by Instructure */
+/* Functional as of October 10, 2016 */
+ 
+form[action="/error_reports"] .ic-HelpDialog__form-actions .Button[type="button"] {
+    display: none;
+}
