@@ -1,4 +1,7 @@
 <#
+
+NOT CURRENTLY FUNCTIONAL!!
+
  You will need to edit several variables here at the top of this script. 
  $token = the access token from Canvas
  $workingPath = the full working path to where the csv files are created.  
@@ -65,7 +68,7 @@ if(!(Test-Path -Path $logPath)){
 }
 if(!(Test-Path -Path $logFilePath))
   {
-   new-item -Path $logFilePath ¿itemtype file
+   new-item -Path $logFilePath Â¿itemtype file
   }
  
 Write-Host "Log File: " + $logFilePath

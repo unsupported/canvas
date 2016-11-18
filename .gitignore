@@ -35,3 +35,5 @@ Temporary Items
 # Python
 *.pyc
 *.pyo
+api/update_user_sis_ids/ruby/vendor
+env
