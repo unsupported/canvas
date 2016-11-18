@@ -1,4 +1,4 @@
-source,sis_id
-ExportFile_MATH-101-001.zip,MATH-101-001
-ExportFile_MATH-101-002.zip,MATH-101-002
-ExportFile_HIST-101-001.zip,HIST-101-001
+source,sis_id,course_name
+ExportFile_MATH-101-001.zip,MATH-101-001,Algebra I
+ExportFile_MATH-101-002.zip,MATH-101-002, Algebra I
+ExportFile_HIST-101-001.zip,HIST-101-001, Introduction to History
