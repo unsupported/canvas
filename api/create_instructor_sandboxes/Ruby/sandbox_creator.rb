@@ -66,16 +66,13 @@ def initialize_create(first_name,last_name,email,sis_id=email)
 
   if $create_user
     create_user(first_name,last_name,email,sis_id)
-    puts " * Created User #{first_name} #{last_name}"
   end
 
   #create course
   course_id = create_course(first_name,last_name)
-  puts " * Created course for #{first_name} #{last_name}"
 
   #enroll user
   enroll_user(sis_id, "#{first_name}_#{last_name}_sandbox")
-  puts " * Enrolled user #{first_name} #{last_name} in sandbox course"
 
   puts "#------------------------------------------------------#\n"
 end
@@ -106,10 +103,10 @@ def create_user(first_name,last_name,email,sis_id)
     #parse JSON data to save in readable array
     data = JSON.parse(response.body)
 
-    if response.code != 200
-      puts "There was an issue creating user #{first_name} #{last_name} (#{response.code})"
-    else
+    if response.code == 200
       puts " * Created User #{first_name} #{last_name}"
+    else
+      puts "There was an issue creating user #{first_name} #{last_name} (#{response.code})"
     end
 
 end
@@ -133,8 +130,11 @@ def create_course(first_name,last_name)
   #parse JSON data to save in readable array
   data = JSON.parse(response.body)
 
-  if response.code != 200
+  if response.code == 200
+    puts " * Created course for #{first_name} #{last_name}"
+  else
     puts "There was an issue creating a course for user #{first_name} #{last_name} (#{response.code})"
+
   end
 
   first_name + "_" +last_name + "_sandbox"
@@ -160,7 +160,9 @@ def enroll_user(user_id,course_id)
   #parse JSON data to save in readable array
   data = JSON.parse(response.body)
 
-  if response.code != 200
+  if response.code == 200
+    puts " * Enrolled user #{user_id} in sandbox course"
+  else
     puts "There was an issue enrolling user #{user_id} (#{response.code})"
   end
 end
