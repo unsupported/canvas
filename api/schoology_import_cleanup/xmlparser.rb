@@ -170,5 +170,3 @@ end
 
 kickoff
 get_csv
-
-# < /> with <3 by Colin Cromar, ccromar@instructure.com
