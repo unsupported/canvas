@@ -17,6 +17,7 @@ The links are really the only important compenent of this web page and they must
 There are two ways the URLs may need to be formatted. 
 
 **1. If you have only one authentication provider of a specific type then the URL will be in the following format:**
+
   https://[canvas_URL]/login/[type]
    * [canvas_URL] = Your Canvas address. Example: school.instructure.com
    * [type] = The type of authentication. This information is available within the "[Authentication Settings](https://community.canvaslms.com/docs/DOC-4284)" page after you add the authentication provider in Canvas.
@@ -30,7 +31,8 @@ Here are some exmples of how this information appears in Canvas:
 
   ![Screenshot displaying an example of Canvas authentication login URL: /login/canvas](images/canvas.png)
     
-**2. If you have more than one of the same authentication type:** 
+**2. If you have more than one of the same authentication type:**
+
 https://[canvas_URL]/login/[type]/[id]
    * [canvas_URL] = Your Canvas address. Example: school.instructure.com
    * [type] = The type of authentication. This information is available within the "[Authentication Settings](https://community.canvaslms.com/docs/DOC-4284)" page after you add the authentication provider in Canvas.
