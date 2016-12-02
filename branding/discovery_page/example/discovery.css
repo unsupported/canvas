@@ -1,0 +1,29 @@
+body {
+    background-color: #CCE9F3;
+    font-family: Arial;
+}
+
+.content {
+    width: 100%;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.boxbox {
+    margin: auto!important;
+    border: 3px solid #0078E2;
+    border-radius: 20px;
+    padding: 10px 40px;
+    display: inline-block;
+    background-color: white;
+}
+
+.buttonbox {
+    margin: auto;
+    width: 250px;
+}
+
+.pure-button {
+    border-radius: 5px;
+    min-width: 250px;
+}
