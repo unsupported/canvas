@@ -23,12 +23,14 @@ There are two ways the URLs may need to be formatted.
    <canvas_URL> = Your Canvas address. Example: school.instructure.com
    <type> = The type of authentication. This information is available within the "[Authentication Settings](https://community.canvaslms.com/docs/DOC-4284)" page after you add the authentication provider in Canvas.
    
-    Here are some exmples of how this information appears in Canvas:
-    **SAML** (/login/SAML):
-    ![Screenshot displaying example of SAML authentication login URL: /login/saml](images/singlesaml.png)
+Here are some exmples of how this information appears in Canvas:
+**Single SAML Configuration in Canvas** (/login/SAML):
     
-    **Canvas** (/login/canvas):
-    ![Screenshot displaying example of Canvas authentication login URL: /login/canvas](images/canvas.png)
+  ![Screenshot displaying an example of SAML authentication login URL: /login/saml](images/singlesaml.png)
+    
+**Canvas authenication example in Canvas** (/login/canvas):
+
+  ![Screenshot displaying an example of Canvas authentication login URL: /login/canvas](images/canvas.png)
     
 **2. If you have more than one of the same authentication type:** 
 https://<canvas_URL>/login/<type>/<id>
@@ -38,12 +40,13 @@ https://<canvas_URL>/login/<type>/<id>
    
 The URL above would only work for the first authentication of that type in the list (example: multiple SAML IdPs). As a result the "[Authentication Settings](https://community.canvaslms.com/docs/DOC-4284)" page will display a new, more specific, login URL after the second authentication provider of the same type has been added.
 
-    **Multiple SAML IdPs** \(/login/SAML/#):
-    ![Screenshot displaying example of SAML authentication login URL: /login/saml/#](images/multisaml.png)
+**An example when multiple SAML IdP configruations are in Canvas** \(/login/SAML/#):
+  
+  ![Screenshot displaying an example of SAML authentication login URL: /login/saml/#](images/multisaml.png)
 
 ##I think I get it, but do you have an example?
 
 
 Sure thing! Here is an example of a very basic Discovery Page. In this example we are assuming that your Canvas URL is "canvas.instructure.com". So...if you want to use a copy of this page to use for your Discovery Page then you will need to change your URL at a minimum. Oh...I should also mention that the links on the page are unlikly to work, so don't click them. It is just an example.
 
-###[Example Page](example/discovery.html)
+###[Example Page](example/)
