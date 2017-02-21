@@ -16,7 +16,7 @@ $(document).ready(function() {
         //code goes here to wait for all elements to load
         if ($('h2').text().indexOf('Not Found') > -1) {
             $('.submit_error_link').hide();
-            $('p').append('<h3><a href="#LinkGoesHere" id="new-link-id">Text for link goes here</a></h3>');
+            $('p').append('<h3><a href="#LinkGoesHere">Text for link goes here</a></h3>');
             console.log('Did it!');
         }
     });
