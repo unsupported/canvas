@@ -1,0 +1,10 @@
+/* THIS IS NOT SUPPORTED BY INSTRUCTURE.
+WORKS AS OF 3.9.17
+Hide eportfolios from observers.  
+This CSS snippet in conjection with the corresponding JS snippet will hide the eportfolios from observers.  
+Staff/students must access eportfolios from their profile.  
+Use at your own risk.
+*/
+li.ic-NavMenu-list-item a[href="/dashboard/eportfolios"] {
+	display: none;
+}
