@@ -4,7 +4,6 @@ require 'csv'
 require 'json'
 
 ################################# CHANGE THESE VALUES ###########################
-@access_token = ''			#your API token that was generated from your account user
 @access_token = ''				#your API token that was generated from your account user
 @domain = '' 						#domain.instructure.com, use domain only
 @env = nil 							#Leave nil if pushing to Production
