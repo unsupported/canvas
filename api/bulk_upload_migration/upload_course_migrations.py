@@ -20,19 +20,20 @@ from pprint import pprint
  domain = the full domain name you use to access canvas. (i.e. something.instructure.com)
 """
 
-token = "<access_token>" # access_token
-workingPath = "/path/to/working/folder/"; # Important! Make sure this ends with a backslash
+token = os.getenv('ACCESS_TOKEN') # access_token
+workingPath = "/Users/kjhansen/Downloads/"; # Important! Make sure this ends with a backslash
 CSVFileName = "csvfile.csv" # The name of the course copy CSV file.  Not the full path
 
 source_archive_filename_column = "source"
-canvas_domain = "yourdomain.test.instructure.com"  # Your Canvas domain.  Use the .test area at first
+canvas_domain = "kevin.instructure.com"  # Your Canvas domain.  Use the .test area at first
 
 destination_course_id_column = "destination_id"
-num_processes = 4 # Change this to be the number of concurrent course copies to run, with a max of 4
-wait_till_done = False # Set this to false if you don't want the script to wait for each
+num_processes = 1 # Change this to be the number of concurrent course copies to run, with a max of 4
+wait_till_done = True # Set this to false if you don't want the script to wait for each
                        # course copy to finish before doing another.
 
-migration_type = "common_cartridge_importer" # Change this to fit your migration type
+#migration_type = "blackboard_exporter" # Change this to fit your migration type
+migration_type = "zip_file_importer" # Change this to fit your migration type
 migration_url_field = 'export_url'
 migration_base_url = None # This only needs to be set if linking to files to download from
                           # the web somewhere
@@ -137,15 +138,17 @@ def massDoCopies(data):
   # data[1] is the row of data, in the form of a list
 
   row_data = data[1]
+  rootLogger.info('========row_data {}'.format(row_data))
 
   # data[0] is the progress bar object  
   prog_bar = data[0]
   prog_bar.label = 'doing copy: {}'.format(row_data)
 
-  logger_prefix = '{0[destination_id]}:{0[source_id]}'.format(row_data)
+  logger_prefix = '{0[destination_id]}::::{0[source_id]}'.format(row_data)
   file_path = os.path.join(workingPath,row_data['source_id'])
   rootLogger.debug(row_data)
   course_search_url = "https://{}/api/v1/courses/{}".format(canvas_domain,row_data['destination_id'])
+  folders_url = "https://{}/api/v1/courses/{}/folders".format(canvas_domain,row_data['destination_id'])
   rootLogger.info('{} looking for course: {}'.format(logger_prefix,course_search_url))
 
   done_finding = False
@@ -189,6 +192,12 @@ def massDoCopies(data):
         'size':os.path.getsize(file_path), # read the filesize
         'content_type':'application/zip',
        }
+
+      if migration_type == 'zip_file_importer':
+        folder_info = {'name': row_data['source_id']}
+        folder = requests.post(folders_url, headers=headers, data=folder_info).json()
+        rootLogger.info('******** this is a zip file importer, new folder %s', folder.get('id'))
+        params['settings'] = {'folder_id' : folder.get('id') }
     elif process_type == 'copy':
       # set the source course field
       params['settings'] = {'source_course_id':row_data['source_id']}
@@ -203,6 +212,7 @@ def massDoCopies(data):
     uri = "https://{}/api/v1/courses/{}/content_migrations".format(canvas_domain,row_data['destination_id'])
     rootLogger.info('{} uri: {}'.format(logger_prefix,uri))
 
+
     migration = requests.post(uri,headers=headers_post,data=json.dumps(params))
     migration_json = migration.json()
 
@@ -216,22 +226,27 @@ def massDoCopies(data):
       # Step 2:  Upload data
       files = {'file':open(file_path,'rb').read()}
       
-      _data = json_res['pre_attachment'].items()
-      if _data[1][0]=='error':
-          rootLogger.info("{} {} - There was a problem uploading the file.  Probably a course quota problem.".format( row_data['destination_id'], row_data['source_id']))
-          row_data['errors'] = _data[1][0]
-          return row_data
+      rootLogger.info('-------- json_keys1 --- %s', json_res.keys())
+      if json_res.has_key('message'):
+        print json_res['message']
+      else:
+        _data = json_res['pre_attachment'].items()
+        if _data[1][0]=='error':
+            rootLogger.info("{} {} - There was a problem uploading the file.  Probably a course quota problem.".format( row_data['destination_id'], row_data['source_id']))
+            row_data['errors'] = _data[1][0]
+            return row_data
 
-      _data[1] = ('upload_params',_data[1][1].items())
+        _data[1] = ('upload_params',_data[1][1].items())
 
-      rootLogger.info("{} Yes! Done sending pre-emptive 'here comes data' data, now uploading the file...".format(logger_prefix))
-      upload_file_response = uploadFile(json_res['pre_attachment'],file_path)
+        rootLogger.info("{} Yes! Done sending pre-emptive 'here comes data' data, now uploading the file...".format(logger_prefix))
+        rootLogger.info('-------- json_keys2 --- %s', json_res.keys())
+        upload_file_response = uploadFile(json_res['pre_attachment'],file_path)
 
-      # Step 3: Confirm upload
+        # Step 3: Confirm upload
 
-      rootLogger.info("{} Done uploading the file, now confirming the upload...".format(logger_prefix))
-      rootLogger.info("{} upload completed...nicely done! The Course migration should be starting soon.".format(logger_prefix))
-      migration_json = requests.get('https://{}/api/v1/courses/{}/content_migrations/{}'.format(canvas_domain,row_data['destination_id'],migration_json['id']),headers=headers).json()
+        rootLogger.info("{} Done uploading the file, now confirming the upload...".format(logger_prefix))
+        rootLogger.info("{} upload completed...nicely done! The Course migration should be starting soon.".format(logger_prefix))
+        migration_json = requests.get('https://{}/api/v1/courses/{}/content_migrations/{}'.format(canvas_domain,row_data['destination_id'],migration_json['id']),headers=headers).json()
 
       
     output = "\r\n" + migration.text
@@ -294,7 +309,7 @@ def UnicodeDictReader(utf8_data, **kwargs):
     yield dict([(key, unicode(value, 'utf-8')) for key, value in row.iteritems()])
 
 def prep_row(row):
-  print 'process_type',process_type
+  #print 'process_type',process_type
   if process_type == 'link' and migration_base_url:
     source_id = migration_base_url + row.get(source_archive_filename_column,None)
   else:
