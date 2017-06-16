@@ -19,12 +19,12 @@ from pprint import pprint
  domain = the full domain name you use to access canvas. (i.e. something.instructure.com)
 """
 
-token = "17~RSE9WrgnW3od6wy2aISWo8ZZZzYa9KkTnpvl480zPbe0LZQhUE1L3AbwL0PrUYQT" # access_token
-workingPath = "/Users/kjhansen/dev/unsupported/canvas/api/bulk_migration/python/bulk_upload_migration/"; # Important! Make sure this ends with a backslash
+token = "" # access_token
+workingPath = "/path/to/csv/folder/"; # Important! Make sure this ends with a backslash
 CSVFileName = "csvfile.csv" # The name of the course copy CSV file.  Not the full path
 
 source_archive_filename_column = "source"
-canvas_domain = "kevin.test.instructure.com"  # Your Canvas domain.  Use the .test area at first
+canvas_domain = "domain.test.instructure.com"  # Your Canvas domain.  Use the .test area at first
 
 num_processes = 4 # Change this to be the number of concurrent course copies to run, with a max of 4
 wait_till_done = True # Set this to false if you don't want the script to wait for each
