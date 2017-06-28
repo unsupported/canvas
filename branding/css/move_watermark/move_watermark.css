@@ -1,0 +1,10 @@
+/* Moves the watermark on a Canvas page */
+
+
+/* Works as of June 28, 2017 */
+
+body:not(.no-headers) .ic-Layout-columns:before {
+  position: absolute;
+  margin-bottom: 20%;
+  margin-left: 5%;
+}
