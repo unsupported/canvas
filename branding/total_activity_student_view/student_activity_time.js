@@ -15,13 +15,13 @@ $(document).ready(function() {
 
   if (window.location.pathname.indexOf('courses') > -1 && $.inArray('student', ENV.current_user_roles) > -1) {
     let userId = ENV.current_user_id;
-    let courseId = ENV.COURSE_ID;
+    let courseId = ENV.context_asset_string.split('_')[1];
     let jsonUrl = `https://${window.location.hostname}/api/v1/users/${userId}/enrollments`;
     let time = "";
 
     $.getJSON(jsonUrl, (data) => {
       let currentCourse = data.filter((course) => {
-        return course.course_id == courseId
+        return course.course_id == courseId;
       });
       time = currentCourse[0].total_activity_time;
       time = convertSeconds(time);
