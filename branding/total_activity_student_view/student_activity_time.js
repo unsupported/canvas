@@ -23,11 +23,8 @@ $(document).ready(function() {
       let currentCourse = data.filter((course) => {
         return course.course_id == courseId
       });
-      // console.log(currentCourse);
       time = currentCourse[0].total_activity_time;
-      // console.log(time);
       time = convertSeconds(time);
-      // console.log(time);
       $('#right-side').prepend("<div class='events_list time_active'><h2>Time Activity</h2></div>");
       $(".events_list.time_active").append(time + " (hrs/mins/secs)");
     });
