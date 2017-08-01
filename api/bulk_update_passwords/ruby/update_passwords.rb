@@ -11,7 +11,7 @@ env = '' 						  	# Leave nil if pushing to Production
 output_csv = ''         # put the full path to a blank csv file to have the errors written in.
 
 ############################## DO NOT CHANGE THESE VALUES #######################
-env ? env << '.' : env
+env != '' ? env << '.' : env
 base_url = "https://#{domain}.#{env}instructure.com"
 
 def start(csv_file, access_token, base_url, output_csv)
