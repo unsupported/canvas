@@ -16,9 +16,9 @@ require 'json'
   #Replace underscores with the sub-domain for your Canvas instance
   #Example: If Canvas URL is canvasstuff.instructure.com, use canvasstuff
 
-@env = nil
+@env = ''
   #To use script with Production, leave as-is
-  #For use with test/beta environments, replace nil with test or with beta
+  #For use with test/beta environments, use 'beta' or 'test'
 
 @csv_file = '___'
   #Replace underscores with the full file path to the CSV file being used
@@ -53,7 +53,7 @@ require 'json'
 ########## END OF USER AREA: DO NOT EDIT ANY VALUES BEYOND THIS POINT ##########
 ################################################################################
 
-@env ? @env << "." : @env
+@env != '' ? @env << '.' : @env
 @base_url = "https://#{@domain}.#{@env}instructure.com/"
 
 
