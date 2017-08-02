@@ -6,11 +6,11 @@ require 'csv'
 
 #================
 # Change these
-access_token = "your api token here" #api access token
-domain = "example" #example.instructure.com would be example
-env = "test" #production = nil, "test" = test, "beta" = beta
-csv_file = "custom_data.csv" #point to the file location
-account = "1" #what account? nil is not acceptable
+access_token = "your api token here" # api access token
+domain = "" # e.g. the 'schoolname' in 'schoolname.instructure.com'
+env = "test" # production = nil, "test" = test, "beta" = beta
+csv_file = "custom_data.csv" # point to the file location
+account = "1" # what account? nil is not acceptable
 
 #================
 # Don't edit from here down unless you know what you're doing.
@@ -30,11 +30,9 @@ unless csv_file
   csv_file = gets.chomp
 end
 
-unless File.exists?(csv_file)
-  raise "Error: can't locate the Data CSV"
-end
+raise "Error: can't locate the Data CSV" unless File.exists?(csv_file)
 
-env ? env << "." : env
+env != '' ? env << '.' : env
 base_url = "https://#{domain}.#{env}instructure.com/api/v1"
 test_url = "#{base_url}/accounts/self"
 
@@ -43,16 +41,13 @@ Unirest.default_header("Authorization", "Bearer #{access_token}")
 # Make generic API call to test token, domain, and env.
 test = Unirest.get(test_url)
 
-unless test.code == 200
-  raise "Error: The token, domain, or env variables are not set correctly"
-end
+raise "Error: The token, domain, or env variables are not set correctly" unless test.code == 200
 
 CSV.foreach(csv_file, {:headers => true}) do |row|
   url = "#{base_url}/users/#{row[0]}/custom_data/#{row[1]}"
 
   create_data = Unirest.put(url, parameters: { 'ns' => row[2], 'data' => row[3] })
   puts "API Call Successful \n #{create_data.body} \n\n"
-
 end
 
-puts "Finished creating custom datas"
+puts "Finished creating custom data"

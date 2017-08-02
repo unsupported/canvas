@@ -6,12 +6,12 @@ require 'json'
 ################################# CHANGE THESE VALUES ###########################
 access_token = ''				#your API token that was generated from your account user
 domain = '' 						#domain.instructure.com, use domain only
-env = nil 							#Leave nil if pushing to Production
+env = '' 							  #Leave empty for production, or use beta or test
 csv_file = ''     			#Use the full path /Users/XXXXX/Path/To/File.csv
 ############################## DO NOT CHANGE THESE VALUES #######################
 
 default_headers = {"Authorization" => "Bearer #{access_token}"}
-env ? env << "." : env
+env != '' ? env << '.' : env
 base_url = "https://#{domain}.#{env}instructure.com/"
 
 def start(csv_file, access_token, base_url, default_headers)

@@ -6,15 +6,15 @@ require 'zip'
 
 #=======================================
 # Edit this so you don't have to fill it in every time.
-access_token = nil
-domain = nil
-env = nil # production (leave as nil), "test" or "beta"
-source_folder = nil
-archive_folder = nil
+access_token = ''
+domain = ''
+env = '' # Leave empty for production, or use 'test' or 'beta'
+source_folder = ''
+archive_folder = ''
 
 # Don't edit from here down unless you know what you're doing.
 #=======================================
-env ? env << "." : env
+env != '' ? env << '.' : env
 test_url = "https://#{domain}.#{env}instructure.com/api/v1/accounts/self"
 endpoint_url = "#{test_url}/sis_imports.json?import_type=instructure_csv"
 
@@ -26,7 +26,7 @@ unless test.code == 200
 end
 
 # Methods to check if the source_folder works
-unless Dir.exists?(source_folder)
+unless Dir.exist?(source_folder)
 	raise "Error: source_folder isn't a directory, or can't be located."
 end
 
@@ -34,7 +34,7 @@ unless Dir.entries(source_folder).detect {|f| f.match /.*(.csv)/}
 	raise "Error: There are no CSV's in the source directory"
 end
 
-unless Dir.exists?(archive_folder)
+unless Dir.exist?(archive_folder)
 	Dir.mkdir archive_folder
 	puts "Created archive folder at #{archive_folder}"
 end
