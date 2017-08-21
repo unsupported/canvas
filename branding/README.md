@@ -12,20 +12,20 @@ Once enabled, you'll need to accomplish one of the following to enable your bran
 
 Uploading the file directly into Canvas.
 ---
-Upload a valid .css or .js extension into the theme editor.
-Save changes and wait for theme editor to apply changes.
-Test!
+1. Upload a valid .css or .js extension into the theme editor.
+2. Save changes and wait for theme editor to apply changes.
+3. Test!
 
 Account Configuration
 -------
 
 When you have your file ready to upload, navigate to the Theme Editor. Please be aware that these files are visible to anyone, anywhere, you're ready to configure your institution's Canvas account. Again, if you aren't an administrator, you'll need to either request administrator privileges or ask your administrator to apply these settings.
 
-Click on your institution's general account management link (from the "Admin" slide out menu).
-Click on "Open Theme Editor" button in the right hand side of the page.
-Select Upload in the Theme Editor menu.
-Enter the URL for each file (the CSS and JavaScript files) in the text fields labeled, "JavaScript File" and "CSS File".
-Click "Apply"
+1. Click on your institution's general account management link (from the "Admin" slide out menu).
+2. Click on "Open Theme Editor" button in the right hand side of the page.
+3. Select Upload in the Theme Editor menu.
+4. Enter the URL for each file (the CSS and JavaScript files) in the text fields labeled, "JavaScript File" and "CSS File".
+5. Click "Apply"
 Your browser should refresh the current page and apply the branding.
 
 # Support
