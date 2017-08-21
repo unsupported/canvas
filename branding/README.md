@@ -26,6 +26,7 @@ When you have your file ready to upload, navigate to the Theme Editor. Please be
 3. Select Upload in the Theme Editor menu.
 4. Enter the URL for each file (the CSS and JavaScript files) in the text fields labeled, "JavaScript File" and "CSS File".
 5. Click "Apply"
+
 Your browser should refresh the current page and apply the branding.
 
 # Support
