@@ -1,0 +1,4 @@
+/* This hides the full batch checkbox and text ont he sis import page in Canvas */
+div#batch_check {
+    display: none;
+}
