@@ -13,7 +13,7 @@ You can get additional information on the Canvas CSV import format and sis_impor
 ###Pre-reqs to run this script:
 
 * PowerShell 3 or higher
-* [PowerShell Community Extensions](https://pscx.codeplex.com/)
+* [PowerShell Community Extensions](https://github.com/Pscx/Pscx)
 
 ###You will need to alter the following variables during the setup process:
 

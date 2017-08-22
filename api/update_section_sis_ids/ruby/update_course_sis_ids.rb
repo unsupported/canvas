@@ -6,12 +6,12 @@ require 'json'
 ################################# CHANGE THESE VALUES ###########################
 access_token = '' 			#your API token that was generated from your account user
 domain = '' 						# domain.instructure.com, use domain
-env = ''  							# leave blank or nil is pushing to production
+env = ''  							# leave blank for production, or use beta or test
 csv_file = ''						# use the full path to the file /Users/XXXXX/Path/To/File.csv
 ############################## DO NOT CHANGE THESE VALUES #######################
 
 default_headers = {"Authorization" => "Bearer #{access_token}"}
-env ? env << "." : env
+env != '' ? env << '.' : env
 base_url = "https://#{domain}.#{env}instructure.com/"
 hydra = Typhoeus::Hydra.new(max_concurrency: 20)
 

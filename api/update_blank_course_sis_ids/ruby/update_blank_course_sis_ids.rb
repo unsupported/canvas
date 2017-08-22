@@ -6,7 +6,7 @@ require 'json'
 ################### Change these values only ##################
 access_token = ''				#Your access token for Canvas
 domain = ''							#The should be the first part of the url
-env = nil								#Either blank for prod, or type test or beta
+env = ''								#Either blank for prod, or type test or beta
 csv_file = ''						#The full path to the location of the mapping file /full/path/to/the/file.csv
 ################### Do not change these #######################
 
@@ -14,7 +14,7 @@ default_headers = { 'Authorization' => "Bearer #{access_token}"}
 
 hydra = Typhoeus::Hydra.new(max_concurrency: 40)
 
-env ? env << '.' : env
+env != '' ? env << '.' : env
 base_url = "https://#{domain}.#{env}instructure.com/"
 
 CSV.foreach(csv_file, {headers: true}) do |row|

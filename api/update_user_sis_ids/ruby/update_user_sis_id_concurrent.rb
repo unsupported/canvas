@@ -10,11 +10,11 @@ require 'json'
 csv_file = 'example_info.csv'     			# Use the full path /Users/XXXXX/Path/To/File.csv
 access_token = ''				# your API token that was generated from your account user
 domain = '' 						# domain.instructure.com, use domain only
-env = nil 						  # Leave nil if pushing to Production or 'test' for test
+env = '' 						  # Leave empty for production, or use beta or test.
 output_csv = 'example_output.csv'         # put the full path to a blank csv file to have the errors written in.
 
 ############################## DO NOT CHANGE THESE VALUES #######################
-env ? env << '.' : env
+env != '' ? env << '.' : env
 base_url = "https://#{domain}.#{env}instructure.com"
 
 def start(csv_file, access_token, base_url, output_csv)
