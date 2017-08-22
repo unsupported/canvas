@@ -1,0 +1,9 @@
+a.avatar.profile_pic_link.approved {
+    pointer-events: none !important;
+    cursor: default !important;
+}
+
+a.avatar.profile-link {
+    pointer-events: none !important;
+    cursor: default !important;
+}

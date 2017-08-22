@@ -1,6 +1,6 @@
-#Discover Page
+# Discover Page
 
-##Why a Discovery Page, also what is a Discovery Page?
+## Why a Discovery Page, also what is a Discovery Page?
 
 In some cases an instituion using Canvas may have users who authenticate into Canvas using more than one authentication mechanism each using a different page for the collection of authentication credentials.
 
@@ -12,7 +12,7 @@ The solution to this challenge is to add a "Discovery URL" to your "[Authenticat
 
 The links are really the only important compenent of this web page and they must be in a specific format. As such, a best practice is to make the links very promenent on the page.
 
-###Seriously though, what are the URLs?
+### Seriously though, what are the URLs?
 
 There are two ways the URLs may need to be formatted. 
 
@@ -40,13 +40,13 @@ https://[canvas_URL]/login/[type]/[id]
    
 The URL above would only work for the first authentication of that type in the list (example: multiple SAML IdPs). As a result the "[Authentication Settings](https://community.canvaslms.com/docs/DOC-4284)" page will display a new, more specific, login URL after the second authentication provider of the same type has been added.
 
-**An example when multiple SAML IdP configruations are in Canvas** \(/login/SAML/#):
+**An example when multiple SAML IdP configurations are in Canvas** \(/login/SAML/#):
   
   ![Screenshot displaying an example of SAML authentication login URL: /login/saml/#](images/multisaml.png)
 
-##I think I get it, but do you have an example?
+## I think I get it, but do you have an example?
 
 
 Sure thing! Here is an example of a very basic Discovery Page. In this example we are assuming that your Canvas URL is "canvas.instructure.com". So...if you want to use a copy of this page to use for your Discovery Page then you will need to change your URL at a minimum. Oh...I should also mention that the links on the page are unlikly to work, so don't click them. It is just an example.
 
-###[Example Page](example/)
+### [Example Page](example/)

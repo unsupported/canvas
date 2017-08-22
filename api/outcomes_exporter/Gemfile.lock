@@ -1,0 +1,21 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    byebug (9.0.6)
+    ethon (0.10.1)
+      ffi (>= 1.3.0)
+    ffi (1.9.18)
+    ruby-progressbar (1.8.1)
+    typhoeus (1.1.2)
+      ethon (>= 0.9.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  byebug
+  ruby-progressbar
+  typhoeus
+
+BUNDLED WITH
+   1.14.6

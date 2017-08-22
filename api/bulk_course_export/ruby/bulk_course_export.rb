@@ -1,10 +1,10 @@
 #Working as of 03/30/2016
 # Edit these below, or you will be prompted in the CLI
-access_token = nil          #your token acquired in your canvas user profile
-domain = nil                #the domain of your URL, such as school in school.instructure.com
-env = nil                   #leave nil for prod, or enter test & beta
-input_file = nil            #input file for courses to export
-output_file = nil            #output file for courses that have been exported
+access_token = ''          #your token acquired in your canvas user profile
+domain = ''                #the domain of your URL, such as school in school.instructure.com
+env = ''                   #leave empty for prod, or use test or beta
+input_file = ''            #input file for courses to export
+output_file = ''            #output file for courses that have been exported
 #============
 # Don't edit from here down unless you know what you're doing.
 
@@ -32,17 +32,15 @@ unless output_file
   output_file = gets.chomp
 end
 
-unless File.exists?(input_file)
-  raise "Error: can't locate the input CSV"
-end
+raise "Error: can't locate the input CSV" unless File.exist?(input_file)
 
-unless File.exists?(output_file)
+unless File.exist?(output_file)
   CSV.open(output_file, 'wb') do |csv|
     csv << ["course_id", "export_url"]
   end
 end
 
-env ? env << '.' : env
+env != '' ? env << '.' : env
 base_url = "https://#{domain}.#{env}instructure.com/api/v1"
 default_header = { Authorization: "Bearer #{access_token}" }
 
