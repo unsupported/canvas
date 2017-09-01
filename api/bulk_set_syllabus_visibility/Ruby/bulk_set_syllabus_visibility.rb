@@ -68,8 +68,8 @@ CSV.foreach(@csv_file, {headers: true}) do |row|
             headers: {:authorization => 'Bearer ' + @access_token , 'Content-Type' => 'application/x-www-form-urlencoded' },
             body: {
                 course: {
-                  :public_syllabus => @public_visibility,
-                  :public_syllabus_to_auth => @institution_visibility
+                  public_syllabus: @public_visibility,
+                  public_syllabus_to_auth: @institution_visibility
                 }
             }
         )
