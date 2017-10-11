@@ -1,6 +1,6 @@
 # Loading Specific Branding Dependent on Canvas URL
 
-This folder is used to load styling dependent on the ```javascript window.location.hostname```, which can be useful if you have multiple domains for a single Canvas instance, or you're utilizing a vanity URL.
+This folder is used to load styling dependent on the `window.location.hostname```, which can be useful if you have multiple domains for a single Canvas instance, or you're utilizing a vanity URL.
 
 # Edits to Make Prior to Using
 
