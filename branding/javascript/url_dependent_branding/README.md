@@ -12,3 +12,4 @@ case "YOUR_DOMAIN.instructure.com OR yourVanity_URL":
 ```javascript
 sheet.innerHTML = "{REPLACE_ME}";
 ```
+*Working as of 10/11/2017*
