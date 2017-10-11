@@ -5,4 +5,7 @@ This folder is used to load styling dependent on the `window.location.hostname``
 # Edits to Make Prior to Using
 
 1. Each `case` will need a single URL, either <DOMAIN>.instructure.com or your vanity URL.
-2. Add your styling to this line, replacing the REPLACE_ME as your placeholder `sheet.innerHTML = "{REPLACE_ME}";`
+2. Add your styling to this line, replacing the REPLACE_ME as your placeholder
+```javascript
+sheet.innerHTML = "{REPLACE_ME}";
+```
