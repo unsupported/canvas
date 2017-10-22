@@ -26,59 +26,60 @@
 |Apps|`$("li#external_tools_tab").hide();`|`$("div#tab-details").hide();`|
 |Alerts|`$("li#alerts_tab").hide();`|`$("div#tab-alerts").hide();`|
 |Feature Options|`$("li#feature_flags_tab").hide();`|`$("div#tab-features").hide();`|
-***Note:** "Course Details" is the default landing tab for the "Settings" Course Navigation link.  `$("a.settings").hide();` will hide the "Settings" tab in the Course Navigation Menu
+
+**Note:** "Course Details" is the default landing tab for the "Settings" Course Navigation link.  `$("a.settings").hide();` will hide the "Settings" tab in the Course Navigation Menu
 
 ### Course Details
 
-##### Image
+#### Image
 |Element|Target + `HIDE`| Target + `DISABLE`|
 |-----|-----|-----|
 |"Image" Text|`$('label[for="course_image"]').hide();`|N/A|
 |Image Selector|`$('div.CourseImageSelector__Container').hide();`|`$('div.CourseImageSelector__Container > div > div > button').prop('disabled',true);`|
 
-##### Name
+#### Name
 |Element|Target + `HIDE`| Target + `DISABLE`|
 |-----|-----|-----|
 |"Name" text|`$('label[for="course_name"]').hide();`|N/A|
 |Course Name field|`$('input#course_name.course_form').hide();`|`$('input#course_name.course_form').prop('disabled',true);`|
 
-##### Course Code
+#### Course Code
 |Element|Target + `HIDE`| Target + `DISABLE`|
 |-----|-----|-----|
 |"Course Code" text|`$('label[for="course_course_code"]').hide();`|N/A|
 |Course Code field|`$('input#course_course_code').hide();`|`$('input#course_course_code').prop('disabled',true);`|
 
-##### Blueprint Course
+#### Blueprint Course
 |Element|Target + `HIDE`| Target + `DISABLE`|
 |-----|-----|-----|
 |"Blueprint Course" text|`$('label[for="course_blueprint_course"]').hide();`|N/A|
 |"Enable course as a Blueprint Course" checkbox|`$('div#blueprint_menu').hide();`|`$('input[name="course[blueprint]"').prop('disabled',true);`|
 
-##### Time Zone
+#### Time Zone
 |Element|Target + `HIDE`| Target + `DISABLE`|
 |-----|-----|-----|
 |"Time Zone" text|`$('label[for="course_time_zone"]').hide();`|N/A|
 |Time Zone menu|`$('select#course_time_zone').hide();`|`$('select#course_time_zone').prop('disabled',true);`|
 
-##### SIS ID
+#### SIS ID
 |Element|Target + `HIDE`| Target + `DISABLE`|
 |-----|-----|-----|
 |"SIS ID" text|`$('label[for="course_sis_source_id"]').hide();`|N/A|
 |SIS ID field|`$('input#course_sis_source_id').hide();`|`$('input#course_sis_source_id').prop('disabled',true);`|
 
-##### Subaccount
+#### Subaccount
 |Element|Target + `HIDE`| Target + `DISABLE`|
 |-----|-----|-----|
 |"Subaccount" text|`$('label[for="course_account_id"]').hide();`|N/A|
 |Sub-account field|`$('select#course_account_id').hide();`|`$('select#course_account_id').prop('disabled',true);`|
 
-##### Terms
+#### Terms
 |Element|Target + `HIDE`| Target + `DISABLE`|
 |-----|-----|-----|
 |"Terms" text|`$('label[for="course_enrollment_term_id"]').hide();`|N/A|
 |Term menu|`$('select#course_enrollment_term_id').hide();`|`$('select#course_enrollment_term_id').prop('disabled',true);`|
 
-##### Start Date
+#### Start Date
 |Element|Target + `HIDE`| Target + `DISABLE`|
 |-----|-----|-----|
 |"Starts" text|`$('label[for="course_start_at"]').hide();`|N/A|
@@ -86,21 +87,21 @@
 |DatePicker button|`$('input#course_start_at + button.ui-datepicker-trigger').hide();`|`$('input#course_start_at + button.ui-datepicker-trigger').prop('disabled',true);`|
 |Subtext with full date|`$('div.datetime_suggest').hide();`|N/A|
 
-##### End Date
+#### End Date
 |Element|Target + `HIDE`| Target + `DISABLE`|
 |-----|-----|-----|
 |"Ends" text|`$('label[for="course_conclude_at"]').hide();`|N/A|
 |End Date field|`$('input#course_conclude_at').hide();`|`$('input#course_conclude_at').prop('disabled',true);`|
 |DatePicker button|`$('input#course_conclude_at + button.ui-datepicker-trigger').hide();`|`$('input#course_conclude_at + button.ui-datepicker-trigger').prop('disabled',true);`|
 
-##### Term Override Option
+#### Term Override Option
 |Element|Target + `HIDE`| Target + `DISABLE`|
 |-----|-----|-----|
 |"Users can only participate in the course between these dates" text|`$('label[for="course_restrict_enrollments_to_course_dates"]').hide();`|N/A|
 |"Users can only participate in the course between these dates" checkbox|`$('input[name="course[restrict_enrollments_to_course_dates]"').hide();`|`$('input#course_restrict_enrollments_to_course_dates').prop('disabled',true);`|
 |Term override warning text|`$('div.palign:contains("This will override any term availability settings.")').hide();`|N/A|
 
-##### Language
+#### Language
 |Element|Target + `HIDE`| Target + `DISABLE`|
 |-----|-----|-----|
 |"Language" text|`$('label[for="course_locale"]').hide();`|N/A|
@@ -108,27 +109,27 @@
 |Canvas Translation Link text|`$('p:contains("Join the")').hide();`|N/A|
 |Language override warning text|`$('div.palign:contains("This will override any user/system language preferences.")').hide();`|N/A|
 
-##### File Storage
+#### File Storage
 |Element|Target + `HIDE`| Target + `DISABLE`|
 |-----|-----|-----|
 |"File Storage" text|`$('label[for="course_storage_quota_mb"]').hide();`|N/A|
 |File Storage field|`$('input#course_storage_quota_mb').hide();`|`$('input#course_storage_quota_mb').prop('disabled',true);`|
 |"megabytes" text|`$('td:contains("megabytes")').hide();`|N/A|
 
-##### Grading Scheme
+#### Grading Scheme
 |Element|Target + `HIDE`| Target + `DISABLE`|
 |-----|-----|-----|
 |"Grading Scheme" text|`$('label[for="course_grading_scheme"]').hide();`|N/A|
 |Grading Scheme checkbox and help text|`$('td#course_grading_scheme').hide();`|`$('input#course_grading_standard_enabled').prop('disabled',true);`|
 
-##### License
+#### License
 |Element|Target + `HIDE`| Target + `DISABLE`|
 |-----|-----|-----|
 |"License" text|`$('label[for="course_license"]').hide();`|N/A|
 |License menu|`$('select#course_license').hide();`|`$('select#course_license').prop('disabled',true);`|
 |License helper link '(?)'|`$('select#course_license + a.license_help_link').hide();`|N/A|
 
-##### Visibility
+#### Visibility
 |Element|Target + `HIDE`| Target + `DISABLE`|
 |-----|-----|-----|
 |"Visibility" text|`$('label[for="course_visibility"]').hide();`|N/A|
@@ -137,9 +138,9 @@
 |Visibility Help link `(?)`|`$('a.visibility_help_link').hide();`|N/A|
 |"Customize" visibility text|`$('label[for="course_custom_course_visibility"]').hide();`|N/A|
 |"Customize" visibility checkbox|`$('input#course_custom_course_visibility').hide();`|`$('input#course_custom_course_visibility').prop('disabled',true);`|
-|"Syllabus" text (if "Customize" is enabled)|`$('label[for="course_syllabus_visibility_option"]').hide();`|``|
-|"Syllabus" option menu|`$('select#Syllabus').hide();`|``|
-|"Customize" outlined `div`|`$('td#course_visibility > span + div.panel-border').hide();`|``|
+|"Syllabus" text (if "Customize" is enabled)|`$('label[for="course_syllabus_visibility_option"]').hide();`|N/A|
+|"Syllabus" option menu|`$('select#Syllabus').hide();`|`$('select#Syllabus').prop('disabled',true);`|
+|"Customize" outlined `div`|`$('td#course_visibility > span + div.panel-border').hide();`|N/A|
 |"Include this course in the public course index" text|`$('label[for="course_indexed"]').hide();`|N/A|
 |"Include this course in the public course index" checkbox|`$('input#course_indexed').hide();`|`$('input#course_indexed').prop('disabled',true);`|
 |"Restrict students from viewing course **after end date**" text|`$('label[for="course_restrict_student_past_view"]').hide();`|N/A|
@@ -147,20 +148,20 @@
 |"Restrict students from viewing course **before start date**" text|`$('label[for="course_restrict_student_future_view"]').hide();`|N/A|
 |"Restrict students from viewing course **before start date**" checkbox|`$('input#course_restrict_student_future_view').hide();`|`$('input#course_restrict_student_future_view').prop('disabled',true);`|
 
-##### Format
+#### Format
 |Element|Target + `HIDE`| Target + `DISABLE`|
 |-----|-----|-----|
 |"Format" text|`$('label[for="course_course_format"]').hide();`|N/A|
 |Course Format option menu|`$('select#course_course_format').hide();`|`$('select#course_course_format').prop('disabled',true);`|
 
-##### Epub Export
+#### Epub Export
 |Element|Target + `HIDE`| Target + `DISABLE`|
 |-----|-----|-----|
 |"Epub Export" text|`$('label[for="course_epub_export"]').hide();`|N/A|
 |Epub organize option checkbox|`$('input#course_organize_epub_by_content_type').hide();`|`$('input#course_organize_epub_by_content_type').prop('disabled',true);`|
 |"Organize epub by content type (default is by module)." text|`$('label[for="course_organize_epub_by_content_type"]').hide();`|N/A|
 
-##### Description
+#### Description
 |Element|Target + `HIDE`| Target + `DISABLE`|
 |-----|-----|-----|
 |"Description" text|`$('label[for="course_public_description"]').hide();`|N/A|
