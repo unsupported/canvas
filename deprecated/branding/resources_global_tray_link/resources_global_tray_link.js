@@ -1,4 +1,5 @@
-// THIS IS NOT SUPPORTED BY INSTRUCTURE, WORKS as of 10/10/16
+// THIS IS NOT SUPPORTED BY INSTRUCTURE, NO LONGER WORKS AS 3/30/18
+// NO LONGER UPDATED AS INSTRUCTURE HAS ADDED THE CUSTOMIZED HELP MENU FUNCTIONALITY
 $(document).ready(function() {
 	var trayLinks = [
 		{key: 'http://www.example.com/your-library', val: 'Library'},
