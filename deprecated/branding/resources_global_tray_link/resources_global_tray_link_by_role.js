@@ -1,4 +1,5 @@
-// THIS IS NOT SUPPORTED BY INSTRUCTURE, WORKS as of 04/14/16
+// THIS IS NOT SUPPORTED BY INSTRUCTURE, NO LONGER WORKS AS 3/30/18
+// NO LONGER UPDATED AS INSTRUCTURE HAS ADDED THE CUSTOMIZED HELP MENU FUNCTIONALITY
 $(document).ready(function() {
 	if(ENV.current_user_roles.indexOf('teacher') >= 0 || ENV.current_user_roles.indexOf('admin') >= 0){
 		//items to show to teachers and admins
