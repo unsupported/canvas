@@ -5,8 +5,9 @@ require 'byebug'
 ### CHANGE THESE VALUES
 domain = '' # e.g. 'domain' in 'https://domain.instructure.com'
 token = ''  # api token for account admin user
-csv = 'courses.csv'
-feature = 'new_gradebook'
+feature = '' # ex. new_gradebook. GET list of features API Endpoint: https://canvas.instructure.com/doc/api/feature_flags.html#method.feature_flags.index
+status = 'on' # use 'off' to disable feature
+csv = 'courses.csv' # this should contain a canvas_course_id header
 
 #================
 # Don't edit from here down unless you know what you're doing.
@@ -22,7 +23,7 @@ raise "Error: The token, domain, or env variables are not set correctly" unless 
 
 CSV.foreach(csv, {:headers => true}) do |row|
   create_user = Typhoeus.put(
-            base_url + "/api/v1/courses/" + row['canvas_course_id'] + "/features/flags/#{feature}?state=on",
+            base_url + "/api/v1/courses/" + row['canvas_course_id'] + "/features/flags/#{feature}?state=#{status}",
             headers: {:authorization => 'Bearer ' + token }
             )
   if create_user.code == 200
