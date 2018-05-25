@@ -1,3 +1,5 @@
+# working as of 5/25/2018
+
 require 'csv'
 require 'typhoeus'
 require 'byebug'
