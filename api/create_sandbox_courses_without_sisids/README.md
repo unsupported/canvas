@@ -1,3 +1,4 @@
+LAST WORKING AS OF 07/30/2018
 <h1>Sandbox Course Creation Script</h1>
 ==============================
 
