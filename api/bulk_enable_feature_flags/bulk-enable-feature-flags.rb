@@ -32,7 +32,7 @@ CSV.foreach(csv, {:headers => true}) do |row|
             )
   if enable_feature_flag.code == 200
     puts "Course #{row['canvas_course_id']} feature flag is now #{status}."
-  elsif create_user.code == 400
+  elsif enable_feature_flag.code == 400
     puts "Error: #{row['canvas_course_id']} that didn't work Error 400."
   else
     puts "Course #{row['canvas_course_id']} had failed to turn feature flag #{status}."
