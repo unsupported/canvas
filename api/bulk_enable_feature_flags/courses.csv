@@ -1,1 +1,3 @@
-﻿canvas_course_id,course_id,short_name,long_name,account_id,term_id,status,start_date,end_date,course_format,blueprint_course_id
+course_id,state
+12345,off
+67890,on
