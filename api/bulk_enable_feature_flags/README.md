@@ -1,7 +1,31 @@
-Bulk Enable Feature Flags
----
-This script takes a csv file with one header **canvas_course_id**. The *id's* in this column refer to courses that should have a feature flag enabled via the API.
+# Bulk Enable Course Feature Flags
 
-**Best case use: If only feature flags can be enabled at the course level, this script enables (also disables) the feature flag in bulk, course by course.**
+## Summary
 
-Please see the `courses.csv` as a template to structure your CSV file.
+This script utilizes a CSV file to update the state of course feature flags in bulk.
+
+## Setup
+
+**[bulk-enable-feature-flags.rb](bulk-enable-feature-flags.rb)**
+
+- `feature`
+  - The actual feature flag to toggle
+  - EX: `student_outcome_gradebook`
+  - Use this API request to GET available feature flags => <https://canvas.instructure.com/doc/api/feature_flags.html#method.feature_flags.index>
+
+**[courses.csv](courses.csv)**
+
+Your CSV file should contain the following headers:
+
+- `course_id`
+  - value expected - integer
+  - The ID will be the ID from the course's Canvas URL
+  - EX: `https://<YOUR_DOMAIN>.instructure.com/courses/<course_id>`
+- `status`
+  - value expected - "off" or "on"
+
+## NOTE
+
+**Features may be locked on the Account level!**
+
+> Depending on the local settings for feature flags on the account level, your Canvas admins may have "locked" the status of feature flags within a course. If this is the case, you'll see an italicized status for a feature flag instead of a toggle switch.
