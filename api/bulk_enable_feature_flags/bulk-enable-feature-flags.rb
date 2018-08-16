@@ -1,4 +1,4 @@
-# Working as of 5/25/2018
+# Working as of 8/16/2018
 
 require 'csv'
 require 'typhoeus'
