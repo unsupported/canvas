@@ -1,76 +1,51 @@
-#Working as of August 22nd, 2017
+# Working as of 3/11/2018
 require 'typhoeus'
 require 'csv'
 require 'json'
 
-################################################################################
-################# USER AREA: COMPLETE THE EQUIVALENCIES BELOW ##################
+### Prompts to set ENV, DOMAIN, TOKEN, and CSV FILE PATH
 
-### Replace ONLY underscores
-### Leave in single quotations surrounding the underscores (where pertinent)
+## ENV
+puts "For prod, hit enter. For Beta, enter 'beta'. For Test, enter 'test'"
+@env = gets.chomp!.downcase
+@env != '' ? @env << '.' : @env
 
-@access_token = '___'
-  #Replace underscores with API token generated from account user in Canvas
+## DOMAIN
+puts 'Enter the domain, EX: <domain>.instructure.com'
+@domain = gets.chomp!.downcase
 
-@domain = '___'
-  #Replace underscores with the sub-domain for your Canvas instance
-  #Example: If Canvas URL is canvasstuff.instructure.com, use canvasstuff
+## TOKEN
+puts 'Enter a valid access token to perform the API calls within this script'
+@token = gets.chomp!
 
-@env = nil
-  #To use script with Production, leave as-is
-  #For use with test/beta environments, replace nil with test or with beta
+## CSV FILE ##
+puts 'Enter the full file path for CSV data. EX: /Users/person/file/to/path.csv'
+@csv_file = gets.chomp!
 
-@csv_file = '___'
-  #Replace underscores with the full file path to the CSV file being used
-  #Example File Path: /Users/XXXXX/Path/To/File.csv
+@base_url = "https://#{@domain}.#{@env}instructure.com/api/v1/accounts/self/logins/"
+@default_headers = { Authorization: 'Bearer ' + @token }
 
-@root_account = '___'
-  #Replace underscores with the numeric ID of your root account.  This is the number that will display after '.com/accounts/' when on your Canvas root account admin settings page. It's usually 1.
-
-########## END OF USER AREA: DO NOT EDIT ANY VALUES BEYOND THIS POINT ##########
-################################################################################
-
-@env ? @env << "." : @env
-@base_url = "https://#{@domain}.#{@env}instructure.com/"
-
-
-CSV.foreach(@csv_file, {headers: true}) do |row|
-  if row['canvas_user_id'].nil?
-    puts 'No data in needed canvas_user_id column'
-    raise 'Valid CSV headers not found (Expecting canvas_user_id)'
-  elsif row['login_id'].nil?
-    puts 'No data in needed login_id csv column'
-    raise 'Valid CSV headers not found (Expecting login_id)'
-  elsif row['authentication_provider_id'].nil?
-    puts 'No data in needed authentication_provider_id csv column'
-    raise 'Valid CSV headers not found (Expecting authentication_provider_id)'
-  elsif row['sis_user_id'].nil?
-    puts 'No data in needed sis_user_id csv column'
-    raise 'Valid CSV headers not found (Expecting sis_user_id)'
-  else
-    canvas_user_id = row['canvas_user_id']
-    login_id = row['login_id']
-    authentication_provider_id = row['authentication_provider_id']
-    sis_user_id = row['sis_user_id']
-    response = Typhoeus.put
-        (
-            @base_url + "api/v1/accounts/" + @root_account + "/logins/",
-            headers: {
-                      :authorization => 'Bearer ' + @access_token , 'Content-Type' => 'application/x-www-form-urlencoded'
-                    },
-            body: {
-                  user: {
-                        :id => canvas_user_id
-                      },
-                  login: {
-                      :unique_id => login_id,
-                      :authentication_provider_id => authentication_provider_id,
-                      :sis_user_id => sis_user_id
-                      }
-                  }
-        )
-    #parse JSON data to save in readable array
-    data = JSON.parse(response.body)
-    puts data
-  end
+CSV.foreach(@csv_file, headers: true) do |row|
+  return raise "Invalid CSV headers: 'canvas_user_id' not found" if row['canvas_user_id'].nil?
+  return raise "Invalid CSV headers: 'login_id' not found" if row['login_id'].nil?
+  # return raise "Invalid CSV headers: 'authentication_provider_id' not found" if row['authentication_provider_id'].nil? # || ENABLE IF SETTING AUTHENTICAION PROVIDER
+  # return raise "Invalid CSV headers: 'sis_user_id' not found" if row['sis_user_id'].nil? # || ENABLE IF NEW LOGIN NEEDS TO HAVE AN SIS ID
+  response = Typhoeus.post(
+    @base_url,
+    headers: @default_headers,
+    body: {
+      user: {
+        id: row['canvas_user_id']
+      },
+      login: {
+        unique_id: row['login_id'],
+        ## If not using sis_user_id, remove the trailing comma on the next line.
+        # authentication_provider_id: "#{row['authentication_provider_id']}", # || ENABLE IF SETTING AUTHENTICAION PROVIDER
+        # sis_user_id: row['sis_user_id'] # || ENABLE IF NEW LOGIN NEEDS TO HAVE AN SIS ID
+      }
+    }
+  )
+  # parse JSON data to save in readable array
+  data = JSON.parse(response.body)
+  puts data
 end
