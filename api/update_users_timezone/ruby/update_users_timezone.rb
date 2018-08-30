@@ -1,4 +1,4 @@
-# Working as of 03/24/2016
+# Working as of 08/30/2018
 require 'typhoeus'
 require 'csv'
 
@@ -6,7 +6,6 @@ require 'csv'
 access_token = ''
 domain = '' # this would be canvas or canvas.test/canvas.beta
 csv_path = "full/path/to/file.csv"
-time_zone = "America/New_York"
 
 ########################### DO NOT EDIT ##############################
 url = "https://#{domain}.test.instructure.com/api/v1/" # remove or add test & beta if needed
