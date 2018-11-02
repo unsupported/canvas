@@ -23,7 +23,6 @@ def start(csv_file, access_token, base_url, output_csv)
         if row.headers[0] != 'old_sis_user_id' || row.headers[1] != 'new_sis_user_id'
             puts 'First column needs to be old_user_id, second column needs to be new_login_id'
         else
-            # puts base_url, access_token
             get_response = Typhoeus::Request.new("#{base_url}/api/v1/users/sis_user_id:#{row['old_sis_user_id']}/logins?per_page=100",
                                                  method: :get,
                                                  headers: { Authorization: "Bearer #{access_token}" })

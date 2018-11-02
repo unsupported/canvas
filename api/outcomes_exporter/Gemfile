@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
 gem 'typhoeus'
+gem "ffi", ">= 1.9.24"
 gem 'byebug'
 gem 'ruby-progressbar'
