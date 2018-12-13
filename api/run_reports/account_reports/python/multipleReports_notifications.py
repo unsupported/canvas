@@ -69,7 +69,7 @@ BASE_URI = BASE_DOMAIN.format('accounts/{}/reports'.format(ACCOUNT_ID))
 BASE_START_URI = BASE_DOMAIN.format('accounts/{}/reports/{}'.format(ACCOUNT_ID,{}))
 
 # This headers dictionary is used for almost every request
-headers = {'Authorization':'Bearer {}'.format(reports_auth_token)}
+headers = {'Authorization':'Bearer {}'.format(token)}
 
 # Use list indices to indicate report to run - default is [0]
 standard_reports = (
