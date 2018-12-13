@@ -1,5 +1,9 @@
 #!/usr/bin/python
 
+
+#Working as of 12/12
+
+
 import csv, requests, time, os
 import json, collections
 #import re
@@ -88,7 +92,7 @@ for user_image in csv_file_reader:
   files = {'file':open(image_path,'rb').read()}
   
   _data = json_res.items()
-  _data[1] = ('upload_params',_data[1][1].items())
+  _data[1] = ('upload_params',_data[3][1].items())
 
   log("Yes! Done sending pre-emptive 'here comes data' data, now uploading the file...")
   upload_file_response = requests.post(json_res['upload_url'],data=_data[1][1],files=files,allow_redirects=False)
