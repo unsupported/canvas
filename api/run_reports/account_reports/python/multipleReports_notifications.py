@@ -2,7 +2,7 @@
 # working as of 12/13/2018
 import requests
 import time, json, os
-import re,pprint, sys
+import re, sys
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
