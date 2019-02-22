@@ -1,0 +1,22 @@
+/*
+ * style_by_domain.css
+ * by: Danny Wahl danny@instructure.com
+ * Style a Canvas instance based on the
+ * domain it's being accessed from.
+ */
+
+/* Example for styling the login page of
+ * domaina.instructure.com
+ * differently than
+ * domainb.instructure.com
+ * the classes are added dynamically on every
+ * page by style_by_domain.js
+ */
+
+.ic-Login-Body.domain-a {
+    /* Login styles for domaina.instructure.com */
+}
+
+.ic-Login-Body.domain-b {
+    /* Login styles for domainb.instructure.com */
+}

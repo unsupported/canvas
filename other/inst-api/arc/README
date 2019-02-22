@@ -1,0 +1,177 @@
+NAME
+    arc - https://www.arcmedia.com
+
+SYNOPSIS
+    arc [options] method
+
+DESCRIPTION
+    arc-cli is a secure curl wrapper designed to simplify interacting
+    with the Arc JSON/REST API.
+
+    arc-cli automatically handles the creation of auth sessions based
+    on user credentials stored in the config file or on values
+    passed at runtime.
+
+OPTIONS
+    Options start with a single dash and many options require
+    a value after them.
+
+    All of the options are optional, however, some require
+    that other options be set as well for example
+    -d <domain> also requires -e <email> and -p <password>
+
+    All options must be included before the API method.
+
+    -c
+        This option runs the arc configuration and stores the
+        domain, email, and password in the preference file
+        located at ~/.inst
+
+        If no preference file is detected on first run, the
+        configuration process will automatically run.  This option
+        is mainly for adding arc if other Instructure APIs have
+        already been used, such as canvas or bridge
+
+        Arc config stores the following values in ~/.inst:
+        arc_domain="<domain>"
+        arc_email="<email>"
+        arc_password="<password>"
+
+    -d <domain>
+        This option allows querying a specified domain,
+        overriding the value set in the .inst config file.
+
+        The value only requires the subdomain string of
+        instructuremedia.com.  E.g. if the desired domain to query
+        is https://foobar.instructuremedia.com then pass the option
+        "-d foobar"
+
+        -d also requires that -e <email> and -p <password> be included
+        in the query.  arc will not allow you to pass one
+        authentication parameter and read the others from config.
+
+    -e <email>
+        This option allows querying via a specified email log in,
+        overriding the value set in the .inst config file.
+
+        -e also requires that -d <domain> and -p <password> be included
+        in the query.  arc will not allow you to pass one
+        authentication parameter and read the others from config.
+
+    -F <name=content>
+        The Form option transparently passes to curl.  Please read
+        the curl documentation regarding the use of the Form option.
+
+    -h
+        Usage help.  This lists all the available options with
+        descriptions and examples.
+
+    -l
+        License information.
+
+    -o <path>
+        This option outputs the return to a specified path and file.
+
+        When an output is specified, arc will always set the output
+        rendered to "plain", even if it is explicitly specified.
+
+    -p <password>
+        This option allows querying with a specified login password,
+        overriding the value set in the .inst config file.
+
+        -p also requires that -e <email> and -d <domain> be included
+        in the query.  arc will not allow you to pass one
+        authentication parameter and read the others from config.
+
+    -r <renderer>
+        This option allows you to specify the render method of the
+        the return from arc.  Available options are:
+
+        "color" (default) This will use json (npm) to format the
+        return and will use pygmentize (pip) to color the return.
+
+        "plain" This option will return the raw JSON object unformatted.
+
+        Plain is always used when when -o <path> is used, even if color
+        is explicitly specified in the command.
+
+    -s
+        This command will output the complete curl command in a readable
+        format.  It will not execute the command.
+
+    -X <HTTP method>
+        This option specifies the request method to be used by
+        the command.  Available options are:
+
+        "GET"/"get" (default)
+        "POST"/"post"
+        "PUT"/"put"
+        "DELETE"/"delete"
+
+        The required HTTP method is generally specified in the arc
+        API documentation.
+
+    -v
+        Version information.
+
+METHOD
+    The method is the URL path to be queried, excluding the
+    domain, subdomain and, /api/ path.
+
+    For example if the desired query is:
+    https://<domain>.instructuremedia.com/api/abacus/media/roster
+    The method is simply:
+    abacus/media/roster
+
+    The method can be quoted without issue in the event that
+    the current shell has issues with query parameters.
+    For example when searching for users you can use:
+
+    arc "media_management/search_users?query=<name>"
+
+EXAMPLES
+    List caption files associated with a given media object
+        arc media_management/media/<media_id>/caption_files
+
+    Get plain format of list of caption files associated with a media object
+        arc -r plain media_management/media/<media_id>/caption_files
+
+    Save output of list of caption files associated with a media object
+        arc -o ~/captions.json media_management/media/<media_id>/caption_files
+
+    Search for users by name or email
+        arc media_management/search_users?query=<name>
+
+    Delete a tag for the given media and tag
+        arc -X DELETE tags/<id>?media_id=<media_id>
+
+    Send a password reset email
+        arc -X POST -F "email=<email>" user_management/users/reset_password
+
+    Authenticate to Arc without using .inst config file
+        arc -d <domain> -e <email> -p <password> media_management/media/<id>
+
+FILES
+    ~/.inst
+        Config file, see -c for details.
+
+EXIT CODES
+    1   Unable to overwrite specified output file
+        (or user canceled overwrite)
+
+    2   Invalid option or missing argument
+
+    127 Missing dependency
+
+        Unspecified exit codes, or an exit code of 0 represent
+        a successful command.
+
+WWW
+    https://www.arcmedia.com/
+        Instructure home page for the Arc media software.
+
+    https://instructure.instructuremedia.com/api/docs/
+        API documentation for Arc media software.
+
+    https://github.com/thedannywahl/inst-api
+        Software repository for arc-cli.

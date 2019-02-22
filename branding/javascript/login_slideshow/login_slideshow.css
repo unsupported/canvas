@@ -1,0 +1,122 @@
+/*
+ * Canvas Login Slideshow
+ * by: Danny Wahl (dwahl@instructure.com)
+ * Allows you to specify up to 3 images
+ * to rotate on the background of the login page
+ * independently of the new theme editor
+ * REQUIRES: login_slideshow.js
+ * Specify the URL for each image below
+ */
+
+.ic-Login-Body .slide:nth-child(1) {
+    background-image: url("");
+}
+
+.ic-Login-Body .slide:nth-child(2) {
+    background-image: url("");
+}
+
+.ic-Login-Body .slide:nth-child(3) {
+    background-image: url("");
+}
+
+/**
+ * Modified from: http://tympanus.net/codrops/2012/01/02/fullscreen-background-image-slideshow-with-css3/
+ */
+
+.ic-Login-Body .ic-app-main-layout-horizontal {
+    z-index: 1;
+}
+
+.ic-Login-Body .slideshow {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    z-index: 0;
+    margin: 0;
+}
+
+.ic-Login-Body .slide {
+    list-style: none outside none;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    color: transparent;
+    background-size: cover;
+    background-position: 50% 50%;
+    background-repeat: none;
+    opacity: 0;
+    z-index: 0;
+    -webkit-backface-visibility: hidden;
+    -webkit-animation: imageAnimation 18s linear infinite 0s;
+    -moz-animation: imageAnimation 18s linear infinite 0s;
+    -o-animation: imageAnimation 18s linear infinite 0s;
+    -ms-animation: imageAnimation 18s linear infinite 0s;
+    animation: imageAnimation 18s linear infinite 0s;
+}
+
+.ic-Login-Body .slide:nth-child(2) {
+    -webkit-animation-delay: 6s;
+    -moz-animation-delay: 6s;
+    -o-animation-delay: 6s;
+    -ms-animation-delay: 6s;
+    animation-delay: 6s;
+}
+
+.ic-Login-Body .slide:nth-child(3) {
+    -webkit-animation-delay: 12s;
+    -moz-animation-delay: 12s;
+    -o-animation-delay: 12s;
+    -ms-animation-delay: 12s;
+    animation-delay: 12s;
+}
+
+@-webkit-keyframes imageAnimation {
+    0% { opacity: 0;
+    -webkit-animation-timing-function: ease-in; }
+    17% { opacity: 1;
+         -webkit-animation-timing-function: ease-out; }
+    33% { opacity: 1 }
+    51% { opacity: 0 }
+    100% { opacity: 0 }
+}
+@-moz-keyframes imageAnimation {
+    0% { opacity: 0;
+    -moz-animation-timing-function: ease-in; }
+    17% { opacity: 1;
+         -moz-animation-timing-function: ease-out; }
+    33% { opacity: 1 }
+    51% { opacity: 0 }
+    100% { opacity: 0 }
+}
+@-o-keyframes imageAnimation {
+    0% { opacity: 0;
+    -o-animation-timing-function: ease-in; }
+    17% { opacity: 1;
+         -o-animation-timing-function: ease-out; }
+    33% { opacity: 1 }
+    51% { opacity: 0 }
+    100% { opacity: 0 }
+}
+@-ms-keyframes imageAnimation {
+    0% { opacity: 0;
+    -ms-animation-timing-function: ease-in; }
+    17% { opacity: 1;
+         -ms-animation-timing-function: ease-out; }
+    33% { opacity: 1 }
+    51% { opacity: 0 }
+    100% { opacity: 0 }
+}
+@keyframes imageAnimation {
+    0% { opacity: 0;
+    animation-timing-function: ease-in; }
+    17% { opacity: 1;
+         animation-timing-function: ease-out; }
+    33% { opacity: 1 }
+    51% { opacity: 0 }
+    100% { opacity: 0 }
+}

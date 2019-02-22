@@ -1,0 +1,471 @@
+#!/bin/bash
+
+# LICENSE ######################################################################
+# ##############################################################################
+#
+# Copyright 2017 Danny Wahl (danny@instructure.com)
+# Working as of 02/21/2019
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# HELPER FUNCTIONS #############################################################
+# ##############################################################################
+
+logo() {
+  echo '
+           CCCCCCCCCCCC
+      C     CCCCCCCCCC     C
+     CCC     CCCCCCCC     CCC
+    CCCCC       CC       CCCCC
+   CCCCCC                CCCCCC
+                CC
+C         CC          CC         C
+CCC                            CCC
+CCCC                          CCCC
+CCCCC   C                C   CCCCC
+CCCCC   C                C   CCCCC
+CCCC                          CCCC
+CCC                            CCC
+C         CC          CC         C
+                CC
+   CCCCCC                CCCCCC
+    CCCCC       CC       CCCCC
+     CCC     CCCCCCCC     CCC
+      C     CCCCCCCCCC     C
+           CCCCCCCCCCCC
+  '
+}
+
+dependency() {
+  declare -a dep=("$@")
+  command -v ${dep[2]} > /dev/null 2>&1 || prompt ${dep[@]}
+}
+
+prompt() {
+  declare -a dep=("$@")
+  clear
+  echo >&2 "catalog-cli requires ${dep[1]} (${dep[3]}) but it's not installed"
+  echo >&2 "would you like to install it now?"
+  select yn in "Yes" "No"; do
+    case $yn in
+      Yes ) install ${dep[@]}; dependency ${dep[@]}; break;;
+      No ) manualinstall ${dep[@]}; exit;;
+    esac
+  done
+}
+
+install() {
+  declare -a dep=("$@")
+  clear
+  echo >&2 "catalog-cli will attempt to install ${dep[1]} (${dep[3]})"
+  hr
+  if [ ${dep[3]} = "npm" ]; then
+    command -v ${dep[3]} > /dev/null 2>&1 && npm install -g "${dep[1]}" || manualinstall ${dep[@]} ""
+  elif [ ${dep[3]} = "pip" ]; then
+    command -v ${dep[3]} > /dev/null 2>&1 && pip2 install "${dep[1]}" || manualinstall ${dep[@]} ""
+  else
+    manualinstall ${dep[@]} ""
+  fi
+  local status=$(echo $?)
+  if [ "$status" -gt 0 ]; then
+    manualinstall ${dep[@]} $status
+  fi
+  hr
+  echo >&2 "${dep[1]} (${dep[3]}) successfully installed"
+}
+
+manualinstall() {
+  declare -a dep=("$@")
+  if [ ${#dep[@]} -gt 4 ]; then
+    hr
+    echo "catalog-cli was unable to install ${dep[1]} (${dep[3]})"
+    if [ ${dep[3]} = "npm" ]; then
+      echo >&2 "\`npm install -g ${dep[1]}\` failed"
+    elif [ ${dep[3]} = "pip" ]; then
+      echo >&2 "\`pip2 install ${dep[1]}\` failed"
+    else
+      echo >&2 "\`curl\` is a system package"
+    fi
+  fi
+  if [ ${dep[3]} = "npm" ]; then
+    echo >&2 "Try using \`npm install -g ${dep[1]}\` to manually install"
+  elif [ ${dep[3]} = "pip" ]; then
+    echo >&2 "Try using \`pip2 install ${dep[1]}\` to manually install"
+  else
+    echo >&2 "${dep[1]} must be installed using a system package manager"
+  fi
+  exit 127
+}
+
+hr() {
+  local start=$'\e(0' end=$'\e(B' line='qqqqqqqqqqqqqqqq'
+  local cols=${COLUMNS:-$(tput cols)}
+  while ((${#line} < cols)); do line+="$line"; done
+  echo >&2 ""
+  printf '%s%s%s\n' "$start" "${line:0:cols}" "$end"
+  echo >&2 ""
+}
+
+outputrenderer="| json | pygmentize -l json"
+setrenderer() {
+  local renderer="$1"
+  case $renderer in
+    "plain")
+      outputrenderer="" ;;
+    "color")
+      outputrenderer="| json | pygmentize -l json" ;;
+    *)
+      echo >&2 "invalid argument \`$renderer\` for \`-r\`" && usage && exit 2 ;;
+  esac
+}
+
+httpmethod="GET"
+sethttp() {
+  local http="$1"
+  case $http in
+    "get"|"GET")
+      httpmethod="GET" ;;
+    "post"|"POST")
+      httpmethod="POST" ;;
+    "put"|"PUT")
+      httpmethod="PUT" ;;
+    "delete"|"DELETE")
+      httpmethod="DELETE" ;;
+    *)
+      echo >&2 "invalid argument \`$http\` for \`-x\`" && usage && exit 2 ;;
+  esac
+}
+
+curlopts="--tlsv1.2 --retry 2 --retry-connrefused -s -S -g"
+
+# HELP STUFF ###################################################################
+# ##############################################################################
+
+help() {
+  usage
+  exit;
+}
+
+verbosehelp() {
+  curl $curlopts -X GET "https://raw.githubusercontent.com/thedannywahl/inst-api/master/catalog/README" | less
+  exit;
+}
+
+usage() {
+  echo -e 2>&1 "Usage: catalog [options] method\r\nHelp:  catalog -h"
+}
+
+version() {
+  logo
+  echo >&2 "    catalog-cli version 0.3.1"
+  exit
+}
+
+license() {
+  curl $curlopts -X GET "https://www.apache.org/licenses/LICENSE-2.0.txt" | less
+  exit
+}
+
+examples() {
+  echo >&2 "$0 courses";
+  echo >&2 "$0 -x PUT users/self/settings -F 'manual_mark_as_read=false'";
+  echo >&2 "$0 <token> DELETE <domain> users/self/activity_stream";
+  echo >&2 "$0 <token> POST <domain> users/self/files -F 'url=http://www.canvaslms.com/img/logo_instructure.png' -F 'name=instructure.png'";
+}
+
+# HANDLE DEPENDENCIES ##########################################################
+# Requires: jsontool (npm), pygmentize (pip), curl, and getopts                #
+# ##############################################################################
+
+# null | name | executable | repository
+# `null` is a hacky shift to avoid string manipulation of
+# multi-dimensional array when passed as a parameter
+json=("" "json" "json" "npm")
+pygments=("" "pygments" "pygmentize" "pip")
+shellgetopts=("" "getopts" "getopts" "system")
+curl=("" "curl" "curl" "system")
+dependencies=(JSON=${json[@]} PYGMENTS=${pygments[@]} SHELLGETOPTS=${shellgetopts[@]} CURL=${curl[@]})
+for dep in "${dependencies[@]}"
+  do dependency ${dep[@]}
+done
+
+# PREF FILE ####################################################################
+# ##############################################################################
+
+catalog_domain=""
+catalog_token=""
+readconfig() {
+  if [ -f ~/.inst ]; then
+    . ~/.inst
+    if [ -z $catalog_domain ]; then
+      echo >&2 "unable to read domain from config file \`~/.inst\`"
+      echo >&2 "It must be manually added or repaired.  Format:"
+      echo >&2 "catalog_domain=\"<domain>\""
+      exit 2
+    fi
+    if [ -z $catalog_token ]; then
+      echo >&2 "unable to read token from config file \`~/.inst\`"
+      echo >&2 "It must be manually added or repaired.  Format:"
+      echo >&2 "catalog_token=\"<token>\""
+      exit 2;
+    fi
+  else
+    clear
+    echo >&2 "config file \`~/.inst\` not found"
+    echo >&2 "would you like to create it now?"
+    select yn in "Yes" "No"; do
+      case $yn in
+        Yes )
+          setconfig; break ;;
+        No )
+          clear
+          echo >&2 "catalog-cli requires a config file or use \`-d\` and \`-t\`"
+          usage; exit 2 ;;
+      esac
+    done
+  fi
+}
+
+setconfig() {
+  clear
+  echo -e "DO NOT create a config file on a shared system"
+  echo >&2 "other system users will be able to authenticate using your"
+  echo >&2 "saved credentials.  Instead use the \`-d\` and \`-t\` options"
+  echo >&2 "Do you wish to proceed?"
+  select ok in "Okay" "Cancel"; do
+    case $ok in
+      Okay)
+        touch ~/.inst
+        if [ $? = 0 ]; then
+          setdomain
+          settoken
+          readconfig
+        else
+          clear
+          echo >&2 "unable to create config file \`~/.inst\`"
+          echo >&2 "please ensure that you have appropriate permissions"
+          exit 2
+        fi; break;;
+      Cancel)
+        clear
+        echo >&2 "Enter your command again using the \`-t\` and \`-d\` options"
+        usage;
+        exit 0;;
+    esac
+  done
+  clear
+}
+
+setdomain() {
+  clear
+  echo >&2 "what is your catalog subdomain?"
+  echo >&2 "https://<subdomain>.catalog.instructure.com"
+  read catalogdomain
+  echo "catalog_domain=\"$catalogdomain\"" >> ~/.inst
+}
+
+settoken() {
+  clear
+  echo >&2 "please input your Canvas API token"
+  read catalogtoken
+  echo >&2 "catalog_token=\"$catalogtoken\"" >> ~/.inst
+}
+
+# OUTPUT FILE ##################################################################
+# ##############################################################################
+
+outputpath=""
+setoutput() {
+  if [ -f $1 ]; then
+    clear
+    echo "\`$1\` exists, overwrite it?"
+    select ow in "Yes" "No"; do
+      case $ow in
+        Yes )
+          outputpath="> $1"; break ;;
+        No )
+          echo >&2 "will not overwrite file."
+          exit 1
+      esac
+    done
+  else
+    outputpath="> $1"
+  fi
+}
+
+# PAGINATION ###################################################################
+# ##############################################################################
+
+query="?"
+setquery() {
+  if [[ $path == *"?"* ]]; then
+    query="&"
+  fi
+}
+
+pageint=1
+nextpage() {
+  pageint=$((pageint+1))
+  setpage $pageint
+}
+
+page=$query"page="$pageint
+setpage() {
+  page=$query"page="$1
+}
+
+perpage="&per_page=20"
+setcount() {
+  if [ $1 -gt 100 ]; then
+    perpage=100
+  else
+    perpage=$1
+  fi
+  perpage="&per_page="$perpage
+}
+
+getpages() {
+  shopt -s extglob
+  while IFS=':' read key value; do
+      value=${value##+([[:space:]])}; value=${value%%+([[:space:]])}
+      case "$key" in
+          Link) link="$value";;
+       esac
+  done < <(eval $1)
+  IFS=',' read -r -a link <<< "$link"
+  for index in "${!link[@]}"
+  do
+    if [[ ${link[index]} == *"last"* ]]; then
+      link=${link[index]}
+      break
+    fi
+  done
+  link=${link##*\?}
+  for val in ${link//&/ };do
+    key=( ${val/=/ } )
+    k=${key[0]}
+    if [ $k == 'page' ]; then
+      pagecount=${key[1]}
+    fi
+  done
+}
+
+# PARSE OPTS ###################################################################
+# ##############################################################################
+
+formopts=""
+page=""
+if [ $# -eq 0 ] && [ ! -f ~/.inst ]; then
+  readconfig
+  help
+elif [ $# -eq 0 ] && [ -f ~/.inst ]; then
+  help
+else
+  while [ $# -gt 0 ] && [ "$1" != "--" ]; do
+    while getopts ":hlvcasr:X:t:d:o:p:q:F:" opt; do
+      case $opt in
+        h)
+          verbosehelp ;;
+        l)
+          license ;;
+        v)
+          version ;;
+        c)
+          setconfig ;;
+        r)
+          setrenderer $OPTARG ;;
+        X)
+          sethttp $OPTARG ;;
+        d)
+          catalog_domain="$OPTARG" ;;
+        t)
+          catalog_token="$OPTARG" ;;
+        o)
+          setoutput $OPTARG ;;
+        a)
+          getpages=true ;;
+        s)
+          sample=true ;;
+        q)
+          setcount $OPTARG ;;
+        p)
+          pageint="$OPTARG" ;;
+        F)
+          formopts="$formopts -F $OPTARG" ;;
+        \?)
+          echo >&2 "invalid option: \`-$OPTARG\`" && usage && exit 2 ;;
+        :)
+          echo >&2 "missing argument for \`-$OPTARG\`" && usage && exit 2 ;;
+      esac
+    done
+    shift $((OPTIND-1))
+    if [ $# -gt 0 ] && ! [[ "$1" =~ ^- ]]; then
+      path="$1"
+      shift
+      break
+    else
+      echo "No API method provided!"
+      usage
+      exit 2
+    fi
+  done
+  if [ "$1" == "--" ]; then
+    shift
+    path=("${path[@]}" "$@")
+  fi
+fi
+
+# BUILD COMMAND ################################################################
+# ##############################################################################
+
+if [ -z "$catalog_domain" ] && [ -z "$catalog_token" ]; then
+  readconfig
+elif [ -z "$catalog_domain" ] || [ -z "$catalog_token" ]; then
+  echo >&2 "Both \`-d\` and \`-t\` are requied when not using a config file"
+  usage
+  exit 2
+fi
+
+if [ -n "$outputpath" ] && [ -n "$outputrenderer" ]; then
+  outputrenderer=""
+fi
+
+setquery
+setpage $pageint
+
+curlopts="$curlopts -H 'Authorization: Token token=\"$catalog_token\"'"
+
+pagecount=1
+if [ "$getpages" = true ] && [ "$httpmethod" == "GET" ]; then
+  command="curl $curlopts -I -X $httpmethod \"https://$catalog_domain.catalog.instructure.com/api/v1/$path$page$perpage\""
+  getpages "$command"
+fi
+
+if [ $httpmethod != "GET" ]; then
+  perpage=""
+  page=""
+  pagecount=1
+fi
+
+while
+  command="curl $curlopts -X $httpmethod \"https://$catalog_domain.catalog.instructure.com/api/v1/$path$page$perpage\" $formopts $outputrenderer $outputpath"
+  if [ "$sample" = true ]; then
+    echo "$command"
+  else
+    eval $command
+  fi
+  (( $pageint < $pagecount ))
+do
+  nextpage
+  continue
+done
