@@ -1,0 +1,44 @@
+/*
+ * User Dashboard Customizations: Modifies course tiles in the new Canvas UI
+ * by: Danny Wahl (dwahl@instructure.com)
+ * Working as of 10/16/2015
+ * By default this doesn't do anything
+ * you need to set the values in the following rules:
+ * 1.  Disable tile color selectors in new Canvas UI
+ * 2a. Set a standard color for all tiles
+ * 2b. Optionally set a background image for all tiles
+ * 3.  Set course title text color
+ * 4.  Set course sub-title text color
+ * 5.  Hide the course cards */
+
+/* 1. hide settings cog on tiles */
+.ic-DashboardCard__header-button {
+  /* display: none; */
+}
+
+/* 2. Set a background color or image for tiles */
+.ic-DashboardCard__background {
+  /* 2a. (uncomment to apply) Need !important b/c react.js writes inline style */
+  /*background-color: #ff0 !important;*/
+
+  /* 2b. Insert image URL between quotes to superimpose an image on all tiles */
+  background-image: url("");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-attachment: scroll;
+}
+
+/* 3. Set the color of course title text */
+.ic-DashboardCard__header-title {
+  /* color: currentColor; */
+}
+
+/* 4. Set the color of the course title sub-header text */
+.ic-DashboardCard__header-subtitle {
+  /* color: currentColor; */
+}
+/* 5. Hide the course cards (announcements, discussions, grades, files) */
+.ic-DashboardCard__action-container {
+  /* display: none; */
+}
