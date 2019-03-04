@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# Author: Brandon Poulliot 2018
+# Author: Brandon Poulliot
+# Working as of 3/4/19
 # currently uses mutt utility to send mail w/ attachment
 
 # standard libraries
