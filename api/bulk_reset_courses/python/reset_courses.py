@@ -28,7 +28,7 @@ if __name__ == '__main__':
   with open(CSVFileName, 'r') as _f:
     course_csv = csv.DictReader(_f)
     for course in course_csv:
-      course_id = course['scourse_id']
+      course_id = course['course_id']
       uri = "https://{0}/api/v1/courses/{1}/reset_content".format(domain, course_id)
       result = requests.post(uri, headers=headers)
     print(result.json())
