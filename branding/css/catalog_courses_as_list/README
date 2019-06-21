@@ -1,0 +1,10 @@
+# Catalog Courses as List
+Adding this CSS to a Catalog Instance will make it display courses in a list format instead of in a tile grid.  The list should scale down on mobile devices.
+Note: As with any part of Catalog, the links that these CSS Selectors target could change at any time. Be sure to check your beta environment before each production release to be sure that none of your JS/CSS has broken due to an upcoming code change.
+
+![Canvas Catalog courses displayed in a list format](screenshot.png)
+
+## Support
+This is an unsupported, community-created project. Keep that in mind. Instructure won't be able to help you fix or debug this. That said, the community will hopefully help support and keep both the script and this documentation up-to-date.
+
+Good luck!
