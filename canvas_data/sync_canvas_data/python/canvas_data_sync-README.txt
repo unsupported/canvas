@@ -53,5 +53,5 @@ file) before they are removed.
 #         
 # NOTES: + Working as of 9/20/19
 #    + Left in "future-proofing" lines, do not uncomment until useful
-#    + Flat file extensions don't matter -- change at will#    + Schema/dump extenstions - keep JSON for syntax marks in text editors
+#    + Flat file extensions don't matter -- change at will#    
 #    + Schema/dump extenstions - keep JSON for syntax marks in text editors
