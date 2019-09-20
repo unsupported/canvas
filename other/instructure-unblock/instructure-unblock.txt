@@ -1,0 +1,93 @@
+[Adblock Plus 2.0]
+! Version: 0008
+! Title: Instructure Whitelist
+! Last modified: 1550768261
+! Working as of 02/21/2019
+! Expires: 7 days (update frequency)
+! Homepage: https://github.com/unsupported/canvas/other/instructure-unblock
+
+! INDIVIDUAL SCHOOLS
+@@||instructure.com$~third-party
+@@||du11hjcvx0uqb.cloudfront.net
+@@||canvas-user-content.com
+
+! FREE FOR TEACHER
+@@||canvaslms.com$~third-party
+
+! UPLOADED FILES, SCRIPTS, STYLESHEETS
+@@||instructure.cloudfront.net
+@@||instructure-uploads.s3.amazonaws.com
+@@||inst-fs-*-prod.inscloudgate.net
+
+! CANVADOCS
+@@||canvadocs.instructure.com
+@@||cluster*-files.instructure.com
+
+! ARC
+@@||instructuremedia.com
+@@||notorious-prod.s3.amazonaws.com
+@@||s3.amazonaws.com/instructure-signal-prod/*
+
+! CANVAS DATA
+@@||pandata-events.*.inshosteddata.com
+@@||portal.inshosteddata.com
+@@||hosted-data-work.s3.amazonaws.com
+
+! ANALYTICS
+@@||canvas-analytics-*-prod.inscloudgate.net
+
+! COMMONS
+@@||lor-images.s3.amazonaws.com
+@@||pensieve*.s3.amazonaws.com
+
+! GAUGE
+@@||gauge-*-prod.instructure.com
+@@||quiz-api-production-s3-uploads-*.s3.amazonaws.com
+!! TODO: GAUGE CLOUDFRONT
+
+! SCORM
+@@||scone-prod.*.insops.net
+@@||scone-production-s3-filestore-*.s3.amazonaws.com
+@@||scorm-*-prod.insops.net
+
+! EDUAPPS
+@@||edu-apps.org
+@@||eduappcenter.com
+@@||eduappcenter-production-s3-bucketkey-*.s3.amazonaws.com
+
+! DOCUMENTATION
+@@||https://s3.amazonaws.com/tr-learncanvas/*
+
+! BIGBLUEBUTTON
+@@||blindsidenetworks.com$~third-party
+
+! BADGR
+@@||api.badgr.io
+
+! RCE
+@@||rich-content-*.inscloudgate.net
+@@||dvgcns7dz7zc.cloudfront.net/rce_service
+
+! QUIZZES.NEXT
+@@||*.quiz-lti-*-prod.instructure.com
+
+! MASTERY PATHS
+@@||conditional-release-*-prod.instructure.com
+
+! Collaborations
+@@||google-drive-lti-*-prod.instructure.com
+@@||office365-*-prod.instructure.com
+
+! BRIDGE
+@@||bridgeapp.com$~third-party
+@@||perform.bridgeapp.com$~third-party
+@@||bridgelms-production-*.s3.amazonaws.com
+@@||pandapush-*-prod.inscloudgate.net
+@@||r2b-*-prod.insops.net
+@@||s3.amazonaws.com/bridgelms-production-
+@@||bridge-scorm.*.insops.net
+@@||holly.bridgeops.net
+
+! BRIDGE SUITE
+@@||bridgelms-production-*.s3.amazonaws.com
+@@||suite.bridgeapp.com$~third-party

@@ -10,7 +10,7 @@ This script can be used to create sandbox courses for teachers. This script will
     <tr>
         <td>first_name</td>
         <td>last_name</td>
-        <td>email</td>
+        <td>login_id</td>
     </tr>
       <tr>
         <td>John</td>

@@ -1,0 +1,164 @@
+NAME
+    bridge - https://www.getbridge.com/
+
+SYNOPSIS
+    bridge [options] method
+
+DESCRIPTION
+    bridge-cli is a secure curl wrapper designed to simplify interacting
+    with the bridge JSON/REST API.
+
+    bridge-cli automatically authenticates users based on credentials stored
+    in the config file or on values passed at runtime.
+
+OPTIONS
+    Options start with a single dash and many options require
+    a value after them.
+
+    All of the options are optional, however, some require
+    that other options be set as well for example
+    -d <domain> also requires -t <token> and vice versa.
+
+    All options must be included before the API method.
+
+    -c
+        This option runs the bridge configuration and stores the
+        domain, email, and password in the preference file
+        located at ~/.inst
+
+        If no preference file is detected on first run, the
+        configuration process will automatically run.  This option
+        is mainly for adding bridge if other Instructure APIs have
+        already been used, such as arc or bridge
+
+        bridge config stores the following values in ~/.inst:
+        bridge_domain="<domain>"
+        bridge_token="<token>"
+
+
+    -d <domain>
+        This option allows querying a specified domain,
+        overriding the value set in the .inst config file.
+
+        The value only requires the subdomain string of
+        bridgeapp.com.  E.g. if the desired domain to query
+        is https://foobar.bridgeapp.com then pass the option
+        "-d foobar"
+
+        -d also requires that -t <token> be included
+        in the query.  bridge will not allow you to pass one
+        authentication parameter and read the others from config.
+
+    -F <name=content>
+        The Form option transparently passes to curl.  Please read
+        the curl documentation regarding the use of the Form option.
+
+    -h
+        Usage help.  This lists all the available options with
+        descriptions and examples.
+
+    -l
+        License information.
+
+    -o <path>
+        This option outputs the return to a specified path and file.
+
+        When an output is specified, bridge will always set the output
+        rendered to "plain", even if it is explicitly specified.
+
+    -r <renderer>
+        This option allows you to specify the render method of the
+        the return from bridge.  Available options are:
+
+        "color" (default) This will use json (npm) to format the
+        return and will use pygmentize (pip) to color the return.
+
+        "plain" This option will return the raw JSON object unformatted.
+
+        Plain is always used when when -o <path> is used, even if color
+        is explicitly specified in the command.
+
+    -t <token>
+        This option allows querying with a specified login password,
+        overriding the value set in the .inst config file.
+
+        -t also requires that -d <domain> be included
+        in the query.  bridge will not allow you to pass one
+        authentication parameter and read the others from config.
+
+    -X <HTTP method>
+        This option specifies the request method to be used by
+        the command.  Available options are:
+
+        "GET"/"get" (default)
+        "POST"/"post"
+        "PUT"/"put"
+        "DELETE"/"delete"
+
+        The required HTTP method is generally specified in the bridge
+        API documentation.
+
+    -v
+        Version information.
+
+METHOD
+    The method is the URL path to be queried, excluding the
+    domain, subdomain and, /api/ path.
+
+    For example if the desired query is:
+    https://<domain>.bridgeapp.com/api/learner/courses
+    The method is simply:
+    learner/courses
+
+    The method can be quoted without issue in the event that
+    the current shell has issues with query parameters.
+    For example when searching for users you can use:
+
+    bridge "learner/courses?as_user_id=<user_id>"
+
+EXAMPLES
+    Download a data dump
+        bridge -o ~/data.zip admin/data_dumps/download
+
+    Get plain format for a specified report
+        bridge -r plain admin/reports/<report_id>
+
+    Save output of list of author-affiliated sub accounts
+        bridge -o ~/affiliated.json author/affiliated_sub_accounts
+
+    Masquerade as a specified user
+        bridge learner/courses?as_user_id=<user_id>
+
+    Delete a specified enrollment
+        bridge -X DELETE /api/author/enrollments/<enrollment_id>
+
+    Publish a course
+        bridge -X POST author/course_templates/<course_id>/publish
+
+    Authenticate to bridge without using .inst config file
+        bridge -d <domain> -t <token> learner/courses
+
+FILES
+    ~/.inst
+        Config file, see -c for details.
+
+EXIT CODES
+    1   Unable to overwrite specified output file
+        (or user canceled overwrite)
+
+    2   Invalid option or missing argument
+
+    127 Missing dependency
+
+        Unspecified exit codes, or an exit code of 0 represent
+        a successful command.
+
+WWW
+    https://www.getbridge.com/
+        Instructure home page for the bridge application.
+
+    https://docs.bridgeapp.com/doc/api/html/
+        API documentation for the bridge application.
+
+    https://github.com/thedannywahl/inst-api
+        Software repository for bridge-cli.
