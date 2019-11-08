@@ -1,4 +1,8 @@
-Words of WARNING: This will likely download a LOT of data to the output directory. Carefully consider if you have space (hundreds of GB most likely) to spare for the sync files as well as newly re-written files (e.g., data was added to "module_progression_fact" table, but not enough to warrant a whole new file) before they are removed.
+Words of WARNING: This will likely download a LOT of data to the output 
+directory. Carefully consider if you have space (hundreds of GB most likely) 
+to spare for the sync files as well as newly re-written files (e.g., data was 
+added to "module_progression_fact" table, but not enough to warrant a whole new
+file) before they are removed.
 
 # canvas_data_sync.py
 # Author: Brandon Poulliot
@@ -47,7 +51,7 @@ Words of WARNING: This will likely download a LOT of data to the output director
 #             Uses default python to write a JSON file with all info on
 #               the first 100 data dumps after dump ID 345
 #         
-# NOTES: + Working as of 3/4/19
+# NOTES: + Working as of 9/20/19
 #    + Left in "future-proofing" lines, do not uncomment until useful
-#    + Flat file extensions don't matter -- change at will
+#    + Flat file extensions don't matter -- change at will#    
 #    + Schema/dump extenstions - keep JSON for syntax marks in text editors
