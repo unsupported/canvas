@@ -1,0 +1,2 @@
+canvas_user_id,login_id,authentication_provider_id,sis_user_id
+12345,userLogin1234,some_auth_name_or_auth_id,userSis1234

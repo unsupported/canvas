@@ -1,0 +1,203 @@
+NAME
+    canvas - https://canvaslms.com/
+
+SYNOPSIS
+    canvas [options] method
+
+DESCRIPTION
+    canvas-cli is a secure curl wrapper designed to simplify interacting
+    with the canvas JSON/REST API.
+
+    canvas-cli automatically authenticates users based on credentials stored
+    in the config file or on values passed at runtime.
+
+OPTIONS
+    Options start with a single dash and many options require
+    a value after them.
+
+    All of the options are optional, however, some require
+    that other options be set as well for example
+    -d <domain> also requires -t <token> and vice versa.
+
+    All options must be included before the API method.
+
+    -a
+        This option gets all pages of results for the specified
+        method.  By default only the first page is queried.
+
+        This option only works when the httpmethod (-X) is set to "GET"
+
+    -c
+        This option runs the canvas configuration and stores the
+        domain, email, and password in the preference file
+        located at ~/.inst
+
+        If no preference file is detected on first run, the
+        configuration process will automatically run.  This option
+        is mainly for adding canvas if other Instructure APIs have
+        already been used, such as arc or canvas
+
+        canvas config stores the following values in ~/.inst:
+        canvas_domain="<domain>"
+        canvas_token="<token>"
+
+    -d <domain>
+        This option allows querying a specified domain,
+        overriding the value set in the .inst config file.
+
+        The value only requires the subdomain string of
+        instructure.com.  E.g. if the desired domain to query
+        is https://foobar.instructure.com then pass the option
+        "-d foobar"
+
+        -d also requires that -t <token> be included
+        in the query.  canvas will not allow you to pass one
+        authentication parameter and read the others from config.
+
+    -F <name=content>
+        The Form option transparently passes to curl.  Please read
+        the curl documentation regarding the use of the Form option.
+
+    -h
+        Usage help.  This lists all the available options with
+        descriptions and examples.
+
+    -l
+        License information.
+
+    -o <path>
+        This option outputs the return to a specified path and file.
+
+        When an output is specified, canvas will always set the output
+        rendered to "plain", even if it is explicitly specified.
+
+    -p <page>
+        This option allows you to query starting at a specific page.
+        For example -p 2 will start at page 2.  This defaults to
+        page 1 if not set.  This can be used with the all option. For
+        example -a -p 3 will query all results, starting with page 3.
+
+        This option only works when the httpmethod (-X) is set to "GET"
+
+    -q <quantity>
+        This option allows you to set the per_page value of the query.
+        The default is 10 if this is not set.  The max value is 100, if
+        a value greater than 100 is selected, this will revert to 100.
+        This option will affect the numer of pages returned or the values
+        returned by the -a or -p <page> option.  For example, if there are
+        100 records by default -a will return 10 pages of results.  If the
+        option is set to -q 50 then only 2 pages of results will be returned.
+
+        When performing multiple queries it is recommended to set -q <quantity>
+        to a higher value to avoid being rate limited.
+
+        This option only works when the httpmethod (-X) is set to "GET"
+
+    -r <renderer>
+        This option allows you to specify the render method of the
+        the return from canvas.  Available options are:
+
+        "color" (default) This will use json (npm) to format the
+        return and will use pygmentize (pip) to color the return.
+
+        "plain" This option will return the raw JSON object unformatted.
+
+        Plain is always used when when -o <path> is used, even if color
+        is explicitly specified in the command.
+
+    -s
+        This command will output the complete curl command in a readable
+        format.  It will not execute the command.
+
+    -t <token>
+        This option allows querying with a specified login password,
+        overriding the value set in the .inst config file.
+
+        -t also requires that -d <domain> be included
+        in the query.  canvas will not allow you to pass one
+        authentication parameter and read the others from config.
+
+    -X <HTTP method>
+        This option specifies the request method to be used by
+        the command.  Available options are:
+
+        "GET"/"get" (default)
+        "POST"/"post"
+        "PUT"/"put"
+        "DELETE"/"delete"
+
+        The required HTTP method is generally specified in the canvas
+        API documentation.
+
+    -v
+        Version information.
+
+METHOD
+    The method is the URL path to be queried, excluding the
+    domain, subdomain and, /api/v1/ path.
+
+    For example if the desired query is:
+    https://<domain>.instructure.com/api/v1/courses
+    The method is simply:
+    courses
+
+    The method can be quoted without issue in the event that
+    the current shell has issues with query parameters.
+    For example when searching for users you can use:
+
+    canvas "courses?as_user_id=<user_id>"
+
+EXAMPLES
+    Get a user profile
+        canvas users/<user_id>
+
+    Get plain format list of rubrics for a specified account
+        canvas -r plain /api/v1/accounts/<account_id>/rubrics
+
+    Save output of submissions for a specified assignmnet
+        canvas -o ~/submissions.json \
+        courses/<course_id>/assignments/<assignment_id>/submissions
+
+    Masquerade as a specified user
+        canvas courses?as_user_id=<user_id>
+
+    Delete a specified enrollment
+        canvas -X DELETE /api/author/enrollments/<enrollment_id>
+
+    Edit a specified assignment
+        canvas -X PUT -F "assignment[name]=foobar" \
+        <course_id>/assignments/<assignment_id>
+
+    Authenticate to canvas without using .inst config file
+        canvas -d <domain> -t <token> courses
+
+    Download a file
+        canvas -o <path> files/<id>/download?download_frd=1&verifier=<verifier>
+
+    Get all the courses for a user, 50 courses per page
+        canvas -a -q 50 courses
+
+FILES
+    ~/.inst
+        Config file, see -c for details.
+
+EXIT CODES
+    1   Unable to overwrite specified output file
+        (or user canceled overwrite)
+
+    2   Invalid option or missing argument
+
+    127 Missing dependency
+
+        Unspecified exit codes, or an exit code of 0 represent
+        a successful command.
+
+WWW
+    https://www.canvaslms.com/
+        Instructure home page for the canvas application.
+
+    https://canvas.instructure.com/doc/api/
+        API documentation for the canvas application.
+
+    https://github.com/thedannywahl/inst-api
+        Software repository for canvas-cli.

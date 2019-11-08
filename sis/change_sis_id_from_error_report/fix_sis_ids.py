@@ -5,7 +5,35 @@ import string
 #This value is used to write a new CSV
 name_of_fixed_csv = ''
 #This is the the sis_id you would like to change. Values accepted are account, term, course, section, group, group_category, user
-type = ''
+type = 'user'
+
+
+def main():
+    total_val = read_csv()
+    total_val.pop(0)
+    final_test = []
+    for item in total_val:
+        try:
+            final_test.append(get_info(item))
+        except:
+            print('Failed at {}'.format(item))
+    #Write CSV
+    with open(name_of_fixed_csv, 'w') as write_csv:
+        csv_writer = csv.writer(write_csv)
+        csv_writer.writerow(['old_id', 'new_id', 'type'])
+        for data in final_test:
+            with open(name_of_fixed_csv, 'a') as writ:
+                csv_writ = csv.writer(writ)
+                csv_writer.writerow([data[0], data[1], data[2]])
+
+##Trying to use this with new, better code
+def find_between_r(s, first, last):
+    try:
+        start = s.rindex(first) + len(first)
+        end = s.rindex(last, start)
+        return s[start:end]
+    except ValueError:
+        return ""
 
 def main():
     ##Enter name of Error Report generated from Canvas

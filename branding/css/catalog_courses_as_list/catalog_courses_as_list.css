@@ -1,0 +1,43 @@
+/* Working as of 6/21/19
+ * Displays Catalog Courses in a list view
+ * Version 0.1
+ */
+
+#listings .col-md-3,
+#listings .col-sm-6,
+#listings .col-xs-12 {
+  width: 100%;
+  float: none;
+}
+
+#listings .product-tile {
+  padding: 1%;
+}
+
+#listings .product-image,
+#listings .product-account-image-wrapper {
+  display: none;
+}
+
+#listings .product-heading,
+#listings .product-description,
+#listings .product-footer {
+  display: inline-block;
+  width: auto;
+  border: 0 none;
+  margin: 0 1em;
+  padding: 0;
+  vertical-align: top;
+  height: auto;
+
+}
+#listings .product-heading,
+#listings .product-footer {
+  width: 20%;
+}
+#listings .product-description {
+  width: calc(60% - 2% - 6em)
+}
+#listings .product-footer {
+  width: 20%;
+}

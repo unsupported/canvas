@@ -1,0 +1,196 @@
+NAME
+    catalog - https://www.canvaslms.com/higher-education/catalog
+
+SYNOPSIS
+    catalog [options] method
+
+DESCRIPTION
+    catalog-cli is a secure curl wrapper designed to simplify interacting
+    with the catalog JSON/REST API.
+
+    catalog-cli automatically authenticates users based on credentials stored
+    in the config file or on values passed at runtime.
+
+OPTIONS
+    Options start with a single dash and many options require
+    a value after them.
+
+    All of the options are optional, however, some require
+    that other options be set as well for example
+    -d <domain> also requires -t <token> and vice versa.
+
+    All options must be included before the API method.
+
+    -a
+        This option gets all pages of results for the specified
+        method.  By default only the first page is queried.
+
+    -c
+        This option runs the catalog configuration and stores the
+        domain, email, and password in the preference file
+        located at ~/.inst
+
+        If no preference file is detected on first run, the
+        configuration process will automatically run.  This option
+        is mainly for adding catalog if other Instructure APIs have
+        already been used, such as arc or canvas
+
+        catalog config stores the following values in ~/.inst:
+        catalog_domain="<domain>"
+        catalog_token="<token>"
+
+    -d <domain>
+        This option allows querying a specified domain,
+        overriding the value set in the .inst config file.
+
+        The value only requires the subdomain string of
+        catalogapp.com.  E.g. if the desired domain to query
+        is https://foobar.catalog.instructure.com then pass the option
+        "-d foobar"
+
+        -d also requires that -t <token> be included
+        in the query.  catalog will not allow you to pass one
+        authentication parameter and read the others from config.
+
+    -F <name=content>
+        The Form option transparently passes to curl.  Please read
+        the curl documentation regarding the use of the Form option.
+
+    -h
+        Usage help.  This lists all the available options with
+        descriptions and examples.
+
+    -l
+        License information.
+
+    -o <path>
+        This option outputs the return to a specified path and file.
+
+        When an output is specified, catalog will always set the output
+        rendered to "plain", even if it is explicitly specified.
+
+    -p <page>
+        This option allows you to query starting at a specific page.
+        For example -p 2 will start at page 2.  This defaults to
+        page 1 if not set.  This can be used with the all option. For
+        example -a -p 3 will query all results, starting with page 3.
+
+        This option only works when the httpmethod (-X) is set to "GET"
+
+    -q <quantity>
+        This option allows you to set the per_page value of the query.
+        The default is 10 if this is not set.  The max value is 100, if
+        a value greater than 100 is selected, this will revert to 100.
+        This option will affect the numer of pages returned or the values
+        returned by the -a or -p <page> option.  For example, if there are
+        100 records by default -a will return 10 pages of results.  If the
+        option is set to -q 50 then only 2 pages of results will be returned.
+
+        When performing multiple queries it is recommended to set -q <quantity>
+        to a higher value to avoid being rate limited.
+
+        This option only works when the httpmethod (-X) is set to "GET"
+
+    -r <renderer>
+        This option allows you to specify the render method of the
+        the return from catalog.  Available options are:
+
+        "color" (default) This will use json (npm) to format the
+        return and will use pygmentize (pip) to color the return.
+
+        "plain" This option will return the raw JSON object unformatted.
+
+        Plain is always used when when -o <path> is used, even if color
+        is explicitly specified in the command.
+
+    -s
+        This command will output the complete curl command in a readable
+        format.  It will not execute the command.
+
+    -t <token>
+        This option allows querying with a specified login password,
+        overriding the value set in the .inst config file.
+
+        -t also requires that -d <domain> be included
+        in the query.  catalog will not allow you to pass one
+        authentication parameter and read the others from config.
+
+    -X <HTTP method>
+        This option specifies the request method to be used by
+        the command.  Available options are:
+
+        "GET"/"get" (default)
+        "POST"/"post"
+        "PUT"/"put"
+        "DELETE"/"delete"
+
+        The required HTTP method is generally specified in the catalog
+        API documentation.
+
+    -v
+        Version information.
+
+METHOD
+    The method is the URL path to be queried, excluding the
+    domain, subdomain and, /api/ path.
+
+    For example if the desired query is:
+    https://<domain>.catalog.instructure.com/api/v1/courses
+    The method is simply:
+    courses
+
+    The method can be quoted without issue in the event that
+    the current shell has issues with query parameters.
+    For example when searching for users you can use:
+
+    catalog "courses?per_page=40"
+
+EXAMPLES
+    Get the list of courses
+        catalog courses
+
+    Get plain format for the list of catalogs
+        catalog -r plain catalogs
+
+    Save output of list of enrollments for a specified course
+        catalog -o ~/enrollments.json -F "listing_id=<course_id>" enrollments
+
+    List additional results (default 20, max 100)
+        catalog -q <integer> courses
+
+    Delete a specific program
+        catalog -X DELETE programs/<program_id>
+
+    Update a specific program
+        catalog -X PUT -F "program[title]=<title>" programs/<program_id>
+
+    Authenticate to catalog without using .inst config file
+        catalog -d <domain> -t <token> courses
+
+    Get all the courses for a user, 50 courses per page
+        catalog -a -q 50 courses
+
+FILES
+    ~/.inst
+        Config file, see -c for details.
+
+EXIT CODES
+    1   Unable to overwrite specified output file
+        (or user canceled overwrite)
+
+    2   Invalid option or missing argument
+
+    127 Missing dependency
+
+        Unspecified exit codes, or an exit code of 0 represent
+        a successful command.
+
+WWW
+    https://www.canvaslms.com/higher-education/catalog
+        Instructure home page for the catalog application.
+
+    http://api.catalog.instructure.com/api/docs
+        API documentation for the catalog application.
+
+    https://github.com/thedannywahl/inst-api
+        Software repository for catalog-cli.

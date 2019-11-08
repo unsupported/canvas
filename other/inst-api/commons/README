@@ -1,0 +1,171 @@
+NAME
+    commons - https://lor.instructure.com/
+
+SYNOPSIS
+    commons [options] method
+
+DESCRIPTION
+    commons-cli is a secure curl wrapper designed to simplify interacting
+    with the Canvas Commons JSON/REST API.
+
+    commons-cli automatically handles the creation of auth sessions based
+    on user credentials stored in the config file or on values
+    passed at runtime.
+
+OPTIONS
+    Options start with a single dash and many options require
+    a value after them.
+
+    All of the options are optional, however, some require
+    that other options be set as well for example
+    -d <domain> also requires -t <token> and vice versa.
+
+    All options must be included before the API method.
+
+    -c
+        This option runs the commons configuration and stores the
+        domain, email, and password in the preference file
+        located at ~/.inst
+
+        If no preference file is detected on first run, the
+        configuration process will automatically run.  This option
+        is mainly for adding commons if other Instructure APIs have
+        already been used, such as canvas or bridge
+
+        commons config stores the following values in ~/.inst:
+        canvas_domain="<domain>"
+        canvas_token="<token>"
+
+        These values can also be set and are used by the canvas application.
+
+    -d <domain>
+        This option allows querying a specified domain,
+        overriding the value set in the .inst config file.
+
+        The value only requires the subdomain string of
+        instructure.com.  E.g. if the desired domain to query
+        is https://foobar.instructure.com then pass the option
+        "-d foobar"
+
+        -d also requires that -t <token> be included
+        in the query.  commons will not allow you to pass one
+        authentication parameter and read the others from config.
+
+    -F <name=content>
+        The Form option transparently passes to curl.  Please read
+        the curl documentation regarding the use of the Form option.
+
+    -h
+        Usage help.  This lists all the available options with
+        descriptions and examples.
+
+    -l
+        License information.
+
+    -o <path>
+        This option outputs the return to a specified path and file.
+
+        When an output is specified, commons will always set the output
+        rendered to "plain", even if it is explicitly specified.
+
+    -r <renderer>
+        This option allows you to specify the render method of the
+        the return from commons.  Available options are:
+
+        "color" (default) This will use json (npm) to format the
+        return and will use pygmentize (pip) to color the return.
+
+        "plain" This option will return the raw JSON object unformatted.
+
+        Plain is always used when when -o <path> is used, even if color
+        is explicitly specified in the command.
+
+    -s
+        This command will output the complete curl command in a readable
+        format.  It will not execute the command.
+
+    -t <token>
+        This option allows querying with a specified login password,
+        overriding the value set in the .inst config file.
+
+        -t also requires that -d <domain> be included
+        in the query.  commons will not allow you to pass one
+        authentication parameter and read the others from config.
+
+    -X <HTTP method>
+        This option specifies the request method to be used by
+        the command.  Available options are:
+
+        "GET"/"get" (default)
+        "POST"/"post"
+        "PUT"/"put"
+        "DELETE"/"delete"
+
+        The required HTTP method is generally specified in the commons
+        API documentation.
+
+    -v
+        Version information.
+
+METHOD
+    The method is the URL path to be queried, excluding the
+    domain, subdomain and, /api/ path.
+
+    For example if the desired query is:
+    https://lor.instructure.com/api/licenses
+    The method is simply:
+    licenses
+
+    The method can be quoted without issue in the event that
+    the current shell has issues with query parameters.
+    For example when searching for users you can use:
+
+    commons "users?q=<name>"
+
+EXAMPLES
+    List all available licenses
+        commons licenses
+
+    Get plain format for a single specified resource
+        commons -r plain resources/<id>/import
+
+    Save output of list of review votes for the specified resource
+        commons -o ~/reviews.json resources/:id/review-votes
+
+    Search for users by name or email
+        commons users?q=<name>
+
+    Delete a specified consortium
+        commons -X DELETE consortiums/<consortium_id>
+
+    Invite an account to a consortium
+        commons -X POST --data '{"accountId":"<account_id>"}' \
+        consortiums/<consortium_id>/members
+
+    Authenticate to commons without using .inst config file
+        commons -d <domain> -t <token> courses
+
+FILES
+    ~/.inst
+        Config file, see -c for details.
+
+EXIT CODES
+    1   Unable to overwrite specified output file
+        (or user canceled overwrite)
+
+    2   Invalid option or missing argument
+
+    127 Missing dependency
+
+        Unspecified exit codes, or an exit code of 0 represent
+        a successful command.
+
+WWW
+    https://lor.instructure.com/
+        Instructure home page for the commons learning object repository.
+
+    https://lor.instructure.com/docs/api/
+        API documentation for commons media software.
+
+    https://github.com/thedannywahl/inst-api
+        Software repository for commons-cli.
