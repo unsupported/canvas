@@ -4,10 +4,11 @@ require 'date'
 require 'json'
 require 'typhoeus'
 require 'fileutils'
+require 'io/console'
 
 ## TOKEN
 puts 'Enter a valid access token to perform the API calls within this script'
-token = gets.chomp!
+token = STDIN.noecho(&:gets).chomp!
 
 ## DOMAIN
 puts 'Enter the domain, EX: <domain>.instructure.com'
