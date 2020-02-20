@@ -51,6 +51,9 @@ with open(f"{working_path}/{csv_filename}") as csv_file:
         # Step 1: Start upload file to user's file storage in Canvas
         inform_api_url = f"https://{domain}/api/v1/users/self/files"
         image_path = f"{working_path}{images_path}{row['image_filename']}"
+        if not os.path.isfile(image_path):
+            print(image_path, "does not exist, skipping to next record")
+            continue
         mime_type = mimetypes.guess_type(image_path)
         inform_parameters = {
             'name': row['image_filename'],
