@@ -37,3 +37,7 @@ Temporary Items
 *.pyo
 api/update_user_sis_ids/ruby/vendor
 env
+
+
+#NodeJS
+node_modules/
