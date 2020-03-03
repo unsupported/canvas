@@ -1,4 +1,4 @@
-#Bulk update all course grading policies to manual
+# Bulk update all course grading policies to manual
 This script was made to use a headless browser to crawl through a canvas site and update all course grading policies manually based on a list of course SIS IDs. 
 
 The headless browser approach was used because there was no way to do this through the api at the point of this script being written (hopefully there is something in the future).
