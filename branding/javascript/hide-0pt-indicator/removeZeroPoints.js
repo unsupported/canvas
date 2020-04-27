@@ -1,5 +1,5 @@
 // Written by A. Carey, Instructure Inc
-// 2020.04.27 - Forgot/Set password
+// 2020.04.27
 // If you put this in your Theme's JS - 
 // It will hide any module point indicators with '0 pts'
 
