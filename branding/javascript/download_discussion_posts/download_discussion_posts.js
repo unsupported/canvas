@@ -6,6 +6,16 @@
  * of all the discussion posts
  */
 
+function onElementRendered(selector, cb, _attempts) {
+  var el = $(selector);
+  _attempts = ++_attempts || 1;
+  if (el.length) return cb(el);
+  if (_attempts == 60) return;
+  setTimeout(function() {
+    onElementRendered(selector, cb, _attempts);
+  }, 250);
+};
+
 $(function(){
 
   console.log("download_discussion_posts.js");
@@ -34,6 +44,7 @@ $(function(){
     var entries = [];
     //entries.push(new entry("ID", "Author", "Time", "Likes", "Text"));
 
+    onElementRendered('li.entry', function(e) {
     $('.entry').each(function(i){
 
       var id = Number($(this).prop("id").match(/\d+/));
@@ -69,6 +80,7 @@ $(function(){
     csv.unshift(header.join(','))
     csv = csv.join('\n')
     console.log(csv)
+    });
 
     function download(strData, strFileName, strMimeType) {
       var D = document,
