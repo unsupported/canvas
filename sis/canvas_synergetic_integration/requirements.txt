@@ -1,2 +1,6 @@
-requests>=2.20.0
-pyodbc==4.0.21
+requests
+pyodbc
+urllib3
+idna
+charset-normalizer
+certifi

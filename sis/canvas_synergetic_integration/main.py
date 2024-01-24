@@ -11,22 +11,25 @@ import zipfile
 import os
 import time
 import pyodbc
+import datetime
+
+now = datetime.datetime.now()
+
 from contextlib import contextmanager
 
 working_dir = './canvas/'
 
-base_url = 'https://******.instructure.com/api/v1/accounts/self/'
+base_url = os.environ['base_url']
 token = os.environ['TOKEN']
 header = {'Authorization' : 'Bearer {token}'.format(token=token)}
 payload = {'import_type' : 'instructure_csv', 'extension' : 'zip'}
 
-DB_URL = os.environ['DB_URL']
-DB = os.environ['DB']
-DB_USER = os.environ['DB_USER']
-DB_PASSWORD = os.environ['DB_PASSWORD']
-DRIVER = os.environ['DRIVER']
+SERVER = os.environ['SERVER']
+DATABASE = os.environ['DATABASE']
+USERNAME = os.environ['USERNAME']
+PASSWORD = os.environ['PASSWORD']
 
-conn_string = 'DRIVER={DRIVER};SERVER={DB_URL};DATABASE={DB};UID={DB_USER};PWD={DB_PASSWORD}'.format(DRIVER=DRIVER, DB_URL=DB_URL, DB=DB, DB_USER=DB_USER, DB_PASSWORD=DB_PASSWORD)
+conn_string = f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={SERVER};DATABASE={DATABASE};UID={USERNAME};PWD={PASSWORD}'
 
 
 @contextmanager
@@ -70,16 +73,13 @@ def get_canvas_users():
 
       results = [[
           'user_id',
-          'integration_id',
           'login_id',
-          'password',
-          'ssha_password',
           'first_name',
           'last_name',
           'full_name',
           'sortable_name',
-          'short_name',
           'email',
+	  'declared_user_type',
           'status'
       ]]
 
@@ -93,7 +93,7 @@ def get_canvas_courses():
     Selects canvas courses from uvCanvasCourses
     '''
     with db_connect(conn_string) as cur:
-      cur.execute("select * from uvCanvasCourses")
+      cur.execute("SELECT * FROM uvCanvasCourses")
       canvas_accounts = cur.fetchall()
 
       results = [[
@@ -103,11 +103,7 @@ def get_canvas_courses():
           'account_id',
           'term_id',
           'status',
-          'integration_id',
-          'start_date',
-          'end_date',
-          'course_format',
-          'blueprint_course_id'
+          'course_format'
       ]]
 
       for row in canvas_accounts:
@@ -117,26 +113,66 @@ def get_canvas_courses():
 
 def get_canvas_enrolments():
     '''
-    Selects canvas enrolments from uvCanvasEnrolments
+    Selects canvas enrolments from uvCanvasEnrollments
     '''
     with db_connect(conn_string) as cur:
-      cur.execute("select * from uvCanvasEnrolments")
+      cur.execute("select * from uvCanvasEnrollments")
       canvas_accounts = cur.fetchall()
 
       results = [[
           'course_id',
-          'root_account',
+	  'start_date',
+	  'end_date',
           'user_id',
-          'user_integration_id',
           'role',
-          'role_id',
           'section_id',
-          'status',
-          'associated_user_id',
-          'limit_section_priviledges'
+          'status'
         ]]
 
       for row in canvas_accounts:
+          results.append(row)
+
+      return results
+
+def get_canvas_terms():
+    '''
+    Selects canvas enrolments from uvCanvasTerms
+    '''
+    with db_connect(conn_string) as cur:
+      cur.execute("select * from uvCanvasTerms")
+      canvas_terms = cur.fetchall()
+
+      results = [[
+          'term_id',
+	  'name',
+	  'status',
+	  'start_date',
+	  'end_date'
+         
+        ]]
+
+      for row in canvas_terms:
+          results.append(row)
+
+      return results
+
+def get_canvas_sections():
+    '''
+    Selects canvas enrolments from uvCanvasSections
+    '''
+    with db_connect(conn_string) as cur:
+      cur.execute("select * from uvCanvasSections")
+      canvas_sections = cur.fetchall()
+
+      results = [[
+          'section_id',
+	  'course_id',
+	  'name',
+          'status'
+         
+        ]]
+
+      for row in canvas_sections:
           results.append(row)
 
       return results
@@ -157,7 +193,7 @@ def post_data(base_url, header, payload):
 
     r = requests.post(base_url + "/sis_imports/", headers=header, params=payload, data=data)
 
-    print(r.text)
+    print(now.strftime("%Y-%m-%d %H:%M:%S"), r.text)
     
 
 if __name__ == '__main__':
@@ -181,6 +217,14 @@ if __name__ == '__main__':
         writer = csv.writer(f)
         writer.writerows(get_canvas_enrolments())
 
+    with open(working_dir + "terms.csv", "w", newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        writer.writerows(get_canvas_terms())
+
+    with open(working_dir + "sections.csv", "w", newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        writer.writerows(get_canvas_sections())
+  
     # =============
     # ZIP Directory
     # =============
@@ -192,3 +236,4 @@ if __name__ == '__main__':
     # Post Data to Canvas
     # ===================
     post_data(base_url, header, payload)
+
