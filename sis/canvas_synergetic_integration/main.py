@@ -12,25 +12,10 @@ import os
 import time
 import pyodbc
 import datetime
-
-now = datetime.datetime.now()
-
 from contextlib import contextmanager
+import logging, logging.handlers
 
-working_dir = './canvas/'
-
-base_url = os.environ['base_url']
-token = os.environ['TOKEN']
-header = {'Authorization' : 'Bearer {token}'.format(token=token)}
-payload = {'import_type' : 'instructure_csv', 'extension' : 'zip'}
-
-SERVER = os.environ['SERVER']
-DATABASE = os.environ['DATABASE']
-USERNAME = os.environ['USERNAME']
-PASSWORD = os.environ['PASSWORD']
-
-conn_string = f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={SERVER};DATABASE={DATABASE};UID={USERNAME};PWD={PASSWORD}'
-
+logger = logging.getLogger('canvas_SI')
 
 @contextmanager
 def db_connect(conn_string):
@@ -43,7 +28,7 @@ def db_connect(conn_string):
     yield cur
     cnxn.close()
 
-def get_canvas_accounts():
+def get_canvas_accounts(conn_string):
     '''
     Selects canvas accounts from uvCanvasAccounts
     '''
@@ -63,7 +48,7 @@ def get_canvas_accounts():
 
       return results
 
-def get_canvas_users():
+def get_canvas_users(conn_string):
     '''
     Selects canvas users from uvCanvasUsers
     '''
@@ -88,7 +73,7 @@ def get_canvas_users():
 
       return results
 
-def get_canvas_courses():
+def get_canvas_courses(conn_string):
     '''
     Selects canvas courses from uvCanvasCourses
     '''
@@ -111,7 +96,7 @@ def get_canvas_courses():
 
       return results
 
-def get_canvas_enrolments():
+def get_canvas_enrolments(conn_string):
     '''
     Selects canvas enrolments from uvCanvasEnrollments
     '''
@@ -134,7 +119,7 @@ def get_canvas_enrolments():
 
       return results
 
-def get_canvas_terms():
+def get_canvas_terms(conn_string):
     '''
     Selects canvas enrolments from uvCanvasTerms
     '''
@@ -156,7 +141,7 @@ def get_canvas_terms():
 
       return results
 
-def get_canvas_sections():
+def get_canvas_sections(conn_string):
     '''
     Selects canvas enrolments from uvCanvasSections
     '''
@@ -193,37 +178,86 @@ def post_data(base_url, header, payload):
 
     r = requests.post(base_url + "/sis_imports/", headers=header, params=payload, data=data)
 
-    print(now.strftime("%Y-%m-%d %H:%M:%S"), r.text)
+    logger.info(r.text)
     
 
-if __name__ == '__main__':
+def main():
 
+
+
+    logger.setLevel(logging.INFO)
+
+    # Setup a logging to stderr
+    se = logging.StreamHandler()
+    se.setLevel(logging.WARNING)
+    logger.addHandler(se)
+
+    # And logging to event viewer
+    nt = logging.handlers.NTEventLogHandler(appname=__name__,)
+    nt.setLevel(logging.INFO)
+    nt.setFormatter(logging.Formatter("%(message)s"))
+    logger.addHandler(nt)
+
+    # And logging to a local file. Might make this optional later one, when I setup some command line arguments.
+    now = datetime.datetime.now()
+    logging_filename = now.strftime('canvas_SI_%Y-%m.log')
+    fl = logging.FileHandler(logging_filename, encoding='utf-8')
+    fl.setLevel(logging.INFO)
+    fl.setFormatter(logging.Formatter("%(asctime)s %(message)s"))
+    logger.addHandler(fl)
+
+    working_dir = './canvas/'
+
+    try:
+        base_url = os.environ['base_url']
+        token = os.environ['TOKEN']
+        header = {'Authorization' : 'Bearer {token}'.format(token=token)}
+        payload = {'import_type' : 'instructure_csv', 'extension' : 'zip'}
+
+        SERVER = os.environ['SERVER']
+        DATABASE = os.environ['DATABASE']
+        USERNAME = os.environ['USERNAME']
+        PASSWORD = os.environ['PASSWORD']
+    except KeyError as e:
+        logger.exception("missing required environment variable")
+        raise SystemExit()
+
+    conn_string = f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={SERVER};DATABASE={DATABASE};UID={USERNAME};PWD={PASSWORD}'
+
+    try:
+        go(conn_string, working_dir, base_url, header, payload)
+    except Exception as e:
+        logger.exception("Unhandled exception while running")
+        raise e
+
+
+def go(conn_string, working_dir, base_url, header, payload):
     # ===========
     # Create CSVs
     # ===========
     with open(working_dir + "accounts.csv", "w", newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
-        writer.writerows(get_canvas_accounts())
+        writer.writerows(get_canvas_accounts(conn_string))
 
     with open(working_dir + "users.csv", "w", newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
-        writer.writerows(get_canvas_users())
+        writer.writerows(get_canvas_users(conn_string))
 
     with open(working_dir + "courses.csv", "w", newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
-        writer.writerows(get_canvas_courses())
+        writer.writerows(get_canvas_courses(conn_string))
 
     with open(working_dir + "enrolments.csv", "w", newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
-        writer.writerows(get_canvas_enrolments())
+        writer.writerows(get_canvas_enrolments(conn_string))
 
     with open(working_dir + "terms.csv", "w", newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
-        writer.writerows(get_canvas_terms())
+        writer.writerows(get_canvas_terms(conn_string))
 
     with open(working_dir + "sections.csv", "w", newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
-        writer.writerows(get_canvas_sections())
+        writer.writerows(get_canvas_sections(conn_string))
   
     # =============
     # ZIP Directory
@@ -236,4 +270,7 @@ if __name__ == '__main__':
     # Post Data to Canvas
     # ===================
     post_data(base_url, header, payload)
+
+if __name__ == '__main__':
+    main()
 

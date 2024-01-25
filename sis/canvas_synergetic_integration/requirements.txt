@@ -4,3 +4,4 @@ urllib3
 idna
 charset-normalizer
 certifi
+pywin32
