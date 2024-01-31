@@ -16,6 +16,7 @@ from contextlib import contextmanager
 import logging, logging.handlers
 from dataclasses import dataclass
 from typing import List
+from tempfile import TemporaryDirectory
 
 logger = logging.getLogger('canvas_SI')
 
@@ -156,8 +157,6 @@ def post_data(base_url, header, payload):
 
 def main():
 
-
-
     logger.setLevel(logging.INFO)
 
     # Setup a logging to stderr
@@ -179,8 +178,6 @@ def main():
     fl.setFormatter(logging.Formatter("%(asctime)s %(message)s"))
     logger.addHandler(fl)
 
-    working_dir = './canvas/'
-
     try:
         base_url = os.environ['base_url']
         token = os.environ['TOKEN']
@@ -197,7 +194,7 @@ def main():
 
     conn_string = f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={SERVER};DATABASE={DATABASE};UID={USERNAME};PWD={PASSWORD}'
 
-    with db_connect(conn_string) as conn:
+    with db_connect(conn_string) as conn, TemporaryDirectory() as working_dir:
         try:
             go(conn, working_dir, base_url, header, payload)
         except Exception as e:
