@@ -138,6 +138,16 @@ views = [
 
 ]
 
+class SI_Exception(Exception):
+    pass
+
+class SIS_ImportError(SI_Exception):
+    def __init__(self, message, status_code, text):
+            super().__init__(message)
+            self.status_code = status_code
+            self.text = text
+
+
 def zipdir(path, ziph):
     '''
     Helper function for zipping the directory
@@ -146,16 +156,26 @@ def zipdir(path, ziph):
         for file in files:
             ziph.write(os.path.join(root, file))
 
-def post_data(base_url, header, payload):
+def post_data(base_url, header, filename):
+def post_data(base_url, header, filename):
     '''
-    Posts data to the canvas api endpoint
+    Posts data to the canvas api endpoint. Returns identifier for import 
     '''
-    data = open('results.zip', 'rb').read()
+
+    extension = filename.suffix[1:]
+    # Setup URL parameters
+    payload = {'import_type' : 'instructure_csv', 'extension': extension}
+
+    data = open(filename, 'rb').read()
 
     r = requests.post(base_url + "/sis_imports/", headers=header, params=payload, data=data)
 
-    logger.info(r.text)
-    
+    # Rather than just log the output, I would like to inspect the r object and check the return code. If there is an error I want to log that. If there is no error... I might log the output as well, but at a INFO level?
+    if r.status_code != 200:
+        raise SIS_ImportError(status_code=r.status_code, text=r.text)
+    r_json = r.json()
+    logger.info(f"Import started for {filename}, import id {r_json['id']}")
+    return r_json['id']
 
 def main():
 
@@ -184,7 +204,7 @@ def main():
         base_url = os.environ['base_url']
         token = os.environ['TOKEN']
         header = {'Authorization' : 'Bearer {token}'.format(token=token)}
-        payload = {'import_type' : 'instructure_csv', 'extension' : 'zip'}
+        
 
         SERVER = os.environ['SERVER']
         DATABASE = os.environ['DATABASE']
@@ -198,34 +218,43 @@ def main():
 
     with db_connect(conn_string) as conn, TemporaryDirectory() as working_dir:
         try:
-            go(conn, working_dir, base_url, header, payload)
+            go(conn, working_dir, base_url, header)
         except Exception as e:
             logger.exception("Unhandled exception while running")
             raise e
 
 
 
-def go(conn, working_dir, base_url, header, payload):
+def go(conn, working_dir, base_url, header, zip=False):
  
+    imports_started = []
     for view in views:
         with db_cursor(conn) as cur:
             csv_filename = (Path(working_dir) / view.name).with_suffix('.csv')
             with open(csv_filename, 'w', newline='', encoding='utf-8') as f:
                 writer = csv.writer(f)
                 writer.writerow(view.run(cur))
+            if not zip:
+                import_id = post_data(base_url=base_url, header=header, filename=csv_filename)
+                imports_started.append(import_id)
 
   
-    # =============
-    # ZIP Directory
-    # =============
-    zipf = zipfile.ZipFile('results.zip', 'w')
-    zipdir(working_dir, zipf)
-    zipf.close()
+    if zip:
+        # =============
+        # ZIP Directory
+        # =============
+        zipf = zipfile.ZipFile('results.zip', 'w')
+        zipdir(working_dir, zipf)
+        zipf.close()
 
-    # ===================
-    # Post Data to Canvas
-    # ===================
-    post_data(base_url, header, payload)
+        # ===================
+        # Post Data to Canvas
+        # ===================
+        import_id = post_data(base_url=base_url, header=header, filename='results.zip')
+        imports_started.append(import_id)
+
+    # TODO: Use GET /api/v1/accounts/:account_id/sis_imports/:id for each of the imports to track the status of the imports and log the outcome.
+ 
 
 if __name__ == '__main__':
     main()
