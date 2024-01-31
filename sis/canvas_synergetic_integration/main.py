@@ -17,6 +17,7 @@ import logging, logging.handlers
 from dataclasses import dataclass
 from typing import List
 from tempfile import TemporaryDirectory
+from pathlib import Path
 
 logger = logging.getLogger('canvas_SI')
 
@@ -205,10 +206,10 @@ def main():
 
 def go(conn, working_dir, base_url, header, payload):
  
-
     for view in views:
         with db_cursor(conn) as cur:
-            with open(working_dir + view.name, newline='', encoding='utf-8') as f:
+            csv_filename = (Path(working_dir) / view.name).with_suffix('.csv')
+            with open(csv_filename, 'w', newline='', encoding='utf-8') as f:
                 writer = csv.writer(f)
                 writer.writerow(view.run(cur))
 
