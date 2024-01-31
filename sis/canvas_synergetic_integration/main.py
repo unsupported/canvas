@@ -53,8 +53,9 @@ class SIS_Datatype:
     def run(self, cur):
         cur.execute(self.sql_view)
 
-        results = self.results_columns
-        for row in cur.fetch():
+        # Copy the column names into results.
+        results = [self.result_columns[:]]
+        for row in cur.fetchall():
             results.append(row)
         return results
 
