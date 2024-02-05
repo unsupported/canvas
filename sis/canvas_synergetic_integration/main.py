@@ -5,11 +5,9 @@
 # =============================
 
 import requests
-import json
 import csv
 import zipfile
 import os
-import time
 import pyodbc
 import datetime
 from contextlib import contextmanager
@@ -18,8 +16,33 @@ from dataclasses import dataclass
 from typing import List
 from tempfile import TemporaryDirectory
 from pathlib import Path
+import argparse
 
 logger = logging.getLogger('canvas_SI')
+
+@dataclass
+class SIS_Diffing_Parameter:
+    name: str
+    type: type
+    default: str
+    description: str
+
+
+diffing_params = [
+    SIS_Diffing_Parameter(name='diffing_drop_status', default='inactive', type=str,
+                          description='''If diffing_drop_status is passed, this SIS import will use this status for enrollments that are
+not included in the sis_batch. Defaults to ‘deleted’.
+Allowed values:
+deleted, completed, inactive'''),
+    SIS_Diffing_Parameter(name='diffing_data_set_identifier', default='canvas_syn_integration', type=str,
+                          description='''If set on a CSV import, Canvas will attempt to optimize the SIS import by comparing this set of CSVs to 
+the previous set that has the same data set identifier, and only applying the difference between the two'''),
+    SIS_Diffing_Parameter(name='diffing_user_remove_status', default='suspended', type=str,
+                          description='''For users removed from one batch to the next one using the same diffing_data_set_identifier, set their
+status to the value of this argument.'''),
+    SIS_Diffing_Parameter(name='change_threshold_percent', default=10, type=int,
+                          description='If set with diffing, diffing will not be performed if the files are greater than the threshold as a percent.'),
+]
 
 
 @contextmanager
@@ -58,6 +81,9 @@ class SIS_Datatype:
         for row in cur.fetchall():
             results.append(row)
         return results
+    
+
+
 
 views = [
     SIS_Datatype(
@@ -156,19 +182,22 @@ def zipdir(path, ziph):
         for file in files:
             ziph.write(os.path.join(root, file))
 
-def post_data(base_url, header, filename):
-def post_data(base_url, header, filename):
+def post_data(base_url, header, filename, cli_args=None, diffing_mode=False):
     '''
     Posts data to the canvas api endpoint. Returns identifier for import 
     '''
 
     extension = filename.suffix[1:]
     # Setup URL parameters
-    payload = {'import_type' : 'instructure_csv', 'extension': extension}
+    url_params = {'import_type' : 'instructure_csv', 'extension': extension}
 
+    if diffing_mode:
+        for arg in vars(cli_args):
+            url_params[arg] = getattr(cli_args, arg)
+ 
     data = open(filename, 'rb').read()
 
-    r = requests.post(base_url + "/sis_imports/", headers=header, params=payload, data=data)
+    r = requests.post(base_url + "/sis_imports/", headers=header, params=url_params, data=data)
 
     # Rather than just log the output, I would like to inspect the r object and check the return code. If there is an error I want to log that. If there is no error... I might log the output as well, but at a INFO level?
     if r.status_code != 200:
@@ -177,7 +206,13 @@ def post_data(base_url, header, filename):
     logger.info(f"Import started for {filename}, import id {r_json['id']}")
     return r_json['id']
 
-def main():
+def main(arg_strs):
+
+    ap = argparse.ArgumentParser()
+    for param in diffing_params:
+        ap.add_argument('--'+param.name, type=param.type, help=param.description, default=param.default)
+
+    args = ap.parse_args(args=arg_strs)
 
     logger.setLevel(logging.INFO)
 
@@ -218,14 +253,14 @@ def main():
 
     with db_connect(conn_string) as conn, TemporaryDirectory() as working_dir:
         try:
-            go(conn, working_dir, base_url, header)
+            go(conn, working_dir, base_url, header, args)
         except Exception as e:
             logger.exception("Unhandled exception while running")
             raise e
 
 
 
-def go(conn, working_dir, base_url, header, zip=False):
+def go(conn, working_dir, base_url, header, cli_args, zip=False):
  
     imports_started = []
     for view in views:
@@ -235,7 +270,7 @@ def go(conn, working_dir, base_url, header, zip=False):
                 writer = csv.writer(f)
                 writer.writerow(view.run(cur))
             if not zip:
-                import_id = post_data(base_url=base_url, header=header, filename=csv_filename)
+                import_id = post_data(base_url=base_url, header=header, filename=csv_filename, cli_args=cli_args, diffing_mode=True)
                 imports_started.append(import_id)
 
   
@@ -257,5 +292,6 @@ def go(conn, working_dir, base_url, header, zip=False):
  
 
 if __name__ == '__main__':
-    main()
+    import sys
+    main(arg_strs=sys.argv[1:])
 
