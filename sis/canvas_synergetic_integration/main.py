@@ -246,7 +246,7 @@ def main(arg_strs):
         USERNAME = os.environ['USERNAME']
         PASSWORD = os.environ['PASSWORD']
     except KeyError as e:
-        logger.exception("missing required environment variable")
+        logger.critical(f"missing required environment variable {e.args[0]}")
         raise SystemExit()
 
     conn_string = f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={SERVER};DATABASE={DATABASE};UID={USERNAME};PWD={PASSWORD}'
