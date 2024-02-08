@@ -206,7 +206,7 @@ def post_data(base_url, header, filename, diffing_mode=False):
     if r.status_code != 200:
         raise SIS_ImportError(status_code=r.status_code, text=r.text)
     r_json = r.json()
-    logger.info(f"Import started for {filename}, import id {r_json['id']}")
+    logger.info(f"Import upload for {filename}, import id {r_json['id']}")
     return r_json['id']
 
 def main(arg_strs):
@@ -276,7 +276,7 @@ def go(conn, working_dir, base_url, header, zip=False):
             csv_filename = (Path(working_dir) / view.name).with_suffix('.csv')
             with open(csv_filename, 'w', newline='', encoding='utf-8') as f:
                 writer = csv.writer(f)
-                writer.writerow(view.run(cur))
+                writer.writerows(view.run(cur))
             if not zip:
                 import_id = post_data(base_url=base_url, header=header, filename=csv_filename, diffing_mode=True)
                 imports_started.append(import_id)
