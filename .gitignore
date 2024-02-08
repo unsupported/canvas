@@ -41,3 +41,5 @@ env
 
 #NodeJS
 node_modules/
+
+*.log
