@@ -22,27 +22,30 @@ logger = logging.getLogger('canvas_SI')
 
 @dataclass
 class SIS_Diffing_Parameter:
-    name: str
     type: type
-    default: str
+    value: str
     description: str
 
 
-diffing_params = [
-    SIS_Diffing_Parameter(name='diffing_drop_status', default='inactive', type=str,
+diffing_params = {
+    'diffing_drop_status':
+    SIS_Diffing_Parameter(value='inactive', type=str,
                           description='''If diffing_drop_status is passed, this SIS import will use this status for enrollments that are
 not included in the sis_batch. Defaults to ‘deleted’.
 Allowed values:
 deleted, completed, inactive'''),
-    SIS_Diffing_Parameter(name='diffing_data_set_identifier', default='canvas_syn_integration', type=str,
+    'diffing_data_set_identifier':
+    SIS_Diffing_Parameter(value='canvas_syn_integration', type=str,
                           description='''If set on a CSV import, Canvas will attempt to optimize the SIS import by comparing this set of CSVs to 
 the previous set that has the same data set identifier, and only applying the difference between the two'''),
-    SIS_Diffing_Parameter(name='diffing_user_remove_status', default='suspended', type=str,
+    'diffing_user_remove_status':
+    SIS_Diffing_Parameter(value='suspended', type=str,
                           description='''For users removed from one batch to the next one using the same diffing_data_set_identifier, set their
 status to the value of this argument.'''),
-    SIS_Diffing_Parameter(name='change_threshold_percent', default=10, type=int,
+    'change_threshold_percent':
+    SIS_Diffing_Parameter(value=10, type=int,
                           description='If set with diffing, diffing will not be performed if the files are greater than the threshold as a percent.'),
-]
+}
 
 
 @contextmanager
@@ -182,7 +185,7 @@ def zipdir(path, ziph):
         for file in files:
             ziph.write(os.path.join(root, file))
 
-def post_data(base_url, header, filename, cli_args=None, diffing_mode=False):
+def post_data(base_url, header, filename, diffing_mode=False):
     '''
     Posts data to the canvas api endpoint. Returns identifier for import 
     '''
@@ -192,8 +195,8 @@ def post_data(base_url, header, filename, cli_args=None, diffing_mode=False):
     url_params = {'import_type' : 'instructure_csv', 'extension': extension}
 
     if diffing_mode:
-        for arg in vars(cli_args):
-            url_params[arg] = getattr(cli_args, arg)
+        for name, param in diffing_params.items():
+            url_params[name] = param.value
  
     data = open(filename, 'rb').read()
 
@@ -209,10 +212,15 @@ def post_data(base_url, header, filename, cli_args=None, diffing_mode=False):
 def main(arg_strs):
 
     ap = argparse.ArgumentParser()
-    for param in diffing_params:
-        ap.add_argument('--'+param.name, type=param.type, help=param.description, default=param.default)
+    for name, param in diffing_params.items():
+        ap.add_argument('--'+name, type=param.type, help=param.description, default=param.value)
 
     args = ap.parse_args(args=arg_strs)
+
+    diffing_params['diffing_data_set_identifier'].value = args.diffing_data_set_identifier
+    diffing_params['change_threshold_percent'].value = args.change_threshold_percent
+    diffing_params['diffing_drop_status'].value = args.diffing_drop_status
+    diffing_params['diffing_user_remove_status'].value = args.diffing_user_remove_status
 
     logger.setLevel(logging.INFO)
 
@@ -253,14 +261,14 @@ def main(arg_strs):
 
     with db_connect(conn_string) as conn, TemporaryDirectory() as working_dir:
         try:
-            go(conn, working_dir, base_url, header, args)
+            go(conn, working_dir, base_url, header)
         except Exception as e:
             logger.exception("Unhandled exception while running")
             raise e
 
 
 
-def go(conn, working_dir, base_url, header, cli_args, zip=False):
+def go(conn, working_dir, base_url, header, zip=False):
  
     imports_started = []
     for view in views:
@@ -270,7 +278,7 @@ def go(conn, working_dir, base_url, header, cli_args, zip=False):
                 writer = csv.writer(f)
                 writer.writerow(view.run(cur))
             if not zip:
-                import_id = post_data(base_url=base_url, header=header, filename=csv_filename, cli_args=cli_args, diffing_mode=True)
+                import_id = post_data(base_url=base_url, header=header, filename=csv_filename, diffing_mode=True)
                 imports_started.append(import_id)
 
   
