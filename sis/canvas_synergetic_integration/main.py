@@ -8,7 +8,8 @@ import requests
 import csv
 import zipfile
 import os
-import pyodbc
+import time
+import pprint
 import datetime
 from contextlib import contextmanager
 import logging, logging.handlers
@@ -17,6 +18,8 @@ from typing import List
 from tempfile import TemporaryDirectory
 from pathlib import Path
 import argparse
+
+import pyodbc
 
 logger = logging.getLogger('canvas_SI')
 
@@ -176,6 +179,12 @@ class SIS_ImportError(SI_Exception):
             self.status_code = status_code
             self.text = text
 
+class SIS_ImportStatusError(SI_Exception):
+    def __init__(self, message, status_code, text):
+            super().__init__(message)
+            self.status_code = status_code
+            self.text = text
+
 
 def zipdir(path, ziph):
     '''
@@ -206,8 +215,18 @@ def post_data(base_url, header, filename, diffing_mode=False):
     if r.status_code != 200:
         raise SIS_ImportError(status_code=r.status_code, text=r.text)
     r_json = r.json()
-    logger.info(f"Import upload for {filename}, import id {r_json['id']}")
     return r_json['id']
+
+def get_status(base_url, header, import_id):
+    '''
+    Returns a dictionary showing the result of an import
+    '''
+    url = base_url + f"/sis_imports/{import_id}"
+    resp = requests.get(url, headers=header)
+    if resp.status_code != 200:
+        raise SIS_ImportStatusError(status_code=resp.status_code, message="Failed to get status", text=resp.text)
+    return resp.json()
+
 
 def main(arg_strs):
 
@@ -224,16 +243,16 @@ def main(arg_strs):
     diffing_params['diffing_drop_status'].value = args.diffing_drop_status
     diffing_params['diffing_user_remove_status'].value = args.diffing_user_remove_status
 
-    logger.setLevel(logging.INFO)
+    logger.setLevel(logging.DEBUG)
 
     # Setup a logging to stderr
     se = logging.StreamHandler()
-    se.setLevel(logging.WARNING)
+    se.setLevel(logging.INFO)
     logger.addHandler(se)
 
     # And logging to event viewer
     nt = logging.handlers.NTEventLogHandler(appname=__name__,)
-    nt.setLevel(logging.INFO)
+    nt.setLevel(logging.DEBUG)
     nt.setFormatter(logging.Formatter("%(message)s"))
     logger.addHandler(nt)
 
@@ -241,7 +260,7 @@ def main(arg_strs):
     now = datetime.datetime.now()
     logging_filename = now.strftime('canvas_SI_%Y-%m.log')
     fl = logging.FileHandler(logging_filename, encoding='utf-8')
-    fl.setLevel(logging.INFO)
+    fl.setLevel(logging.DEBUG)
     fl.setFormatter(logging.Formatter("%(asctime)s %(message)s"))
     logger.addHandler(fl)
 
@@ -264,10 +283,8 @@ def main(arg_strs):
     with db_connect(conn_string) as conn, TemporaryDirectory() as working_dir:
         try:
             go(conn, working_dir, base_url, header, args.views)
-        except Exception as e:
-            logger.exception("Unhandled exception while running")
-            raise e
-
+        except SI_Exception as e:
+            logger.exception(f"Unhandled SI exception while running: {e}")
 
 
 def go(conn, working_dir, base_url, header, arg_views, zip=False):
@@ -286,7 +303,8 @@ def go(conn, working_dir, base_url, header, arg_views, zip=False):
                 writer.writerows(view.run(cur))
             if not zip:
                 import_id = post_data(base_url=base_url, header=header, filename=csv_filename, diffing_mode=True)
-                imports_started.append(import_id)
+                logger.debug(f"SI Import for {view.name} started, import ID {import_id}")
+                imports_started.append( (import_id, view.name) )
 
   
     if zip:
@@ -301,9 +319,42 @@ def go(conn, working_dir, base_url, header, arg_views, zip=False):
         # Post Data to Canvas
         # ===================
         import_id = post_data(base_url=base_url, header=header, filename='results.zip')
-        imports_started.append(import_id)
+        imports_started.append((import_id, 'results.zip'))
 
-    # TODO: Use GET /api/v1/accounts/:account_id/sis_imports/:id for each of the imports to track the status of the imports and log the outcome.
+
+    # Get the status of the imports we have started. These may not be
+    # immediately available, so the script will loop until we've successfully
+    # retrieved those statuses. But not loop forever.
+    pp = pprint.PrettyPrinter(sort_dicts=False)
+    status_loop_count = 0
+    while len(imports_started) > 0:
+        status_loop_count += 1
+        tmp_list_imports = imports_started[:]
+        imports_started = []
+        for import_id, view_name in tmp_list_imports:
+            status = get_status(base_url=base_url, header=header, import_id=import_id)
+            if status is None:
+                imports_started.append( (import_id, view_name) )
+                continue
+
+            progress = status['progress']
+            if progress != 100:
+                logger.info(f"Import for {view_name} in progress, progress = {progress}")
+                imports_started.append( (import_id, view_name) )
+                continue
+
+            workflow_state = status['workflow_state']
+            logger.warning(f"Import for {view_name} finished, result: {workflow_state}")
+            logger.debug(f"Import for {view_name} details: {pp.pformat(status)}")
+
+        # Don't loop forever
+        if status_loop_count > 1000:
+            logger.warning(f"Import status has taken to long, quiting")
+            break
+
+        if len(imports_started) > 0:
+            time.sleep(2)
+
  
 
 if __name__ == '__main__':
