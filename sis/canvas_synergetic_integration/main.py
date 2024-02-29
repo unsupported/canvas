@@ -212,6 +212,8 @@ def post_data(base_url, header, filename, diffing_mode=False):
 def main(arg_strs):
 
     ap = argparse.ArgumentParser()
+    views_help = ' '.join([i.name for i in views])
+    ap.add_argument('views', nargs='*', help=f'Names of views to process in this execution. One of {views_help}')
     for name, param in diffing_params.items():
         ap.add_argument('--'+name, type=param.type, help=param.description, default=param.value)
 
@@ -261,17 +263,22 @@ def main(arg_strs):
 
     with db_connect(conn_string) as conn, TemporaryDirectory() as working_dir:
         try:
-            go(conn, working_dir, base_url, header)
+            go(conn, working_dir, base_url, header, args.views)
         except Exception as e:
             logger.exception("Unhandled exception while running")
             raise e
 
 
 
-def go(conn, working_dir, base_url, header, zip=False):
+def go(conn, working_dir, base_url, header, arg_views, zip=False):
  
     imports_started = []
     for view in views:
+
+        # If the operator has named a view, but this view is not one of them, skip it.
+        if len(arg_views) > 0 and view.name not in arg_views:
+            continue
+
         with db_cursor(conn) as cur:
             csv_filename = (Path(working_dir) / view.name).with_suffix('.csv')
             with open(csv_filename, 'w', newline='', encoding='utf-8') as f:
