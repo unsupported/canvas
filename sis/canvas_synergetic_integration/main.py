@@ -11,47 +11,54 @@ import os
 import time
 import pprint
 import datetime
-from contextlib import contextmanager
+import shutil
+import contextlib
 import logging, logging.handlers
-from dataclasses import dataclass
-from typing import List
-from tempfile import TemporaryDirectory
-from pathlib import Path
+import dataclasses
+import typing
+import tempfile 
+import pathlib 
 import argparse
 
 import pyodbc
 
 logger = logging.getLogger('canvas_SI')
 
-@dataclass
+@dataclasses.dataclass
 class SIS_Diffing_Parameter:
     type: type
     value: str
     description: str
 
 
+# Various URL parameters we can use in the Canvas SI Import API. This
+# dictionary both documents which ones we are using, and the default value. 
+# This script uses this as a global variable so that the main() method can
+# setup options for the CLI, and store the chosen values back in after the CLI
+# arguments are parsed. Then this dictionary is referred to when building up
+# the URL parameters.
 diffing_params = {
     'diffing_drop_status':
     SIS_Diffing_Parameter(value='inactive', type=str,
-                          description='''If diffing_drop_status is passed, this SIS import will use this status for enrollments that are
+                          description='''If this script is in diffing mode then this script will pass diffing_drop_status as a URL parameter to the POST. Hence the CANVAS SIS import will use this status for enrollments that are
 not included in the sis_batch. Defaults to ‘deleted’.
 Allowed values:
 deleted, completed, inactive'''),
     'diffing_data_set_identifier':
     SIS_Diffing_Parameter(value='canvas_syn_integration', type=str,
-                          description='''If set on a CSV import, Canvas will attempt to optimize the SIS import by comparing this set of CSVs to 
+                          description='''If this scrip is running in diffing mode then diffing_data_set_identifier is used as a URL parameter in the POST to CANVAS. Hence Canvas will attempt to optimize the SIS import by comparing this set of CSVs to 
 the previous set that has the same data set identifier, and only applying the difference between the two'''),
     'diffing_user_remove_status':
     SIS_Diffing_Parameter(value='suspended', type=str,
-                          description='''For users removed from one batch to the next one using the same diffing_data_set_identifier, set their
+                          description='''If this script is running in diffing mode then this is used as a URL parameter in the POST to Canvas as a parameter. For users removed from one batch to the next one using the same diffing_data_set_identifier, set their
 status to the value of this argument.'''),
     'change_threshold_percent':
     SIS_Diffing_Parameter(value=10, type=int,
-                          description='If set with diffing, diffing will not be performed if the files are greater than the threshold as a percent.'),
+                          description='If this script is running in diffing mode then this parameter is used as a URL parameter in the POST to Canvas as a parameter. Canvas diffing will not be performed if the files are greater than the threshold as a percent.'),
 }
 
 
-@contextmanager
+@contextlib.contextmanager
 def db_cursor(conn):
     '''
     Context manager for database cursor. Allows for
@@ -62,7 +69,7 @@ def db_cursor(conn):
     yield cur
     cur.close()
 
-@contextmanager
+@contextlib.contextmanager
 def db_connect(conn_string):
     '''
     Context manager for database connection. Allows for
@@ -73,11 +80,11 @@ def db_connect(conn_string):
     cnxn.close()
 
 
-@dataclass
+@dataclasses.dataclass
 class SIS_Datatype:
     name: str
     sql_view: str
-    result_columns : List[str]
+    result_columns : typing.List[str]
 
     def run(self, cur):
         cur.execute(self.sql_view)
@@ -233,6 +240,9 @@ def main(arg_strs):
     ap = argparse.ArgumentParser()
     views_help = ' '.join([i.name for i in views])
     ap.add_argument('views', nargs='*', help=f'Names of views to process in this execution. One of {views_help}')
+    ap.add_argument('--diffing-mode', action='store_true', help='Instead of building a zip file of all the views upload individual synergetic views as CSV files and enable diffing mode. See Canvas documentation for more details on diffing mode')
+    ap.add_argument('--no-upload', action='store_true', help='Do not POST to canvas, instead only pull the data from Synergetic and save the relevant csv or zip files and save them to the local directory')
+    ap.add_argument('--output-dir', help='If running with --no-upload use the named directory instead of the current directory')
     for name, param in diffing_params.items():
         ap.add_argument('--'+name, type=param.type, help=param.description, default=param.value)
 
@@ -280,14 +290,25 @@ def main(arg_strs):
 
     conn_string = f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={SERVER};DATABASE={DATABASE};UID={USERNAME};PWD={PASSWORD}'
 
-    with db_connect(conn_string) as conn, TemporaryDirectory() as working_dir:
+    with db_connect(conn_string) as conn, tempfile.TemporaryDirectory() as working_dir:
         try:
-            go(conn, working_dir, base_url, header, args.views)
+            go(conn, working_dir, base_url, header, args.views, diffing_mode=args.diffing_mode, no_upload=args.no_upload)
         except SI_Exception as e:
             logger.exception(f"Unhandled SI exception while running: {e}")
+        finally:
+
+            # If the operator said to not upload, then we will copy all the generated files out of the temporary directory before they are deleted.
+            if args.no_upload:
+                if args.output_dir:
+                    output_dir = pathlib.Path(args.output_dir)
+                else:
+                    output_dir = pathlib.Path(".")
+                for filename in pathlib.Path(working_dir).iterdir():
+                    shutil.copy(filename, output_dir)
+                    
 
 
-def go(conn, working_dir, base_url, header, arg_views, zip=False):
+def go(conn, working_dir, base_url, header, arg_views, diffing_mode=False, no_upload=False):
  
     imports_started = []
     for view in views:
@@ -297,17 +318,20 @@ def go(conn, working_dir, base_url, header, arg_views, zip=False):
             continue
 
         with db_cursor(conn) as cur:
-            csv_filename = (Path(working_dir) / view.name).with_suffix('.csv')
+            csv_filename = (pathlib.Path(working_dir) / view.name).with_suffix('.csv')
             with open(csv_filename, 'w', newline='', encoding='utf-8') as f:
                 writer = csv.writer(f)
                 writer.writerows(view.run(cur))
-            if not zip:
+            
+            # If in diffing mode upload these CSV files individually
+            if diffing_mode and not no_upload:
                 import_id = post_data(base_url=base_url, header=header, filename=csv_filename, diffing_mode=True)
                 logger.debug(f"SI Import for {view.name} started, import ID {import_id}")
                 imports_started.append( (import_id, view.name) )
 
   
-    if zip:
+    # If we are not running in diffing mode create a zip file of all the CSV files created.
+    if not diffing_mode:
         # =============
         # ZIP Directory
         # =============
@@ -318,8 +342,9 @@ def go(conn, working_dir, base_url, header, arg_views, zip=False):
         # ===================
         # Post Data to Canvas
         # ===================
-        import_id = post_data(base_url=base_url, header=header, filename='results.zip')
-        imports_started.append((import_id, 'results.zip'))
+        if not no_upload:
+            import_id = post_data(base_url=base_url, header=header, filename='results.zip', diffing_mode=False)
+            imports_started.append((import_id, 'results.zip'))
 
 
     # Get the status of the imports we have started. These may not be
