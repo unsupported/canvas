@@ -26,9 +26,10 @@ logger = logging.getLogger('canvas_SI')
 
 @dataclasses.dataclass
 class SIS_Diffing_Parameter:
-    type: type
     value: str
     description: str
+    type: typing.Optional[type] = None
+    action: typing.Optional[str] = None
 
 
 # Various URL parameters we can use in the Canvas SI Import API. This
@@ -55,6 +56,11 @@ status to the value of this argument.'''),
     'change_threshold_percent':
     SIS_Diffing_Parameter(value=10, type=int,
                           description='If this script is running in diffing mode then this parameter is used as a URL parameter in the POST to Canvas as a parameter. Canvas diffing will not be performed if the files are greater than the threshold as a percent.'),
+    'diffing-remaster-dataset':
+    SIS_Diffing_Parameter(value=False, action='store_true',
+                          description='''If changes are made to SIS-managed objects outside of the normal import process, it may be necessary to process a SIS import with the same data set identifier, but apply the entire import rather than applying just the diff. To enable this mode, set the diffing_remaster_data_set=true option when creating the import, and it will be applied without diffing. The next import for the same data set will still diff against that import.
+                          When scheduling this script to run frequently you should not set this option.
+                          ''')
 }
 
 
@@ -235,8 +241,18 @@ def main(arg_strs):
     ap.add_argument('--diffing-mode', action='store_true', help='Instead of building a zip file of all the views upload individual synergetic views as CSV files and enable diffing mode. See Canvas documentation for more details on diffing mode')
     ap.add_argument('--no-upload', action='store_true', help='Do not POST to canvas, instead only pull the data from Synergetic and save the relevant csv or zip files and save them to the local directory')
     ap.add_argument('--output-dir', help='If running with --no-upload use the named directory instead of the current directory')
+    
+    # Add all of the diffing parameters to the scripts arguments/options.
     for name, param in diffing_params.items():
-        ap.add_argument('--'+name, type=param.type, help=param.description, default=param.value)
+        kwargs = {
+            'help': param.description,
+            'default': param.value,
+        }
+        if param.action:
+            kwargs['action'] = param.action
+        if param.type:
+            kwargs['type'] = param.type
+        ap.add_argument('--'+name, **kwargs)
 
     args = ap.parse_args(args=arg_strs)
 
