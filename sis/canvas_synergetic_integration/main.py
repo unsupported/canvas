@@ -332,18 +332,12 @@ def go(conn, working_dir, base_url, header, arg_views, diffing_mode=False, no_up
   
     # If we are not running in diffing mode create a zip file of all the CSV files created.
     if not diffing_mode:
-        # =============
-        # ZIP Directory
-        # =============
-        zipf = zipfile.ZipFile('results.zip', 'w')
+        zip_filename = pathlib.Path(working_dir) / 'results.zip'
+        zipf = zipfile.ZipFile(zip_filename, 'w')
         zipdir(working_dir, zipf)
         zipf.close()
-
-        # ===================
-        # Post Data to Canvas
-        # ===================
         if not no_upload:
-            import_id = post_data(base_url=base_url, header=header, filename='results.zip', diffing_mode=False)
+            import_id = post_data(base_url=base_url, header=header, filename=zip_filename, diffing_mode=False)
             imports_started.append((import_id, 'results.zip'))
 
 
