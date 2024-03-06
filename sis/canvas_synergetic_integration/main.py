@@ -193,14 +193,6 @@ class SIS_ImportStatusError(SI_Exception):
             self.text = text
 
 
-def zipdir(path, ziph):
-    '''
-    Helper function for zipping the directory
-    '''
-    for root, dirs, files in os.walk(path):
-        for file in files:
-            ziph.write(os.path.join(root, file))
-
 def post_data(base_url, header, filename, diffing_mode=False):
     '''
     Posts data to the canvas api endpoint. Returns identifier for import 
@@ -290,7 +282,9 @@ def main(arg_strs):
 
     conn_string = f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={SERVER};DATABASE={DATABASE};UID={USERNAME};PWD={PASSWORD}'
 
-    with db_connect(conn_string) as conn, tempfile.TemporaryDirectory() as working_dir:
+    with db_connect(conn_string) as conn, tempfile.TemporaryDirectory() as working_dir_name:
+        working_dir = pathlib.Path(working_dir_name)
+
         try:
             go(conn, working_dir, base_url, header, args.views, diffing_mode=args.diffing_mode, no_upload=args.no_upload)
         except SI_Exception as e:
@@ -303,7 +297,7 @@ def main(arg_strs):
                     output_dir = pathlib.Path(args.output_dir)
                 else:
                     output_dir = pathlib.Path(".")
-                for filename in pathlib.Path(working_dir).iterdir():
+                for filename in working_dir.iterdir():
                     shutil.copy(filename, output_dir)
                     
 
@@ -318,7 +312,7 @@ def go(conn, working_dir, base_url, header, arg_views, diffing_mode=False, no_up
             continue
 
         with db_cursor(conn) as cur:
-            csv_filename = (pathlib.Path(working_dir) / view.name).with_suffix('.csv')
+            csv_filename = (working_dir / view.name).with_suffix('.csv')
             with open(csv_filename, 'w', newline='', encoding='utf-8') as f:
                 writer = csv.writer(f)
                 writer.writerows(view.run(cur))
@@ -332,9 +326,13 @@ def go(conn, working_dir, base_url, header, arg_views, diffing_mode=False, no_up
   
     # If we are not running in diffing mode create a zip file of all the CSV files created.
     if not diffing_mode:
-        zip_filename = pathlib.Path(working_dir) / 'results.zip'
+        zip_filename = working_dir / 'results.zip'
         zipf = zipfile.ZipFile(zip_filename, 'w')
-        zipdir(working_dir, zipf)
+        
+        # zip the directory
+        for obj in working_dir.rglob('*.csv'):
+            if obj.is_file():
+                zipf.write(obj)
         zipf.close()
         if not no_upload:
             import_id = post_data(base_url=base_url, header=header, filename=zip_filename, diffing_mode=False)
