@@ -218,7 +218,7 @@ def post_data(base_url, header, filename, diffing_mode=False):
 
     # Rather than just log the output, I would like to inspect the r object and check the return code. If there is an error I want to log that. If there is no error... I might log the output as well, but at a INFO level?
     if r.status_code != 200:
-        raise SIS_ImportError(status_code=r.status_code, text=r.text)
+        raise SIS_ImportError(status_code=r.status_code, message="SIS Import post failed", text=r.text)
     r_json = r.json()
     return r_json['id']
 
