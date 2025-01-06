@@ -40,7 +40,7 @@ class SIS_Diffing_Parameter:
 # the URL parameters.
 diffing_params = {
     'diffing_drop_status':
-    SIS_Diffing_Parameter(value='inactive', type=str,
+    SIS_Diffing_Parameter(value='deleted_last_completed', type=str,
                           description='''If this script is in diffing mode then this script will pass diffing_drop_status as a URL parameter to the POST. Hence the CANVAS SIS import will use this status for enrollments that are
 not included in the sis_batch. Defaults to ‘deleted’.
 Allowed values:
