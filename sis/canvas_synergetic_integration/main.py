@@ -256,7 +256,6 @@ def main(arg_strs):
 
     args = ap.parse_args(args=arg_strs)
 
-    diffing_params['diffing_data_set_identifier'].value = args.diffing_data_set_identifier
     diffing_params['change_threshold_percent'].value = args.change_threshold_percent
     diffing_params['diffing_drop_status'].value = args.diffing_drop_status
     diffing_params['diffing_user_remove_status'].value = args.diffing_user_remove_status
@@ -335,6 +334,10 @@ def go(conn, working_dir, base_url, header, arg_views, diffing_mode=False, no_up
             
             # If in diffing mode upload these CSV files individually
             if diffing_mode and not no_upload:
+
+                # But first, set the identifier to be specific to this view.
+                diffing_params['diffing_data_set_identifier'].value = view.name
+
                 import_id = post_data(base_url=base_url, header=header, filename=csv_filename, diffing_mode=True)
                 logger.debug(f"SI Import for {view.name} started, import ID {import_id}")
                 imports_started.append( (import_id, view.name) )
