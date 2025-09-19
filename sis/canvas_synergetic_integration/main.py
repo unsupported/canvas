@@ -295,6 +295,16 @@ def main(arg_strs):
         logger.critical(f"missing required environment variable {e.args[0]}")
         raise SystemExit()
 
+    if args.views:
+        incorrect_view_name = False
+        views_help = ' '.join([i.name for i in views])
+        for view in args.views:
+            if view not in names_of_defined_views:
+                logger.warning(f"You have named view '{view}', but that is not a valid view name. Valid vewnames are: {views_help}")
+                incorrect_view_name = True
+        if incorrect_view_name:
+            raise SystemExit()
+
     conn_string = f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={SERVER};DATABASE={DATABASE};UID={USERNAME};PWD={PASSWORD}'
 
     with db_connect(conn_string) as conn, tempfile.TemporaryDirectory() as working_dir_name:
