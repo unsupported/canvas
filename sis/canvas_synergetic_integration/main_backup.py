@@ -197,6 +197,7 @@ class SIS_ImportStatusError(SI_Exception):
             self.status_code = status_code
             self.text = text
 
+
 def post_data(base_url, header, filename, diffing_mode=False):
     '''
     Posts data to the canvas api endpoint. Returns identifier for import 
@@ -250,8 +251,7 @@ def main(arg_strs):
             kwargs['action'] = param.action
         if param.type:
             kwargs['type'] = param.type
-        cli_name = '--' + name.replace('_', '-')
-        ap.add_argument(cli_name, **kwargs)
+        ap.add_argument('--'+name, **kwargs)
 
     args = ap.parse_args(args=arg_strs)
 
@@ -395,3 +395,4 @@ def go(conn, working_dir, base_url, header, arg_views, diffing_mode=False, no_up
 if __name__ == '__main__':
     import sys
     main(arg_strs=sys.argv[1:])
+
