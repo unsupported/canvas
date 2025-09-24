@@ -297,9 +297,8 @@ def main(arg_strs):
 
     if args.views:
         incorrect_view_name = False
-        views_help = ' '.join([i.name for i in views])
         for view in args.views:
-            if view not in names_of_defined_views:
+            if view not in views_help:
                 logger.warning(f"You have named view '{view}', but that is not a valid view name. Valid vewnames are: {views_help}")
                 incorrect_view_name = True
         if incorrect_view_name:
