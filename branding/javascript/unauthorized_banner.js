@@ -9,8 +9,8 @@ function initUnauthorizedBanner({ blockedDomains = [], bannerText = 'Unauthorize
   const domain = extractDomain(email);
   if (!domain) return false;
 
-  const normalizedBlocked = new Set(blockedDomains.map(d => d.trim().toLowerCase()));
-  if (!normalizedBlocked.has(domain)) return false;
+  const normalizedAllowed = new Set(allowedDomains.map(d => d.trim().toLowerCase()));
+  if (normalizedAllowed.has(domain)) return false; // allowed
 
   showUnauthorizedBanner({ bannerText, subText, domain });
   return true;
@@ -90,7 +90,7 @@ function showUnauthorizedBanner({ bannerText, subText, domain }) {
 function runBanner() {
   try {
     initUnauthorizedBanner({
-      blockedDomains: [''], // customise as needed
+      allowedDomains: [''], // customise as needed
       bannerText: 'Unauthorized',
       subText: 'Access denied for your organisation.'
     });
